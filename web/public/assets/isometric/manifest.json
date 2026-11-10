@@ -1,0 +1,14 @@
+{
+  "asset": "world.png",
+  "width": 1586,
+  "height": 992,
+  "sha256": "736c57020b174ee506c66b57b5c9857dee57f265b2280517f2c1203186462c5a",
+  "generator": "built-in image_gen",
+  "operation": "reference-guided environment edit",
+  "model_version": "not returned",
+  "parent_concept": "docs/art/isometric-shop-concept-v1.png",
+  "parent_sha256": "21966c9ee65bebe1cd0d07e41eaed726eecc6023dbd7b178bb2af5af14a07dfe",
+  "prompt": "docs/art/isometric-world-v1.prompt.md",
+  "pixel_lab_requests": 0,
+  "jev_requests": 0
+}

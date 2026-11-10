@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2.118.0",
+    "@near-js/crypto": "npm:@near-js/crypto@2.5.1"
+  }
+}

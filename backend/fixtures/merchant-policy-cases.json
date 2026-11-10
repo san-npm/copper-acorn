@@ -1,0 +1,334 @@
+{
+  "source": "Scripted unit cases shared by the Sandbox and hosted planners; no transactions or inference.",
+  "base": {
+    "world": {
+      "day": 0
+    },
+    "craft_fee": "1",
+    "player": {
+      "balances": {
+        "healing_tonic": "1"
+      }
+    },
+    "catalog": [
+      {
+        "token_id": "healing_tonic",
+        "base_value": "12",
+        "recipe": [
+          {
+            "token_id": "sunleaf",
+            "amount": "2"
+          },
+          {
+            "token_id": "spring_water",
+            "amount": "1"
+          }
+        ]
+      }
+    ],
+    "listings": [
+      {
+        "token_id": "healing_tonic",
+        "price": "13"
+      }
+    ],
+    "merchants": [
+      {
+        "name": "Mira",
+        "open": true,
+        "account": {
+          "account_id": "mira.test.near",
+          "balances": {
+            "copper": "61",
+            "healing_tonic": "0",
+            "sunleaf": "2",
+            "spring_water": "1"
+          },
+          "last_consume_day": null,
+          "last_brew_day": null
+        },
+        "quotes": [
+          {
+            "token_id": "spring_water",
+            "stock": "4",
+            "merchant_sells_at": "4"
+          }
+        ]
+      },
+      {
+        "name": "Rowan",
+        "open": true,
+        "account": {
+          "account_id": "rowan.test.near",
+          "balances": {
+            "copper": "100",
+            "healing_tonic": "0",
+            "sunleaf": "2",
+            "spring_water": "1"
+          },
+          "last_consume_day": null,
+          "last_brew_day": null
+        },
+        "quotes": [
+          {
+            "token_id": "spring_water",
+            "stock": "4",
+            "merchant_sells_at": "2"
+          }
+        ]
+      },
+      {
+        "name": "Bram",
+        "open": true,
+        "account": {
+          "account_id": "bram.test.near",
+          "balances": {
+            "copper": "100",
+            "healing_tonic": "0",
+            "sunleaf": "2",
+            "spring_water": "1"
+          },
+          "last_consume_day": null,
+          "last_brew_day": null
+        },
+        "quotes": [
+          {
+            "token_id": "spring_water",
+            "stock": "4",
+            "merchant_sells_at": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "consume owned suitable potion",
+      "patches": [
+        {
+          "path": "/merchants/0/account/balances/healing_tonic",
+          "value": "1"
+        }
+      ],
+      "expected": {
+        "method": "consume",
+        "args": {
+          "token_id": "healing_tonic",
+          "amount": "1"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "buy funded shelf offer",
+      "patches": [],
+      "expected": {
+        "method": "buy_listing",
+        "args": {
+          "token_id": "healing_tonic",
+          "max_price": "13"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "ignore empty shelf",
+      "patches": [
+        {
+          "path": "/player/balances/healing_tonic",
+          "value": "0"
+        }
+      ],
+      "expected": {
+        "method": "brew",
+        "args": {
+          "token_id": "healing_tonic"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "ignore overpriced shelf",
+      "patches": [
+        {
+          "path": "/listings/0/price",
+          "value": "9999"
+        }
+      ],
+      "expected": {
+        "method": "brew",
+        "args": {
+          "token_id": "healing_tonic"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "one brew per day",
+      "patches": [
+        {
+          "path": "/listings",
+          "value": []
+        },
+        {
+          "path": "/merchants/0/account/last_brew_day",
+          "value": 0
+        }
+      ],
+      "expected": {
+        "method": null,
+        "args": {},
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "buy cheapest missing ingredient",
+      "patches": [
+        {
+          "path": "/listings",
+          "value": []
+        },
+        {
+          "path": "/merchants/0/account/balances/spring_water",
+          "value": "0"
+        }
+      ],
+      "expected": {
+        "method": "trade",
+        "args": {
+          "merchant_id": "rowan.test.near",
+          "token_id": "spring_water",
+          "amount": "1",
+          "buy": true,
+          "limit": "2"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "skip closed seller",
+      "patches": [
+        {
+          "path": "/listings",
+          "value": []
+        },
+        {
+          "path": "/merchants/0/account/balances/spring_water",
+          "value": "0"
+        },
+        {
+          "path": "/merchants/1/open",
+          "value": false
+        }
+      ],
+      "expected": {
+        "method": "trade",
+        "args": {
+          "merchant_id": "bram.test.near",
+          "token_id": "spring_water",
+          "amount": "1",
+          "buy": true,
+          "limit": "3"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "retain one Copper",
+      "patches": [
+        {
+          "path": "/listings",
+          "value": []
+        },
+        {
+          "path": "/merchants/0/account/balances/spring_water",
+          "value": "0"
+        },
+        {
+          "path": "/merchants/0/account/balances/copper",
+          "value": "2"
+        }
+      ],
+      "expected": {
+        "method": null,
+        "args": {},
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "closed actor stays idle",
+      "patches": [
+        {
+          "path": "/merchants/0/open",
+          "value": false
+        }
+      ],
+      "expected": {
+        "method": null,
+        "args": {},
+        "probability": null
+      }
+    },
+    {
+      "name": "fulfilled need stays idle",
+      "patches": [
+        {
+          "path": "/merchants/0/account/last_consume_day",
+          "value": 0
+        }
+      ],
+      "expected": {
+        "method": null,
+        "args": {},
+        "probability": null
+      }
+    },
+    {
+      "name": "uncertain boundary stays idle",
+      "patches": [],
+      "expected": {
+        "method": null,
+        "args": {},
+        "probability": null
+      },
+      "probabilities": {
+        "healing_tonic": 0.7,
+        "focus_draught": 0.7,
+        "restoration_elixir": 0.7
+      }
+    },
+    {
+      "name": "inclusive shelf price ceiling",
+      "patches": [
+        {
+          "path": "/listings/0/price",
+          "value": "14"
+        }
+      ],
+      "expected": {
+        "method": "buy_listing",
+        "args": {
+          "token_id": "healing_tonic",
+          "max_price": "14"
+        },
+        "probability": 0.96
+      }
+    },
+    {
+      "name": "reject price above ceiling",
+      "patches": [
+        {
+          "path": "/listings/0/price",
+          "value": "15"
+        }
+      ],
+      "expected": {
+        "method": "brew",
+        "args": {
+          "token_id": "healing_tonic"
+        },
+        "probability": 0.96
+      }
+    }
+  ]
+}

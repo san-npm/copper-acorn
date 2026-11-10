@@ -1,0 +1,39 @@
+{
+  "tileSize": 64,
+  "sourceScale": 2,
+  "worldSize": [
+    640,
+    400
+  ],
+  "layout_sha256": "4cd9941db6f5e9010d421b0b1dd718b4e993efb678f7a57d6b4e34b9820878e7",
+  "assets": {
+    "tiles.png": {
+      "size": [
+        512,
+        960
+      ],
+      "sha256": "3e6234c12f776d60fac1ea841a324cd421fd4a4844e23993cea7aef7b2bd903b"
+    },
+    "mira.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "1946929ceff2523058c102e15e36063245935c8f1628940e2a5865f4577c119d"
+    },
+    "rowan.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "50573870bf94ed51bb7675a2bbb3f192cd603e028cef239d1b0e5cf9dc0d2bfb"
+    },
+    "bram.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "d6e065d5e6c05e5edcda57ed89ecdcdfef23c232d88cc4a60965e2c54b2f5c92"
+    }
+  }
+}

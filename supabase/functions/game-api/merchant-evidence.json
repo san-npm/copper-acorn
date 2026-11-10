@@ -1,0 +1,122 @@
+{
+  "source": "cached_jev",
+  "cases": [
+    {
+      "merchant": "mira",
+      "slot": 0,
+      "text": "The gardeners have small thorn scratches and feel tired after a normal morning tending the herb beds. They want a modest restorative.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:50.647Z",
+      "request_sha256": "7e6df6bf688cafb2240eb52b4d132e6a64d0f59fe5c738a8504239bce77976d1",
+      "probabilities": {
+        "healing_tonic": 0.96,
+        "focus_draught": 0.02,
+        "restoration_elixir": 0.19
+      }
+    },
+    {
+      "merchant": "mira",
+      "slot": 1,
+      "text": "An apprentice keeps losing their place while studying a difficult botanical text. They are healthy and rested, and need steady concentration.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:50.820Z",
+      "request_sha256": "5ee2d36b0c837a9b3b354d6057625af248c4304d1ae14c6e11908d57de8ba5f1",
+      "probabilities": {
+        "healing_tonic": 0.02,
+        "focus_draught": 0.98,
+        "restoration_elixir": 0.02
+      }
+    },
+    {
+      "merchant": "mira",
+      "slot": 2,
+      "text": "A fictional orchard worker fell from a ladder and returned with substantial injuries and profound exhaustion. They need a strong restorative.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:50.967Z",
+      "request_sha256": "fafaa2fc069d0b0a66d65fb7e253749a12830ce11dbfeceeb9cc33fc5909b6ea",
+      "probabilities": {
+        "healing_tonic": 0.04,
+        "focus_draught": 0.01,
+        "restoration_elixir": 0.98
+      }
+    },
+    {
+      "merchant": "rowan",
+      "slot": 0,
+      "text": "Healthy distillers are making mistakes reading precise bottle labels during a complicated inventory check. They need sustained attention, not healing.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:51.170Z",
+      "request_sha256": "6bcf6e1b3f2c6abee47770e49bcc1705ffefd4d6d90eabe6817a4f6654c49e35",
+      "probabilities": {
+        "healing_tonic": 0.02,
+        "focus_draught": 0.98,
+        "restoration_elixir": 0.02
+      }
+    },
+    {
+      "merchant": "rowan",
+      "slot": 1,
+      "text": "In the fantasy town, a worker injured by a furnace accident is severely exhausted. A mild restorative is insufficient for this request.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:51.310Z",
+      "request_sha256": "60425066af99a166367e0d4f94e639b69325e8feebf69ddf93c824348e41f02c",
+      "probabilities": {
+        "healing_tonic": 0.02,
+        "focus_draught": 0.02,
+        "restoration_elixir": 0.97
+      }
+    },
+    {
+      "merchant": "rowan",
+      "slot": 2,
+      "text": "The bottling crew have light physical fatigue and small scrapes after an ordinary shift. They ask for a modest restorative.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:51.459Z",
+      "request_sha256": "229a22b69ab6d801a9098c3fa2c12f48d09e4bf60cddbbbbc95d0ef65a06c4d3",
+      "probabilities": {
+        "healing_tonic": 0.98,
+        "focus_draught": 0.02,
+        "restoration_elixir": 0.2
+      }
+    },
+    {
+      "merchant": "bram",
+      "slot": 0,
+      "text": "An injured fictional expedition returned from the old silver mine with significant wounds and severe exhaustion. They request a potent restorative.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:51.698Z",
+      "request_sha256": "d5f9f0f1d491ee56625fc126c7733a16cbef7e9fa899370b2572a995fecbc5fe",
+      "probabilities": {
+        "healing_tonic": 0.03,
+        "focus_draught": 0.02,
+        "restoration_elixir": 0.97
+      }
+    },
+    {
+      "merchant": "bram",
+      "slot": 1,
+      "text": "An uninjured, rested clerk is distracted while checking a delicate silver-dust ledger. The clerk needs better sustained concentration.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:51.845Z",
+      "request_sha256": "b000594923faaec4b4425ea440d264611a7dee282ab1f9ad708fe949e9f538aa",
+      "probabilities": {
+        "healing_tonic": 0.02,
+        "focus_draught": 0.97,
+        "restoration_elixir": 0.02
+      }
+    },
+    {
+      "merchant": "bram",
+      "slot": 2,
+      "text": "Delivery carriers have a few scraped knuckles and ordinary physical tiredness. They ask for a mild, everyday restorative.",
+      "model": "jev-1.14.0",
+      "recorded_at": "2026-11-06T13:06:51.988Z",
+      "request_sha256": "00ad51ade5fd55406505f659c831fb52e0219d6884cfe4d3e37992f893d9b506",
+      "probabilities": {
+        "healing_tonic": 0.98,
+        "focus_draught": 0.01,
+        "restoration_elixir": 0.15
+      }
+    }
+  ]
+}

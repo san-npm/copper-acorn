@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Briarbridge · Character art review</title>
+  <style>
+    :root { color-scheme:dark; font-family:Georgia,serif; color:#eee4d0; background:#171f23; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:32px 24px; }
+    main { max-width:1184px; margin:auto; }
+    .eyebrow { color:#c6a56c; font:13px system-ui,sans-serif; letter-spacing:.15em; }
+    h1 { font-weight:400; font-size:clamp(30px,5vw,48px); margin:14px 0; }
+    .intro,footer { color:#b6bdaf; font:15px/1.6 system-ui,sans-serif; }
+    .layout { display:grid; grid-template-columns:340px 1fr; gap:24px; margin:32px 0; }
+    .stage,.card { border:1px solid #46514b; border-radius:10px; background:#25302f; }
+    .stage { padding:24px; text-align:center; }
+    h2 { margin:0 0 20px; font-weight:400; font-size:28px; }
+    .large { width:256px; height:256px; margin:0 auto 20px; display:grid; place-items:center; background:radial-gradient(ellipse at 50% 88%,#152323 0%,#25302f 62%); }
+    .sprite { width:64px; height:64px; image-rendering:pixelated; background-repeat:no-repeat; background-size:448px 256px; background-position:0 var(--sprite-y,0px); transform:scale(4); }
+    .moving { animation:walk .75s steps(6,end) infinite; }
+    @keyframes walk { from { background-position-x:-64px; } to { background-position-x:-448px; } }
+    label,select,button { font:15px system-ui,sans-serif; }
+    select { display:block; width:100%; margin:8px 0 16px; padding:10px; color:#eee4d0; border:1px solid #718071; border-radius:4px; background:#172525; }
+    .motion { display:flex; justify-content:center; align-items:center; gap:8px; }
+    input { accent-color:#c6a56c; }
+    .grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .card { color:#eee4d0; min-width:0; padding:12px 8px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; }
+    .card[aria-pressed="true"] { border-color:#e0bc77; background:#35403a; box-shadow:inset 0 0 0 1px #e0bc77; }
+    .card:hover { background:#35403a; }
+    .small { width:128px; height:128px; display:grid; place-items:center; }
+    .small .sprite { transform:scale(2); }
+    :focus-visible { outline:3px solid #e0bc77; outline-offset:4px; }
+    #status { font:14px system-ui,sans-serif; color:#b6bdaf; min-height:1.5em; }
+    footer { border-top:1px solid #46514b; padding-top:18px; }
+    @media(max-width:1000px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:650px) { body { padding:24px 16px; } .layout { grid-template-columns:1fr; } .stage { padding:20px; } .card { min-height:180px; } }
+    @media(prefers-reduced-motion:reduce) { .moving { animation:none; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">BRIARBRIDGE / CHARACTER ART REVIEW</p>
+  <h1>Meet your alchemist.</h1>
+  <p class="intro">Eight appearances, one shared craft. Select a character and inspect its views.</p>
+  <div class="layout">
+    <section class="stage" aria-label="Selected character preview">
+      <h2 id="name">Loading artwork…</h2>
+      <div class="large"><div id="preview" class="sprite" role="img" aria-label="Character preview"></div></div>
+      <label for="direction">View</label>
+      <select id="direction" disabled>
+        <option value="0">Front</option><option value="1">Left</option><option value="2">Right</option><option value="3">Back</option>
+      </select>
+      <label class="motion"><input id="motion" type="checkbox" disabled> Walking animation</label>
+      <p id="status" role="status">Loading the saved art files.</p>
+    </section>
+    <section class="grid" id="characters" aria-label="Choose a character"></section>
+  </div>
+  <footer>Art preview. Your selection here does not change your saved game. All appearances share the same gathering, brewing and trading abilities.</footer>
+</main>
+<script type="module">
+  const grid=document.querySelector('#characters');
+  const preview=document.querySelector('#preview');
+  const name=document.querySelector('#name');
+  const direction=document.querySelector('#direction');
+  const motion=document.querySelector('#motion');
+  const status=document.querySelector('#status');
+  let selected;
+  function show(){
+    if(!selected)return;
+    name.textContent=selected.name;
+    preview.style.backgroundImage=`url('/assets/characters/${selected.file}')`;
+    preview.style.setProperty('--sprite-y',`${-64*Number(direction.value)}px`);
+    preview.classList.toggle('moving',motion.checked);
+    preview.setAttribute('aria-label',`${selected.name}, ${direction.selectedOptions[0].text.toLowerCase()} view${motion.checked?', walking':''}`);
+    for(const button of grid.children)button.setAttribute('aria-pressed',String(button.dataset.id===selected.id));
+    status.textContent=`${selected.name} selected for this preview.`;
+  }
+  direction.addEventListener('change',show);
+  motion.addEventListener('change',show);
+  try{
+    const response=await fetch('/assets/characters/manifest.json',{cache:'no-store'});
+    if(!response.ok)throw new Error('Artwork unavailable');
+    const manifest=await response.json();
+    if(manifest.frameSize!==128||manifest.characters.length!==8)throw new Error('Unexpected art layout');
+    for(const character of manifest.characters){
+      if(!/^[a-z-]+\.png$/.test(character.file))throw new Error('Invalid art filename');
+      const button=document.createElement('button');button.type='button';button.className='card';button.dataset.id=character.id;
+      button.setAttribute('aria-label',`Preview ${character.name}`);button.setAttribute('aria-pressed','false');
+      const frame=document.createElement('span');frame.className='small';frame.setAttribute('aria-hidden','true');
+      const sprite=document.createElement('span');sprite.className='sprite';sprite.style.backgroundImage=`url('/assets/characters/${character.file}')`;
+      frame.append(sprite);const label=document.createElement('span');label.textContent=character.name;button.append(frame,label);
+      button.addEventListener('click',()=>{selected=character;show();});grid.append(button);
+    }
+    direction.disabled=false;motion.disabled=manifest.walkColumns.length!==6;
+    motion.checked=!motion.disabled&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+    selected=manifest.characters.find(c=>c.id==='magician');show();
+  }catch(error){name.textContent='Artwork unavailable';status.textContent='The character art files could not be loaded.';}
+</script>
+</body>
+</html>

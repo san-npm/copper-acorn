@@ -1,0 +1,56 @@
+{
+  "frameSize": 48,
+  "source": "original local pixel drawing",
+  "items": [
+    {
+      "id": "sunleaf",
+      "file": "sunleaf.png",
+      "sha256": "5d2a7784176243eb989555e41fe0492b65e954cadadefa08981757466dee30c7"
+    },
+    {
+      "id": "moonmint",
+      "file": "moonmint.png",
+      "sha256": "a56f58a46f1deb9643f902507129fee53ca0edde3e0bf08e8a355d62defc75c2"
+    },
+    {
+      "id": "emberbloom",
+      "file": "emberbloom.png",
+      "sha256": "d228ac4e4b94656c71b0f3b19b2b6253d9df526bbfffbd44015636891a0accf5"
+    },
+    {
+      "id": "spring_water",
+      "file": "spring_water.png",
+      "sha256": "cb58e2d517fda0d17d96378347f9ec7e970090ee17aab5b4af8e646d0535c474"
+    },
+    {
+      "id": "wood_essence",
+      "file": "wood_essence.png",
+      "sha256": "1edef398ce8412a3009e120f2c0733e30223a4d04e2bea81d4b6bc4f271311d6"
+    },
+    {
+      "id": "silver_dust",
+      "file": "silver_dust.png",
+      "sha256": "eda45f7604c508b0d5beb9a27329fa46ebea1a466a240bbf9165ec53d8c8bc88"
+    },
+    {
+      "id": "healing_tonic",
+      "file": "healing_tonic.png",
+      "sha256": "98ce693b97350bca12e0c0551399ec8cd64c264fa0d576ebe0e4a5fcc1ef174b"
+    },
+    {
+      "id": "focus_draught",
+      "file": "focus_draught.png",
+      "sha256": "1f3ff93030153e04c31cbf45d5aba4c68f8e6796e8bcdcdab9e84f53b4ed1e7f"
+    },
+    {
+      "id": "restoration_elixir",
+      "file": "restoration_elixir.png",
+      "sha256": "5db0f0e815464f8d7750f2a95b5c4ef98c5184e19754db5d438a8a22bf4d8c34"
+    },
+    {
+      "id": "copper",
+      "file": "copper.png",
+      "sha256": "a3049db6c9139550b76ec8f58deaa2ac4fa34559f6dd7be84aa327d8bd9bf51f"
+    }
+  ]
+}

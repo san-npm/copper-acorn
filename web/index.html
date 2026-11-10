@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#192c35" />
+    <link rel="preload" href="/assets/fonts/pixelify-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <title>Copper Acorn · Briarbridge Alchemy</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#ledger">Skip to shop controls</a>
+    <header class="topbar">
+      <div class="brand"><img class="shop-emblem" src="/assets/items/healing_tonic.png" width="48" height="48" alt=""><div><span class="eyebrow">BRIARBRIDGE ALCHEMY</span><h1>Copper Acorn</h1></div></div>
+      <div class="purse"><span>YOUR PURSE</span><strong id="copper">—</strong><span>Copper</span></div>
+      <div class="mana"><div><span>MANA RESERVE</span><strong id="mana-label">—</strong></div><meter id="mana-meter" min="0" max="100" value="0" aria-label="Mana reserve"></meter><button id="refill" disabled>Refill Mana</button><button id="rescue" hidden>Free guild rescue</button></div>
+    </header>
+    <div class="environment"><span id="network-label">Restoring your shop…</span><span id="day-label">Market day —</span></div>
+    <p id="rescue-detail" class="map-help" role="status" hidden></p>
+    <main>
+      <section class="world-column" aria-label="Market square">
+        <div class="character-bar"><span id="character-portrait" class="character-sprite" aria-hidden="true"></span><div><strong id="character-name">Choose your alchemist</strong><p id="character-status" role="status">Loading character artwork…</p></div><button id="choose-character" disabled>Choose character</button><button id="saved-games">Saved games</button></div>
+        <div class="world-frame"><div class="world-caption"><span class="location">THE BRIARBRIDGE MARKET</span><span class="weather">A fine morning for alchemy</span></div><div id="game" aria-label="Interactive pixel market"></div><p id="map-status" class="map-help" role="status" aria-live="polite">Click a destination or object. Move with WASD or arrows; press E to interact.</p></div>
+        <section class="resource-panel" aria-labelledby="gather-title"><div class="section-label"><h2 id="gather-title">Gather ingredients</h2><span>Choose a quantity · daily limits apply</span></div><div id="resources" class="resource-grid"></div></section>
+        <section class="bag-panel" aria-labelledby="bag-title"><div class="section-label"><h2 id="bag-title">Your satchel</h2><span id="bag-count">Waiting for inventory</span></div><div id="inventory" class="inventory-grid"></div></section>
+      </section>
+      <aside id="ledger" class="ledger" tabindex="-1" aria-label="Alchemy shop controls">
+        <div class="ledger-heading"><span class="eyebrow">THE COPPER ACORN</span><h2>Alchemist’s ledger</h2><p>Gather. Brew. Trade. Make yourself at home.</p></div>
+        <nav class="station-nav" aria-label="Shop stations"><button data-panel="shop" aria-pressed="true">Shelves</button><button data-panel="cauldron" aria-pressed="false">Cauldron</button><button data-panel="market" aria-pressed="false">Market</button><button id="quest-tab" data-panel="quests" aria-pressed="false" hidden>Quests</button></nav>
+        <div id="action-status" role="status" aria-live="polite">Restoring your shop…</div>
+        <div id="market-clock" hidden></div>
+        <div id="panel"><div class="empty-state"><h3>Opening the shutters</h3><p>Sign in to restore your inventory.</p></div></div>
+
+      </aside>
+    </main>
+    <dialog id="games-dialog" aria-labelledby="games-title"><span class="eyebrow">THE COPPER ACORN</span><h2 id="games-title">Your saved games</h2><p id="games-intro">Each game keeps its own nickname, character, shop and progress.</p>
+        <button id="continue-game" hidden>Continue game</button>
+        <section id="online-account" aria-label="Online account"></section>
+        <p id="games-status" role="status"></p><button id="startup-retry" hidden>Retry setup</button><div id="save-list"></div><button id="new-game">New game</button>
+<button id="close-games" class="secondary">Back to game</button></dialog>
+    <dialog id="character-dialog" aria-labelledby="character-title" aria-describedby="character-description">
+      <span class="eyebrow">THE COPPER ACORN</span><h2 id="character-title">Your alchemist</h2>
+      <p id="character-description">Eight appearances, the same alchemy skills. Who will run your shop?</p>
+      <div class="character-picker"><div class="character-large"><span id="character-preview" class="character-sprite" aria-hidden="true"></span><strong id="character-preview-name"></strong></div><fieldset><legend>Choose your appearance</legend><div id="character-choices"></div></fieldset></div>
+      <details id="character-combat" hidden></details>
+      <div id="nickname-field" hidden><label for="nickname">Your nickname</label><input id="nickname" type="text" maxlength="40" autocomplete="off" spellcheck="false" aria-describedby="nickname-help"><p id="nickname-help" class="help">3–20 letters or numbers; spaces, hyphens and underscores allowed. Name and character stay with this game.</p></div>
+      <p id="character-note" role="status"></p><div class="character-actions"><button id="cancel-character" class="secondary">Back to shop</button><button id="character-new-game" class="secondary" hidden>New game</button><button id="use-character" disabled>Use this character</button></div>
+    </dialog>
+    <dialog id="interaction-dialog" aria-labelledby="interaction-title" aria-describedby="interaction-text">
+      <div class="interaction-heading"><img id="interaction-portrait" width="112" height="112" alt=""><div><span id="interaction-kind" class="eyebrow"></span><h2 id="interaction-title"></h2></div></div>
+      <p id="interaction-text"></p><p id="interaction-detail" role="status"></p>
+      <div id="gather-quantity" hidden></div>
+      <div class="interaction-actions"><button id="interaction-close" class="secondary">Leave</button><button id="interaction-advice" class="secondary">Any advice?</button><button id="interaction-quest" class="secondary" hidden>About your order</button><button id="interaction-confirm"></button></div>
+    </dialog>
+    <footer>THE COPPER ACORN <span>·</span> A shop, a cauldron, a town full of possibilities.</footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

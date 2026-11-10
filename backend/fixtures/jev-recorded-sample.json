@@ -1,0 +1,55 @@
+{
+  "status": "completed",
+  "request": {
+    "model": "jev-latest",
+    "state": {
+      "setting": "A fictional fantasy alchemy game.",
+      "potion": {
+        "name": "Healing Tonic",
+        "effect": "Heals minor cuts and scrapes. Has no other effect."
+      }
+    },
+    "questions": {
+      "scraped_hand": {
+        "type": "noul",
+        "instructions": {
+          "customer_need": "I scraped my hand while gathering herbs.",
+          "question": "Would the Healing Tonic address this customer's need?"
+        }
+      },
+      "locked_box": {
+        "type": "noul",
+        "instructions": {
+          "customer_need": "I need an iron key to unlock my storage box.",
+          "question": "Would the Healing Tonic address this customer's need?"
+        }
+      },
+      "unclear_need": {
+        "type": "noul",
+        "instructions": {
+          "customer_need": "I need something for later.",
+          "question": "Would the Healing Tonic address this customer's need?"
+        }
+      }
+    }
+  },
+  "result": {
+    "model": "jev-1.14.0",
+    "probabilities": {
+      "scraped_hand": 0.97,
+      "locked_box": 0.02,
+      "unclear_need": 0.33
+    },
+    "usage": {
+      "input_tokens": 431,
+      "output_tokens": 57
+    }
+  },
+  "decisions": {
+    "scraped_hand": "suitable",
+    "locked_box": "unsuitable",
+    "unclear_need": "uncertain"
+  },
+  "completed_at": "2026-11-04T23:46:46.510Z",
+  "request_sha256": "2be8bb443887209725f09f6571acce6e3a5d5744138015f1e50fae43d48e14f9"
+}

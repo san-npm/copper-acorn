@@ -1,0 +1,33 @@
+{
+  "model": "jev-latest",
+  "state": {
+    "setting": "A fictional fantasy alchemy game.",
+    "potion": {
+      "name": "Healing Tonic",
+      "effect": "Heals minor cuts and scrapes. Has no other effect."
+    }
+  },
+  "questions": {
+    "scraped_hand": {
+      "type": "noul",
+      "instructions": {
+        "customer_need": "I scraped my hand while gathering herbs.",
+        "question": "Would the Healing Tonic address this customer's need?"
+      }
+    },
+    "locked_box": {
+      "type": "noul",
+      "instructions": {
+        "customer_need": "I need an iron key to unlock my storage box.",
+        "question": "Would the Healing Tonic address this customer's need?"
+      }
+    },
+    "unclear_need": {
+      "type": "noul",
+      "instructions": {
+        "customer_need": "I need something for later.",
+        "question": "Would the Healing Tonic address this customer's need?"
+      }
+    }
+  }
+}

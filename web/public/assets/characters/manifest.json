@@ -1,0 +1,77 @@
+{
+  "frameSize": 128,
+  "anchor": [
+    64,
+    124
+  ],
+  "opaqueHeight": 112,
+  "columns": 7,
+  "directions": [
+    "south",
+    "west",
+    "east",
+    "north"
+  ],
+  "idleColumn": 0,
+  "walkColumns": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "walkFps": 8,
+  "status": "compact isometric redraw review",
+  "artSource": "original local pixel drawing",
+  "characters": [
+    {
+      "id": "goblin",
+      "name": "Goblin",
+      "file": "goblin.png",
+      "sha256": "0bb98cab5bb430f50f7e27b58db79cf7635472c3e47cd91ee1ca853e7d94f31e"
+    },
+    {
+      "id": "magician",
+      "name": "Magician",
+      "file": "magician.png",
+      "sha256": "14b33d7f4b9051d0671b50e6e762a1b83a20958018ad98095f14be61a2c713fc"
+    },
+    {
+      "id": "dwarf",
+      "name": "Dwarf",
+      "file": "dwarf.png",
+      "sha256": "7384feb2116472e9440467d7098d3420a1d7a426e45dfce99bc4df9b05093e68"
+    },
+    {
+      "id": "skeleton",
+      "name": "Liche",
+      "file": "skeleton.png",
+      "sha256": "efc8d6fb42d817abceded99c82dda9f195d1ea2b559398cb673ee69473d8927c"
+    },
+    {
+      "id": "lizard",
+      "name": "Lizardman",
+      "file": "lizard.png",
+      "sha256": "2f8ec367d8817108adc46db98be2eca8cd465e44d10374032e5dd1a929c0e8a6"
+    },
+    {
+      "id": "vampire",
+      "name": "Vampire",
+      "file": "vampire.png",
+      "sha256": "18ece3d8cecb65243fa4d7a1c1df323ef00ad4d609f80c1112548003c3c70504"
+    },
+    {
+      "id": "elf",
+      "name": "Elf",
+      "file": "elf.png",
+      "sha256": "3e473e3353dd7ef6b210b0140849a3b9c51db3683836b93c180fabe9f8d5af27"
+    },
+    {
+      "id": "dark-elf",
+      "name": "Dark Elf",
+      "file": "dark-elf.png",
+      "sha256": "c3beb0d42d0a0036f70ecef66cc820d3d163f0ad9caa99160b581839a017d75b"
+    }
+  ]
+}

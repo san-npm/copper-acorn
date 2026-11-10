@@ -1,0 +1,11 @@
+{
+  "description": "Original dark fantasy alchemist shopkeeper, adult human, upright humanoid with two arms and two legs, classic detailed 16-bit RPG pixel art. Low top-down camera. Readable medium-size head, short dark brown hair, uncovered head, calm face, warm medium skin. Short muted indigo-blue tunic coat with visible separate legs, worn brown leather apron panel and leather boots, copper belt buckle, small potion pouch on the belt. Symmetric relaxed standing pose, empty hands slightly away from torso. Crisp deliberate pixel clusters, dark selective outline, restrained colors, warm light from upper left, cloth folds and leather detail. Character body about 46 pixels tall centered in a 64 pixel square with clear space above the head for later hats, feet aligned near bottom. Transparent background. Original civilian alchemist costume, no weapon, no staff, no large cloak, no hat, no text, no floor or scenery.",
+  "name": "Briarbridge shared alchemist base 64",
+  "body_type": "humanoid",
+  "mode": "v3",
+  "n_directions": 8,
+  "size": 64,
+  "view": "low top-down",
+  "outline": "selective outline",
+  "detail": "high detail"
+}
