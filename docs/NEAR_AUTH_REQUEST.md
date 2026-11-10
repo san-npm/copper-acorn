@@ -7,7 +7,7 @@ We are integrating Google-only NEAR Auth into Copper Acorn, a testnet-only alche
 The documented shared testnet client returns HTTP 403, "Callback URL mismatch", for this callback:
 
 ```
-https://bafybeibxx5pauq5fyffbziuhmabcxd6ok6bxnvksbv6cholnmqlib46v4m.ipfs.aleph.sh/
+https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/
 ```
 
 Public configuration: domain `login.testnet.fast-auth.com`, client ID `np8paqIpMWmNbzT4xAvOOapZBjsOpptl`, signing audience `auth0.jwt.fast-auth.testnet`. Reproduced on 10 November 2026 with authorization code flow and S256 PKCE, without completing a login.

@@ -1,5 +1,7 @@
 # Release checks — 10 November 2026
 
+[Current game](https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/) uses the original artwork. Native GitHub deployment [42879664780](https://github.com/san-npm/copper-acorn/actions/runs/42879664780), `deploy_jFX4UdZGw4XX`, succeeded; all96hosted files match the 24,294,718-byte build. CI passed119Node,34contract and9art checks. Hosted Google/S256 redirect routing, mocked existing-save opening,320px layout and held-response movement pass; controlled first motion26.9ms, not a network-latency claim. Session19/game21/arena13 retain JWT verification and all earlier origins; Google settings/returns are preserved and13public access checks pass. Four earlier worlds/wallets are unchanged. No human social-account setup is claimed.
+
 ## Original artwork update
 
 Restricted character/action sprites are replaced with original coordinate art. Current builds use committed files and no artwork downloads. Eight character IDs, four directions, walking, seated spectators, three merchants and five working animations are retained. Tools are drawn with each character's pose so they remain in that character's hands. Retired pack-dependent build/review scripts and the download manifest are removed.
