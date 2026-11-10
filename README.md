@@ -4,6 +4,8 @@ A pixel-art alchemy shop prototype for **NEAR Hackathon — Games With Real Econ
 
 Includes a guild quest chain, two side orders, and a shared arena with eight classes, turn-based duels and a passive training chicken.
 
+[Play the hosted build](https://bafybeibxx5pauq5fyffbziuhmabcxd6ok6bxnvksbv6cholnmqlib46v4m.ipfs.aleph.sh/) · [Release checks](docs/VERIFICATION.md)
+
 ## Where NEAR fits
 
 - One NEP-245 multi-token contract per saved world holds ingredients, potions and Copper. Contracts validate recipes, inventories, purchases and merchant investment.
@@ -46,7 +48,7 @@ Google login restores existing hosted shops. **New player-owned Google-only setu
 
 Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established.
 
-The responsive walking correction is included here. Its previous direct Stasho upload was rejected by the agent-key daily budget; the old hosted URL does not contain that correction.
+The hosted build includes the responsive walking correction and deploys from GitHub through Stasho. Backend origin/Auth settings still need an exact-URL update when a new build changes the CID.
 
 ## Project notes
 

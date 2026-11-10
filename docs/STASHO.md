@@ -1,5 +1,7 @@
 # Deploy from GitHub
 
+Connected and verified on 10 November 2026. The [reviewed setup PR](https://github.com/san-npm/copper-acorn/pull/1) is merged; the [first native deployment](https://github.com/san-npm/copper-acorn/actions/runs/42872260231) succeeded. [Current game](https://bafybeibxx5pauq5fyffbziuhmabcxd6ok6bxnvksbv6cholnmqlib46v4m.ipfs.aleph.sh/).
+
 The repository root is the application root. Stasho publishes the static frontend; Supabase provides Auth, persistence and the shared arena backend.
 
 | Wizard setting | Value |
@@ -17,7 +19,7 @@ The repository root is the application root. Stasho publishes the static fronten
 
 Stasho's [documented GitHub import](https://docs.stasho.xyz/guides/import-a-repo.html) requires the owner's dashboard. Agent keys cannot import a repository or edit encrypted build settings. In Stasho, choose **New Project**, install/authorize **stasho-deploy** for this repository if needed, select the repo, enter the settings above and choose **Deploy**. The app opens a setup PR containing its deployment workflow.
 
-After import, review the generated workflow and its configured project/branch/build settings, then merge it. Pushes to main can then trigger native Stasho builds. No agent publish key belongs in source or workflow files. Native GitHub deployment has its own documented account quotas; this is not a key-rotation workaround.
+The generated workflow was corrected to Node 24, `npm ci`, `npm run build:stasho` and `web/dist` before merging. Pushes to main now trigger native Stasho builds using GitHub OIDC. No agent publish key belongs in source or workflow files. Native GitHub deployment has its own documented account quotas.
 
 Each static version gets a new CID URL. Before testing sign-in on a new URL, the operator must add its exact origin to backend CORS and Supabase Auth returns, preserving earlier URLs. No wildcard IPFS origins. Do not report a deployment complete until its actual hosted assets, Google return target, API access and movement are verified.
 

@@ -7,9 +7,10 @@ The official rules say the track hints/integrations and example prompts are opti
 | Official requirement | Evidence / remaining work |
 | --- | --- |
 | A working NEAR prototype fitting the track | Economy contract, NPC merchant wallets, stock/demand prices, crafting/sales and funded orders. Local Sandbox and Node checks cover the rules. |
-| Work within the eligible period | Project work began in November2026. The official window starts19October and ends14November2026 at23:59UTC (Q-001). |
+| Work within the eligible period | Project work began in November 2026. The official window starts 19 October and ends 14 November 2026 at 23:59 UTC (Q-001). |
 | Public repository, reproducible README, license | This repository, lockfiles, local commands, CI and Apache-2.0 license. Public export excludes keys/private source packs. |
 | Disclose templates/libraries/AI assistance | README and asset credits identify dependencies and generated/original artwork. |
+| Respect third-party rights | Original source packs are excluded; accepted playtest sprites retain their separate terms. **Artwork release clearance is unresolved**; see `ASSET_CREDITS.md`. |
 | Public demo post on X | **Pending; the owner must publish it.** It must identify NEAR HACKATHON, tag @NEARProtocol and #NEARHackathon, and include a video/screenshots. A local-only demo requires video (Q-012). |
 | Submit repository and demo-post links before deadline | **Not submitted or authorized by this task.** Team/contact details, the owner's mainnet payout account and consent are still submission inputs. No mainnet deployment is required for this prototype. |
 | Public repo through judging; independent projects disclosed | Keep it public through judging. Each person may submit up to two independent projects; if another entry exists, both READMEs must name it (Q-015). No second entry is asserted here. |
