@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       - name: Register deploy (installing)
@@ -66,14 +66,9 @@ jobs:
                         '{"status":"installing","commitMessage":$msg,"actionsRunUrl":$url}')"
 
       - name: Install dependencies
-        # --legacy-peer-deps opts into npm 6 resolution rules (warn on
-        # peer-dep mismatch instead of failing). Necessary for the
-        # ethers v5/v6 transitional state across the ecosystem: a v6 app
-        # consuming an SDK whose declared peer is still v5 trips npm 7+
-        # by default. Vercel and Netlify default to the same flag.
         run: |
           set -o pipefail
-          npm install --legacy-peer-deps 2>&1 | tee /tmp/build.log
+          npm ci 2>&1 | tee /tmp/build.log
 
       - name: Report building
         run: |
@@ -134,7 +129,7 @@ jobs:
       - name: Build
         run: |
           set -o pipefail
-          npm run build 2>&1 | tee /tmp/build.log
+          npm run build:stasho 2>&1 | tee /tmp/build.log
 
       - name: Report uploading
         run: |
@@ -165,21 +160,21 @@ jobs:
         run: |
           set -o pipefail
           {
-            if [ ! -d "./dist" ]; then
-              echo "Build produced no dist/. If this is a server app, switch the project's Deploy target to Server app in Settings." >&2
+            if [ ! -d "./web/dist" ]; then
+              echo "Build produced no web/dist/. Check the build command and output directory." >&2
               exit 1
             fi
-            SIZE_MB=$(du -sm "./dist" | cut -f1)
+            SIZE_MB=$(du -sm "./web/dist" | cut -f1)
             if [ "$SIZE_MB" -gt 200 ]; then
               echo "Build is ${SIZE_MB} MB, the limit is 200 MB. Check the Output directory in Settings points at the built site. https://docs.stasho.xyz/guides/troubleshooting.html#too-large" >&2
               exit 1
             fi
-            ENTRIES=$(find "./dist" | wc -l | tr -d ' ')
+            ENTRIES=$(find "./web/dist" | wc -l | tr -d ' ')
             if [ "$ENTRIES" -gt 10000 ]; then
               echo "Build has ${ENTRIES} files, the limit is 10000. Check the Output directory in Settings points at the built site. https://docs.stasho.xyz/guides/troubleshooting.html#too-large" >&2
               exit 1
             fi
-            tar -czf /tmp/build.tar.gz -C ./dist .
+            tar -czf /tmp/build.tar.gz -C ./web/dist .
             TOKEN=""
             for WAIT in 0 2 4 8 16; do
               sleep "$WAIT"
