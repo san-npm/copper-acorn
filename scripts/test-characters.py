@@ -42,20 +42,21 @@ class ActorTests(unittest.TestCase):
             for direction in ART.DIRECTIONS:
                 self.assertEqual(len({ART.tactics_actor(kind,direction,frame).tobytes() for frame in range(7)}),7)
 
-    def test_compact_heads_have_substantially_different_proportions_from_the_previous_body(self):
+    def test_heads_leave_room_for_the_body_and_working_arms(self):
         for kind,_,_ in ART.ROSTER:
             for direction in ART.DIRECTIONS:
                 image=ART.tactics_actor(kind,direction)
                 head=sum(bool(p[3]) for p in image.crop((0,0,64,35)).get_flattened_data())
                 body=sum(bool(p[3]) for p in image.crop((0,35,64,64)).get_flattened_data())
-                self.assertGreater(head/(head+body),.40)
+                self.assertGreater(head/(head+body),.25)
+                self.assertLess(head/(head+body),.60)
 
     def test_species_costume_markers_survive_all_views_and_walks(self):
-        markers={'goblin':'#b44353','magician':'#6663ad','skeleton':'#345c76','lizard':'#58a99a','dark-elf':'#76658e'}
+        markers={'goblin':'#b44353','magician':'#686399','skeleton':'#2e626f','lizard':'#5b9c83','dark-elf':'#665573'}
         for kind,color in markers.items():
             for direction in ART.DIRECTIONS:
                 for frame in range(7):
-                    self.assertIn((*ART.rgb(color),255),ART.tactics_actor(kind,direction,frame).get_flattened_data())
+                    self.assertTrue((*ART.rgb(color),255) in ART.tactics_actor(kind,direction,frame).get_flattened_data(),(kind,direction,frame))
 
     def test_all_three_merchants_share_the_player_frame_and_height(self):
         for name in ('mira','rowan','bram'):

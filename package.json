@@ -15,7 +15,6 @@
     "test:web": "playwright test",
     "test:ownership": "playwright test --config playwright.owned.config.ts",
     "dev:ownership": "node scripts/player-owned-preview.ts",
-    "assets:playtest": "node scripts/build-stasho.ts --assets-only",
     "build:stasho": "node scripts/build-stasho.ts"
   },
   "dependencies": {

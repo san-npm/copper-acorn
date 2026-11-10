@@ -2,7 +2,6 @@ import {test,expect} from '@playwright/test';
 import {classes,makeDuel,type CharacterId} from '../../backend/combat.ts';
 
 test('every class skill plays a decoded pose and impact; reduced motion keeps static outcomes',async({page})=>{
-  test.skip(process.env.VITE_PUBLIC_LOCAL_ART!=='true','Private pose-sheet verification');
   test.setTimeout(90_000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/effects-harness',route=>route.fulfill({contentType:'text/html',body:'<!doctype html><link rel="stylesheet" href="/src/arena.css"><div class="arena-world arena-board" style="width:800px"><div data-unit="caster" class="arena-unit" style="left:50%;top:50%"><span class="arena-actor"></span></div></div>'}));

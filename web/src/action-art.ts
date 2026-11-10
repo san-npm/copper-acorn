@@ -1,6 +1,5 @@
 import type { Action } from './types';
 
-export const localArt = import.meta.env.VITE_PUBLIC_LOCAL_ART === 'true';
 export const actionUrl = (file: string) => new URL(`assets/actions/${file}`, document.baseURI).href;
 export type WorkKind = 'brew' | 'mine' | 'harvest' | 'water' | 'tap';
 export type WorkArt = { id: WorkKind; name: string; durations: number[]; files: Record<string, string>; resultFrame: number };
@@ -12,7 +11,6 @@ export function workKind(action: Action): WorkKind | null {
 }
 
 export async function loadWorkArt(ids: string[]): Promise<WorkArt[]> {
-  if (!localArt) return [];
   const response = await fetch(actionUrl('manifest.json'), { signal: AbortSignal.timeout(10_000), cache: 'no-store' });
   if (!response.ok) throw new Error('Local action artwork is unavailable.');
   const value = await response.json();

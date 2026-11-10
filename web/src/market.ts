@@ -3,8 +3,8 @@ import type { Action, GameState } from './types';
 import { characterUrl, type Character } from './characters';
 import { itemUrl } from './icons';
 import { Navigation, distance, inside, type Point } from './navigation';
-import { WORLD, ACTOR, ARENA_GATE, spots, surfaces, solids, portalBase, occluders, merchants, displays, type Spot } from './isometric-layout';
-import { actionUrl, localArt, workKind, type WorkArt } from './action-art';
+import { WORLD, ACTOR, ARENA_GATE, spots, surfaces, solids, portalBase, merchants, displays, type Spot } from './isometric-layout';
+import { actionUrl, workKind, type WorkArt } from './action-art';
 import {TownAmbient} from './ambient';
 
 type Work = { art: WorkArt; spot: Spot; stage: 'approach' | 'pending' | 'confirmed'; frame: number; elapsed: number; ready: ((value: boolean) => void) | null; finished: (() => void) | null };
@@ -17,7 +17,6 @@ export class MarketScene extends Phaser.Scene {
   private merchantSprites = new Map<string, Phaser.GameObjects.Sprite>();
   private shadow!: Phaser.GameObjects.Ellipse;
   private stock: Phaser.GameObjects.Image[] = [];
-  private actors: { sprite: Phaser.GameObjects.Sprite; shadow: Phaser.GameObjects.Ellipse; holes: Point[][]; mask: Phaser.Display.Masks.GeometryMask }[] = [];
   private keys = new Set<string>();
   private route: Point[] = [];
   private pendingSpot: Spot | null = null;
@@ -35,7 +34,7 @@ export class MarketScene extends Phaser.Scene {
   preload() {
     this.load.image('arena-portal',new URL('assets/ui/arena-portal.png',document.baseURI).href);
     this.load.image('isometric-world', new URL('assets/isometric/world.png', document.baseURI).href);
-    for (const name of ['mira', 'rowan', 'bram']) this.load.image(`merchant-${name}`, new URL(`assets/market/${name}.png`, document.baseURI).href);
+    for (const name of ['mira', 'rowan', 'bram']) for(const suffix of ['', '-blink'])this.load.image(`merchant-${name}${suffix}`, new URL(`assets/market/${name}${suffix}.png`, document.baseURI).href);
     for (const c of this.characters) this.load.spritesheet(`character-${c.id}`, characterUrl(c.file), { frameWidth: ACTOR.frame, frameHeight: ACTOR.frame });
     for (const id of ['healing_tonic', 'focus_draught', 'restoration_elixir']) this.load.image(`stock-${id}`, itemUrl(id));
     for (const art of this.workArt) {
@@ -85,7 +84,7 @@ export class MarketScene extends Phaser.Scene {
 
   async prepareWork(action: Action): Promise<boolean> {
     const kind = workKind(action);
-    if (!localArt || !kind) return true;
+    if (!kind) return true;
     const art = this.workArt.find(a => a.id === kind);
     if (!art || !this.player || !this.character || !this.textures.exists(`work-${this.character}-${kind}`)) throw new Error('Action artwork is unavailable. No action was submitted.');
     const spot = spots.find(s => s.id === (action.kind === 'brew' ? 'cauldron' : 'token_id' in action ? action.token_id : ''))!;
@@ -162,23 +161,6 @@ export class MarketScene extends Phaser.Scene {
   private actor(x: number, y: number, texture: string, scale: number) {
     const shadow = this.add.ellipse(x, y, 59, 16, 0x253b31, .25).setDepth(1);
     const sprite = this.add.sprite(x, y, texture).setOrigin(.5, ACTOR.feet / ACTOR.frame).setScale(scale).setDepth(2);
-    const graphics = this.add.graphics().setVisible(false);
-    const mask = graphics.createGeometryMask();
-    const actor = { sprite, shadow, holes: [] as Point[][], mask };
-    // Intersect outside clips so overlapping foreground silhouettes still hide the actor.
-    mask.preRenderCanvas = renderer => {
-      const context = renderer.currentContext; context.save();
-      // Sprite batches may call masks after applying their transform; silhouettes stay in camera space.
-      // shortcut: this scene uses a fixed 1× camera; include its view transform if pan/zoom is added.
-      const transform = context.getTransform(); context.setTransform(1, 0, 0, 1, 0, 0);
-      for (const outline of actor.holes) {
-        context.beginPath(); context.rect(0, 0, WORLD.width, WORLD.height);
-        context.moveTo(...outline[0]); outline.slice(1).forEach(([x, y]) => context.lineTo(x, y)); context.closePath();
-        context.clip('evenodd');
-      }
-      context.setTransform(transform);
-    };
-    this.actors.push(actor);
     return { sprite, shadow };
   }
 
@@ -190,12 +172,12 @@ export class MarketScene extends Phaser.Scene {
     for (const c of this.characters) if (this.characterAvailable(c.id)) for (let row = 0; row < 4; row++) {
       this.anims.create({ key: `${c.id}-${row}`, frames: this.anims.generateFrameNumbers(`character-${c.id}`, { start: row * 7 + 1, end: row * 7 + 6 }), frameRate: 8, repeat: -1 });
     }
-    for (const merchant of merchants) this.merchantSprites.set(merchant.id, this.actor(merchant.feet[0], merchant.feet[1] - (localArt && merchant.id !== 'rowan' ? 15 : 0), `merchant-${merchant.id}`, ACTOR.scale).sprite);
+    for (const m of merchants) this.merchantSprites.set(m.id,this.add.sprite(...m.feet,`merchant-${m.id}`).setOrigin(.5,112/128).setScale(ACTOR.scale).setDepth(2).setCrop(0,m.window[0],128,m.window[1]-m.window[0]));
     const actor = this.actor(...WORLD.spawn, '__WHITE', 1);
     this.player = actor.sprite; this.shadow = actor.shadow;
     this.tools = this.add.sprite(0, 0, '__WHITE').setVisible(false);
     this.effects = this.add.sprite(0, 0, '__WHITE').setVisible(false);
-    this.ambient=new TownAmbient(this,this.merchantSprites,localArt);
+    this.ambient=new TownAmbient(this,this.merchantSprites);
     const atSpot = (point: Point) => {
       if(portal?.getBounds().contains(...point))return activeSpots.find(s=>s.kind==='arena');
       const npc = [...this.merchantSprites].find(([, sprite]) => sprite.getBounds().contains(...point));
@@ -237,7 +219,7 @@ export class MarketScene extends Phaser.Scene {
     this.events.once('shutdown', () => this.cancelMovement());
     this.setCharacter(this.character);
     if (this.latest) this.refresh(this.latest);
-    this.occlude(); this.ready();
+    this.ready();
   }
 
   private go(point: Point, spot: Spot | null) {
@@ -246,7 +228,7 @@ export class MarketScene extends Phaser.Scene {
     this.keys.clear(); this.pendingSpot = spot;
     if (this.motion.matches) {
       this.player.setPosition(...point); this.shadow.setPosition(...point); this.route = []; this.pendingSpot = null;
-      this.idle(); this.occlude(); this.location();
+      this.idle(); this.location();
       if (spot) this.interact(spot.kind, spot.target);
     } else this.route = path;
   }
@@ -274,21 +256,6 @@ export class MarketScene extends Phaser.Scene {
     if (region !== this.region) { this.region = region; this.announce(); }
   }
 
-  private occlude() {
-    for (const actor of this.actors) {
-      // The player stays visible; body clearance routes their feet around solid props.
-      if (actor.sprite === this.player) continue;
-      actor.holes = [];
-      for (const object of occluders) {
-        const [[ax, ay], [bx, by]] = object.front;
-        const line = ay + (by - ay) * (actor.sprite.x - ax) / (bx - ax);
-        if (actor.sprite.y >= line) continue;
-        actor.holes.push(object.outline);
-      }
-      if (actor.holes.length) { actor.sprite.setMask(actor.mask); actor.shadow.setMask(actor.mask); }
-      else { actor.sprite.clearMask(); actor.shadow.clearMask(); }
-    }
-  }
 
   update(_time: number, delta: number) {
     if (!this.player || this.paused) return;
@@ -320,7 +287,7 @@ export class MarketScene extends Phaser.Scene {
       else this.idle();
     }
     this.shadow.setPosition(this.player.x, this.player.y + 2);
-    this.occlude(); this.location();
+    this.location();
     if (!this.route.length && this.work?.stage === 'approach') this.beginWork();
   }
 }

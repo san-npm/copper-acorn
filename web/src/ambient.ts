@@ -8,7 +8,7 @@ export class TownAmbient {
   private steamBase?:Phaser.GameObjects.Image;
   private lights:{glow:Phaser.GameObjects.Image;glass?:Phaser.GameObjects.Image;phase:number}[]=[];
   private last=-1;
-  constructor(private scene:Phaser.Scene,private npcs:Map<string,Phaser.GameObjects.Sprite>,private privateArt:boolean){
+  constructor(private scene:Phaser.Scene,private npcs:Map<string,Phaser.GameObjects.Sprite>){
     this.graphics=scene.add.graphics().setDepth(1.2);
     const source=scene.textures.get('isometric-world').getSourceImage() as HTMLImageElement;
     this.patches.push(this.animateSource('hearth-fire',292,100,40,47),this.animateSource('cauldron-fire',359,202,46,14),this.animateSource('cauldron-steam',355,101,66,54,true));
@@ -33,12 +33,7 @@ export class TownAmbient {
       texture.context.putImageData(data,0,0);texture.refresh();
       this.foliage.push({image:scene.add.image(x,y,key).setOrigin(0).setDepth(1.1),x,y,phase:index*1.7});
     });
-    if(privateArt)for(const [id,sprite] of npcs){
-      const original=sprite.texture.getSourceImage() as HTMLImageElement,texture=scene.textures.createCanvas('merchant-'+id+'-blink',128,128)!;
-      texture.context.drawImage(original,0,0);
-      for(const x of [56,68]){texture.context.fillStyle='#d08860';texture.context.fillRect(x,62,6,6);texture.context.fillStyle='#583c38';texture.context.fillRect(x,64,6,2);}
-      texture.refresh();
-    }
+
   }
   private animateSource(key:string,x:number,y:number,w:number,h:number,steam=false){
     const source=this.scene.textures.get('isometric-world').getSourceImage() as HTMLImageElement;
@@ -81,7 +76,7 @@ export class TownAmbient {
     this.steamBase?.setVisible(!reduced);
     this.lights.forEach(({glow,glass,phase})=>{const pulse=(Math.sin(time/850+phase)+Math.sin(time/1650+phase)*.4+1.4)/2.8;glow.setVisible(!reduced).setAlpha((.25+pulse*.75)*(glass?1:.3));glass?.setVisible(!reduced).setAlpha((1-pulse)*.42);});
     this.foliage.forEach(({image,x,y,phase})=>image.setVisible(!reduced).setPosition(x+Math.round(Math.sin(time/1100+phase)*1.5),y+Math.round(Math.sin(time/1700+phase)*.6)));
-    if(this.privateArt){let index=0;for(const [id,sprite] of this.npcs){const key='merchant-'+id+(!reduced&&(time+index++*1500)%5400<180?'-blink':'');if(sprite.texture.key!==key)sprite.setTexture(key);}}
+    {let index=0;for(const [id,sprite] of this.npcs){const key='merchant-'+id+(!reduced&&(time+index++*1500)%5400<180?'-blink':'');if(sprite.texture.key!==key)sprite.setTexture(key);}}
     if(reduced)return;
     const g=this.graphics,t=time/1000;
     // Small stepped highlights follow the spring's falling water and basin.

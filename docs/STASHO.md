@@ -15,11 +15,11 @@ The repository root is the application root. Stasho publishes the static fronten
 | Deploy target | Static site (IPFS) |
 | Node | 24 or newer |
 
-`build:stasho` verifies and downloads the pinned, previously hosted playtest sprites into ignored `.local/`, then builds the current source. Original third-party packs are not in GitHub. `deploy/public-env.json` contains only the Supabase URL and intentionally public publishable browser key; never add a secret/service-role key there.
+`build:stasho` builds the current source with the original character, merchant and animation art committed under `web/public/assets`. It performs no external artwork download. `deploy/public-env.json` contains only the Supabase URL and intentionally public publishable browser key; never add a secret/service-role key there.
 
 Stasho's [documented GitHub import](https://docs.stasho.xyz/guides/import-a-repo.html) requires the owner's dashboard. Agent keys cannot import a repository or edit encrypted build settings. In Stasho, choose **New Project**, install/authorize **stasho-deploy** for this repository if needed, select the repo, enter the settings above and choose **Deploy**. The app opens a setup PR containing its deployment workflow.
 
-The generated workflow was corrected to Node 24, `npm ci`, `npm run build:stasho` and `web/dist` before merging. Pushes to main now trigger native Stasho builds using GitHub OIDC. No agent publish key belongs in source or workflow files. Native GitHub deployment has its own documented account quotas.
+The generated workflow uses Node 24, `npm ci`, `npm run build:stasho` and `web/dist`. Pushes to main trigger native Stasho builds using GitHub OIDC. No agent publish key belongs in source or workflow files. Native GitHub deployment has its own documented account quotas.
 
 Each static version gets a new CID URL. Before testing sign-in on a new URL, the operator must add its exact origin to backend CORS and Supabase Auth returns, preserving earlier URLs. No wildcard IPFS origins. Do not report a deployment complete until its actual hosted assets, Google return target, API access and movement are verified.
 

@@ -28,7 +28,7 @@ npm run dev:ownership
 
 Open **http://127.0.0.1:5181/?owned=1**. Create a game, choose an alchemist and nickname, brew a Healing Tonic, list it and serve its buyer. Walk through the portal and click the chicken to train. Local saves belong to this running disposable Sandbox; they are separate from hosted Google accounts.
 
-The repository includes original fallback artwork. To use the previously hosted playtest sprites, run `npm run assets:playtest` first and set `VITE_PUBLIC_LOCAL_ART=true`. See [asset credits and restrictions](docs/ASSET_CREDITS.md).
+Characters, merchants and action sheets now use original coordinate drawings included in the repository. Builds need no artwork downloads or model credits. See [asset credits](docs/ASSET_CREDITS.md). To regenerate this art, install `requirements-art.txt` in a Python environment, then run `python3 scripts/build-characters.py` followed by `python3 scripts/build-original-actions.py`.
 
 ## Check the code
 
@@ -44,7 +44,7 @@ Embedded backend WebAssembly modules are included for Node tests and Edge Functi
 
 ## Current limits
 
-Google login restores existing hosted shops. **New player-owned Google-only setup and cross-browser recovery are unfinished**; existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
+Google login restores existing hosted shops. **New player-owned Google-only setup and cross-browser recovery are unfinished**; [provider access is being requested](docs/ONBOARDING.md). Existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
 
 Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established.
 

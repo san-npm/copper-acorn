@@ -24,7 +24,7 @@ export default defineConfig({
       gracefulShutdown: { signal: 'SIGTERM', timeout: 10_000 },
     },
     {
-      command: `VITE_PUBLIC_LOCAL_ART=${process.env.VITE_PUBLIC_LOCAL_ART === 'true'} VITE_PUBLIC_LOCAL_SANDBOX=true VITE_PUBLIC_SUPABASE_URL=https://example.supabase.co VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_browser_test GAME_API_PORT=3101 npm run dev -- --port 5174`,
+      command: `VITE_PUBLIC_LOCAL_SANDBOX=true VITE_PUBLIC_SUPABASE_URL=https://example.supabase.co VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_browser_test GAME_API_PORT=3101 npm run dev -- --port 5174`,
       url: 'http://127.0.0.1:5174',
       timeout: 30_000,
       gracefulShutdown: { signal: 'SIGTERM', timeout: 5_000 },

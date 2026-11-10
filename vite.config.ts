@@ -1,5 +1,4 @@
 import { defineConfig, loadEnv, type ProxyOptions, type ViteDevServer } from 'vite';
-import { readFile,cp,mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import {localNpc} from './backend/local-npc.ts';
 import { localArena } from './backend/local-arena.ts';
@@ -16,8 +15,6 @@ const proxy:Record<string,ProxyOptions> = { '/api': {
 } };
 
 export default defineConfig(({ command,mode }) => {
-  const localArt = process.env.VITE_PUBLIC_LOCAL_ART === 'true';
-  if (localArt && command === 'build' && mode!=='playtest') throw new Error('Accepted artwork requires the explicitly selected playtest build mode.');
   if(command==='build'&&mode==='playtest'){
     const settings=loadEnv(mode,resolve('web'),'VITE_PUBLIC_'),key=settings.VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY||'';
     let publicKey=/^sb_publishable_[A-Za-z0-9_-]+$/.test(key);
@@ -30,31 +27,7 @@ export default defineConfig(({ command,mode }) => {
     configureServer(server:ViteDevServer){
       if(process.env.PLAYER_OWNERSHIP==='true')server.middlewares.use(localNpc({apiBase:`http://127.0.0.1:${process.env.GAME_API_PORT||'3001'}`,file:resolve(`.local/npc-${process.env.GAME_API_PORT||'3001'}.json`),apiKey:process.env.TYPESAFE_API_KEY,requestLimit:Number(process.env.JEV_NPC_REQUEST_LIMIT||'0')}));
       server.middlewares.use(localArena({apiBase:`http://127.0.0.1:${process.env.GAME_API_PORT||'3001'}`,file:resolve(`.local/arena-${process.env.GAME_API_PORT||'3001'}.json`),refereeToken:process.env.LOCAL_REFEREE_TOKEN}));},
-  }]:[]), ...(localArt ? [{
-    name: 'private-local-art',
-    async closeBundle(){
-      if(command!=='build')return;
-      for(const folder of ['characters','actions'])await cp(resolve('.local/mana-review/assets',folder),resolve('web/dist/assets',folder),{recursive:true});
-      await mkdir(resolve('web/dist/assets/market'),{recursive:true});
-      for(const name of ['mira','rowan','bram'])await cp(resolve('.local/mana-review',name+'.png'),resolve('web/dist/assets/market',name+'.png'));
-    },
-    configureServer(server) {
-      server.middlewares.use(async (request, response, next) => {
-        const path = new URL(request.url || '/', 'http://localhost').pathname;
-        let file = '';
-        if (/^\/assets\/characters\/(manifest\.json|[a-z-]+\.png)$/.test(path)) file = path.slice(1);
-        else if (/^\/assets\/actions\/(manifest\.json|[a-z-]+\.png)$/.test(path)) file = path.slice(1);
-        else if (/^\/assets\/market\/(mira|rowan|bram)\.png$/.test(path)) file = path.split('/').pop()!;
-        else return next();
-        try {
-          const body = await readFile(resolve('.local/mana-review', file));
-          response.setHeader('Content-Type', file.endsWith('.json') ? 'application/json' : 'image/png');
-          response.setHeader('Cache-Control', 'no-store');
-          response.end(body);
-        } catch { response.statusCode = 404; response.end('Local artwork not built.'); }
-      });
-    },
-  }] : []) ],
+  }]:[]) ],
   root: 'web',
   resolve:{alias:{buffer:resolve('node_modules/buffer/index.js')}},
   base: './',

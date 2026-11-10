@@ -22,56 +22,56 @@
     6
   ],
   "walkFps": 8,
-  "status": "compact isometric redraw review",
+  "status": "original alchemist redraw",
   "artSource": "original local pixel drawing",
   "characters": [
     {
       "id": "goblin",
       "name": "Goblin",
       "file": "goblin.png",
-      "sha256": "0bb98cab5bb430f50f7e27b58db79cf7635472c3e47cd91ee1ca853e7d94f31e"
+      "sha256": "ec1306b8e9db1499181fe0fec60ab4a41fbee7dc7e529bd2aee3093eb6ec5300"
     },
     {
       "id": "magician",
       "name": "Magician",
       "file": "magician.png",
-      "sha256": "14b33d7f4b9051d0671b50e6e762a1b83a20958018ad98095f14be61a2c713fc"
+      "sha256": "c6ae72b1aaf604008a61f444335987cd3eb008336e944e161fa905cd471f01ea"
     },
     {
       "id": "dwarf",
       "name": "Dwarf",
       "file": "dwarf.png",
-      "sha256": "7384feb2116472e9440467d7098d3420a1d7a426e45dfce99bc4df9b05093e68"
+      "sha256": "8efdf5ef4387f94f944f37a2789439b28ede3abc44b46e1840e2592401447d7f"
     },
     {
       "id": "skeleton",
       "name": "Liche",
       "file": "skeleton.png",
-      "sha256": "efc8d6fb42d817abceded99c82dda9f195d1ea2b559398cb673ee69473d8927c"
+      "sha256": "9e98caaeae20590c1fc4be88395db0352ece8cdb774cc8f30479a7b45d324cd9"
     },
     {
       "id": "lizard",
       "name": "Lizardman",
       "file": "lizard.png",
-      "sha256": "2f8ec367d8817108adc46db98be2eca8cd465e44d10374032e5dd1a929c0e8a6"
+      "sha256": "2d0b49030f25af0ae939fbb03689b78a4363208699eea5ab3afd8531a19083dc"
     },
     {
       "id": "vampire",
       "name": "Vampire",
       "file": "vampire.png",
-      "sha256": "18ece3d8cecb65243fa4d7a1c1df323ef00ad4d609f80c1112548003c3c70504"
+      "sha256": "a0b08e6fb60f321120688f43d108dfd975fe14d889f767f571121adf95cd9dca"
     },
     {
       "id": "elf",
       "name": "Elf",
       "file": "elf.png",
-      "sha256": "3e473e3353dd7ef6b210b0140849a3b9c51db3683836b93c180fabe9f8d5af27"
+      "sha256": "d168779852d9d20fa7c6b6fba613a6af30110ea2960c3c542c3d22b60302287b"
     },
     {
       "id": "dark-elf",
       "name": "Dark Elf",
       "file": "dark-elf.png",
-      "sha256": "c3beb0d42d0a0036f70ecef66cc820d3d163f0ad9caa99160b581839a017d75b"
+      "sha256": "839e65b72a7ff31839d7f2361c8260fca9e3df2d4f18c9d5169b5757c00c2bd0"
     }
   ]
 }

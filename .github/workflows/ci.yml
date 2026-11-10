@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - run: python3 -m pip install -r requirements-art.txt
+      - run: python3 scripts/test-characters.py && python3 scripts/test-original-actions.py
   contracts:
     runs-on: ubuntu-latest
     steps:

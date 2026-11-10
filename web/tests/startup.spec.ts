@@ -15,7 +15,7 @@ test('a fresh preview port starts with New game, saves the chosen alchemist once
   const apiPort=await freePort(),webPort=await freePort(),base=`http://127.0.0.1:${webPort}`;
   const api=spawn(resolve('target/debug/game-api'),[],{env:{...process.env,GAME_API_PORT:String(apiPort)},stdio:'ignore'});
   let server:Awaited<ReturnType<typeof createViteServer>>|undefined;
-  const values={GAME_API_PORT:String(apiPort),VITE_PUBLIC_LOCAL_ART:process.env.VITE_PUBLIC_LOCAL_ART||'false',VITE_PUBLIC_LOCAL_SANDBOX:'true',VITE_PUBLIC_SUPABASE_URL:'',VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY:''};
+  const values={GAME_API_PORT:String(apiPort),VITE_PUBLIC_LOCAL_SANDBOX:'true',VITE_PUBLIC_SUPABASE_URL:'',VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY:''};
   const previous=Object.fromEntries(Object.keys(values).map(key=>[key,process.env[key]]));
   try{
     await expect.poll(async()=>{try{return(await fetch(`http://127.0.0.1:${apiPort}/api/state`)).status;}catch{return 0;}},{timeout:30_000}).toBe(200);

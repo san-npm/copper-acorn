@@ -1,6 +1,5 @@
 import { test, expect, type Page } from './legacy';
 
-test.skip(process.env.VITE_PUBLIC_LOCAL_ART !== 'true', 'Private local artwork only.');
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.addInitScript(() => localStorage.setItem('copper-acorn.sandbox-character', 'goblin'));

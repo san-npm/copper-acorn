@@ -1,0 +1,189 @@
+{
+  "frameSize": 256,
+  "anchor": [
+    128,
+    176
+  ],
+  "columns": 8,
+  "directions": [
+    "south",
+    "west",
+    "east",
+    "north"
+  ],
+  "artSource": "original coordinate drawing; no external sprite inputs",
+  "actions": [
+    {
+      "id": "brew",
+      "name": "Brew potion",
+      "durations": [
+        220,
+        220,
+        220,
+        220,
+        220,
+        220,
+        380,
+        340
+      ],
+      "files": {
+        "goblin": "goblin-brew.png",
+        "magician": "magician-brew.png",
+        "dwarf": "dwarf-brew.png",
+        "skeleton": "skeleton-brew.png",
+        "lizard": "lizard-brew.png",
+        "vampire": "vampire-brew.png",
+        "elf": "elf-brew.png",
+        "dark-elf": "dark-elf-brew.png"
+      }
+    },
+    {
+      "id": "mine",
+      "name": "Mine silver",
+      "durations": [
+        260,
+        170,
+        260,
+        90,
+        110,
+        170,
+        220,
+        340
+      ],
+      "files": {
+        "goblin": "goblin-mine.png",
+        "magician": "magician-mine.png",
+        "dwarf": "dwarf-mine.png",
+        "skeleton": "skeleton-mine.png",
+        "lizard": "lizard-mine.png",
+        "vampire": "vampire-mine.png",
+        "elf": "elf-mine.png",
+        "dark-elf": "dark-elf-mine.png"
+      }
+    },
+    {
+      "id": "harvest",
+      "name": "Harvest herbs",
+      "durations": [
+        240,
+        200,
+        200,
+        160,
+        180,
+        220,
+        260,
+        340
+      ],
+      "files": {
+        "goblin": "goblin-harvest.png",
+        "magician": "magician-harvest.png",
+        "dwarf": "dwarf-harvest.png",
+        "skeleton": "skeleton-harvest.png",
+        "lizard": "lizard-harvest.png",
+        "vampire": "vampire-harvest.png",
+        "elf": "elf-harvest.png",
+        "dark-elf": "dark-elf-harvest.png"
+      }
+    },
+    {
+      "id": "water",
+      "name": "Collect water",
+      "durations": [
+        220,
+        220,
+        240,
+        340,
+        180,
+        200,
+        260,
+        320
+      ],
+      "files": {
+        "goblin": "goblin-water.png",
+        "magician": "magician-water.png",
+        "dwarf": "dwarf-water.png",
+        "skeleton": "skeleton-water.png",
+        "lizard": "lizard-water.png",
+        "vampire": "vampire-water.png",
+        "elf": "elf-water.png",
+        "dark-elf": "dark-elf-water.png"
+      }
+    },
+    {
+      "id": "tap",
+      "name": "Tap wood essence",
+      "durations": [
+        240,
+        170,
+        200,
+        100,
+        130,
+        340,
+        300,
+        340
+      ],
+      "files": {
+        "goblin": "goblin-tap.png",
+        "magician": "magician-tap.png",
+        "dwarf": "dwarf-tap.png",
+        "skeleton": "skeleton-tap.png",
+        "lizard": "lizard-tap.png",
+        "vampire": "vampire-tap.png",
+        "elf": "elf-tap.png",
+        "dark-elf": "dark-elf-tap.png"
+      }
+    }
+  ],
+  "sha256": {
+    "brew-effects.png": "9dca8212f7a06abfd683345e7c22f831e0620befdc9bd5709108dc0afdff3caf",
+    "brew-tools.png": "3b6e81de0315b96aa068570a66a500172c96a9a273e72dcf9bfeb5c095108347",
+    "dark-elf-brew.png": "c50415990f8d05fa8436eaafe2b51ae1dbe8fc34900c79d98a0a8feea51105c1",
+    "dark-elf-harvest.png": "f7cd80503b7d764f4a06f6edad700c52aeef0f3399877187dce66a66ff2a8022",
+    "dark-elf-mine.png": "ed607147e7a480d07b9573e6d3ea94568fc5095350331cf795e752ab2cf59214",
+    "dark-elf-tap.png": "ab6751258f0f4ee65d9dd2f0d6074c2a6245da895e077c3a70f75a73188e5d30",
+    "dark-elf-water.png": "3922e1e02e57491db826a4bb14ba47ca5f210d99c43ff789a3587cbf2965d45a",
+    "dwarf-brew.png": "07d38737f5af9533eaff1cc73e6a75cc43008e94f4da16152bc83447fec6c5ea",
+    "dwarf-harvest.png": "7e98d323d6c81a3b62342ee6bc388d84d8d8013e446407ed11d59945d59ecd72",
+    "dwarf-mine.png": "644722c4bde155afe3a426a7618a6b7c421ac6a16e369b7b551f66725466c784",
+    "dwarf-tap.png": "c783ff9a713409e840b9b748c79a6e3147862e29ff8bdbe35489cb0b8b571be8",
+    "dwarf-water.png": "a5689a0f3e2c8feefc0e7cfc577441ea0a8f947032cc076c8a9bf912dd17672d",
+    "elf-brew.png": "35413bff87b76dc1e6269440134fc45788485fa54ff177da2f28dbb4a4744e5c",
+    "elf-harvest.png": "3a9c10aec5b30f7b03d5e346b275f182a8995a4669c25aca14eabc7a9f91a943",
+    "elf-mine.png": "22f4d0e041f9435276fc7ad2f31ba9c2ffff9e4804db2db1ad1800a41bec75ef",
+    "elf-tap.png": "14f3e8d55875db0b66dfecccdd6edd7af64dbd2f6a0906c35048680eea1a1129",
+    "elf-water.png": "1e65c353e08c8c34026aff5deb866feeaf9415c1ba0fad69e106121783dfcf36",
+    "goblin-brew.png": "973e58835811ebbad30858db39622e9f33bec3e9e38a5b54bb6f1b3e8b77d364",
+    "goblin-harvest.png": "4a82039e72be2103a9cf3117c0c392bf67305cbda8b99a068397f98e18127ab2",
+    "goblin-mine.png": "d5d5f834f41d57a09329c5ad1e7140be68d548921f27d7fd51034fe09d0f481d",
+    "goblin-tap.png": "779f17b8fc2cfe85fd7b50e2cb8241c0f1f721e14304558a5bb5ed5f79e52fec",
+    "goblin-water.png": "56eca7b88ef3862d295cc74201831ed8dbc141547289fb8957bd3ed52cd5c289",
+    "harvest-effects.png": "a7533874891a84727978332e27b1f1a07b480008cc8867a7dac744299b022743",
+    "harvest-tools.png": "3b6e81de0315b96aa068570a66a500172c96a9a273e72dcf9bfeb5c095108347",
+    "lizard-brew.png": "022efa1dc9d6ecd7d7002b45de2cffb1daa9a7ee6a645015771666f6aa0b7073",
+    "lizard-harvest.png": "16eeb31fae12cc3ee5e6b4f95c0e4c072739a69c75d9d23b44a9cf6934a8e58b",
+    "lizard-mine.png": "9e8a3f6875f725161f89e51d13f2f769437fbc2365f27d8c75de5e85f207392c",
+    "lizard-tap.png": "3dcd7a2cef46af8759616e861d37ed8896858a2aff3e96d2bd03325dedb7bed0",
+    "lizard-water.png": "88327e9e8441e14f80a6411482a0fefaa0e7ebf035bc2d225729c4c1ccc552a6",
+    "magician-brew.png": "c5eeeb51042dc2c83d6cfcb5959a71cf207cc8228366a7110d2902b1a2819234",
+    "magician-harvest.png": "930a6277f20a9214bdac83ba53b520c9e20b460cadc2bb2a8404c71038229d89",
+    "magician-mine.png": "16fac2c364d10c046495d7db4a761e641741514e6ebb54095505c98e1a69d0cb",
+    "magician-tap.png": "954ce3962fb39e5000674ec1be99edf7f7b4afed9b65359195e76f731fa885ca",
+    "magician-water.png": "172418db78d50dd2e29feee5b6d2189fc2c307102b9e2bcea947b254f62da35e",
+    "mine-effects.png": "6e3f294db7c92c68dfc94f05895e6e7abe86bbfc46de3130b4040a9a09802f28",
+    "mine-tools.png": "3b6e81de0315b96aa068570a66a500172c96a9a273e72dcf9bfeb5c095108347",
+    "skeleton-brew.png": "bf8583073beb76d77f8bdf9972930e55a213a45d8cf3a36b8bb875c8e8ab294b",
+    "skeleton-harvest.png": "19f5ee0eac9a8438313e683a9551f29620b0afba1ba3874102ebb2c789c4376f",
+    "skeleton-mine.png": "c30ff7cf36e511c2517e10be7c5844df196906f89be9a05f83afc0683f4cd388",
+    "skeleton-tap.png": "81c34958784a4af71af5c882feff1e8a39eed9af8815ca67850d41d957375d34",
+    "skeleton-water.png": "a7f4715c7ff1f84df5dee758407d1e01987e8f005357350404312aaf9974eac4",
+    "tap-effects.png": "6e3f294db7c92c68dfc94f05895e6e7abe86bbfc46de3130b4040a9a09802f28",
+    "tap-tools.png": "3b6e81de0315b96aa068570a66a500172c96a9a273e72dcf9bfeb5c095108347",
+    "vampire-brew.png": "4d6c19a4f6f1255d75472892560a373e443213fc3e9375551f4a3f0f752fd0f0",
+    "vampire-harvest.png": "85159ebab8c09b209e659a7fd5a4d67d6664b338e11f6bff4eb608cd311be2b0",
+    "vampire-mine.png": "306fd6fc695294b538b9f1323eef88b3a77cc9473e17ec56b64cf072fb4bc5eb",
+    "vampire-tap.png": "307cb102c5586720d7decd5404bd2b0f8ecdef2f0dab7b210ac0a48d9f72b212",
+    "vampire-water.png": "4a1e982890d9c4c9afe3c6ce641b2706fbe361e59f0002e11bc13cd031b3dfd0",
+    "water-effects.png": "79d336fc51f7e67754e2c3d03c7a73f93a97ad3902b89929fbb73550ea1f56bc",
+    "water-tools.png": "3b6e81de0315b96aa068570a66a500172c96a9a273e72dcf9bfeb5c095108347"
+  }
+}

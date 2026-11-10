@@ -1,5 +1,5 @@
 import type {Duel,CombatVisual} from '../../backend/combat.ts';
-import {localArt,actionUrl} from './action-art';
+import {actionUrl} from './action-art';
 import {ARENA,combatPoint} from './arena-layout';
 
 const point=(x:number,y:number)=>{const [px,py]=combatPoint(x,y);return {x:px/ARENA.width*100,y:py/ARENA.height*100};};
@@ -10,12 +10,12 @@ function loadPose(character:string,pose:string){
   const url=actionUrl(character+'-'+pose+'.png');let ready=poses.get(url);
   if(!ready){const image=new Image();image.src=url;ready=image.decode().then(()=>true,()=>false);poses.set(url,ready);}return ready;
 }
-export async function warmCombatArt(character:string){if(localArt)await Promise.all(['harvest','tap'].map(pose=>loadPose(character,pose)));}
+export async function warmCombatArt(character:string){await Promise.all(['harvest','tap'].map(pose=>loadPose(character,pose)));}
 
 export async function playCombatEffect(board:HTMLElement,d:Duel,event:CombatVisual,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches){
   const caster=d.players.find(p=>p.id===event.actor||p.id+'-bone'===event.actor);if(!caster||!board.isConnected)return;
   const pose=['shiv','cheap','cleave','rupture','scale','quarry','harpoon'].includes(event.skill)?'tap':'harvest';
-  const ready=localArt&&!reduced&&event.actor===caster.id?await loadPose(caster.character,pose):false;
+  const ready=!reduced&&event.actor===caster.id?await loadPose(caster.character,pose):false;
   if(!board.isConnected)return;
   const from=point(event.from.x,event.from.y),to=point(event.to.x,event.to.y);
   const layer=document.createElement('div');layer.className='combat-effects';layer.dataset.visual=String(event.version);layer.setAttribute('aria-hidden','true');layer.style.setProperty('--spell-color',hues[caster.character]);board.append(layer);
