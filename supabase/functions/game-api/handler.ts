@@ -71,7 +71,7 @@ export function createGameHandler(config: Config, fetcher: typeof fetch = fetch)
         if(path==='/saves') {
           const saves=[];
           for(const row of rows){let alchemist=null;if(row.status==='ready'&&row.contract_id)try{alchemist=await view(row.contract_id,'alchemist_view',{},fetcher);}catch{}saves.push({world_id:row.id,is_active:row.is_active,alchemist,status:row.status,player_owned:row.ownership_mode==='owned'});}
-          return reply(200,{saves,limit:2,active_world_id:rows.find(r=>r.is_active)?.id});
+          return reply(200,{saves,limit:2+rows.filter(r=>r.ownership_mode==='legacy').length,active_world_id:rows.find(r=>r.is_active)?.id});
         }
         if(path==='/new-game') {
           const previous=rows.find(r=>r.previous_world_id===world.id);

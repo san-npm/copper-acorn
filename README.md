@@ -38,13 +38,14 @@ npm run build
 cargo test --locked -p briarbridge-alchemy -p briarbridge-arena --lib
 npx playwright install chrome
 npx playwright test web/tests/arena-recovery.spec.ts
+npx playwright test --config playwright.privy.config.ts
 ```
 
 Embedded backend WebAssembly modules are included for Node tests and Edge Function packaging. After changing a contract, rebuild the WebAssembly targets and run `node scripts/bundle-contract.ts`.
 
 ## Current limits
 
-Google login restores existing hosted shops. **New player-owned Google-only setup and cross-browser recovery are unfinished**; [provider access is being requested](docs/ONBOARDING.md). Existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
+Google login restores existing hosted shops. A [Privy integration](docs/ONBOARDING.md) for new player-owned games is prepared locally; live social setup and recovery remain unverified and gated pending provider configuration. Existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
 
 Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established.
 
@@ -57,6 +58,6 @@ The hosted build includes the responsive walking correction and deploys from Git
 - [GitHub → Stasho setup](docs/STASHO.md)
 - [Security reporting](SECURITY.md)
 
-Started during the hackathon development window, in November 2026. Built with AI coding assistance, NEAR SDK, Phaser, Supabase and TypeSafe/Jev; lockfiles pin dependencies. This public snapshot omits private development logs, credentials and original third-party art packs.
+Started during the hackathon development window, in November 2026. Built with AI coding assistance, NEAR SDK, Phaser, Supabase, Privy and TypeSafe/Jev; lockfiles pin dependencies. This public snapshot omits private development logs, credentials and original third-party art packs.
 
 Original project code is licensed under **Apache-2.0**. Third-party artwork, font and dependency terms remain separate; see [credits](docs/ASSET_CREDITS.md). Contributions are welcome through small pull requests with relevant checks.

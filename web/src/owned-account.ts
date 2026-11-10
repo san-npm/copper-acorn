@@ -2,6 +2,8 @@ import {saveAccountCharacter} from './account-character';
 import {createClient} from '@supabase/supabase-js';
 import {ownedDevice} from './owned-device';
 import {gameMessage} from './game-message';
+import {privyConfigured,socialSigner,startSocialLogin,signOutSocial,socialReturn,clearSocialReturn,type SocialReturn} from './privy.ts';
+import {bindSocialGame,enableSocialDevice} from './social-access.ts';
 import type {GameConnection,CharacterAccount} from './account';
 import type {GameState,Action} from './types';
 
@@ -42,7 +44,11 @@ export function initOwnedAccount(connected:(c:GameConnection|null,enter?:boolean
   };
   const device=ownedDevice(raw,()=>selected);
   const connection:GameConnection=async<T>(path:string,init?:RequestInit)=>{
-    if(path==='/new-game')throw Error('New game setup is temporarily unavailable. Your saved games are kept.');
+    if(path==='/new-game'){
+      const result=await run(()=>createGame(JSON.parse(String(init?.body)).request_id));
+      if(!result)throw Error('Continue with Google to finish setting up your saved game.');
+      return result as T;
+    }
     if(path==='/action'&&state?.environment.player_owned){const body=JSON.parse(String(init?.body));if(!['serve_customer','market_tick','next_day'].includes((body.action as Action).kind))return device.action(body.request_id,body.action,state) as Promise<T>;}
     const result=await raw<T>(path,init);if(path==='/state')state=result as GameState;return result;
   };
@@ -53,17 +59,52 @@ export function initOwnedAccount(connected:(c:GameConnection|null,enter?:boolean
     if(!selected)selected=saves.find(s=>s.is_active)?.world_id||saves[0]?.world_id||null;
     if(selected)select.value=selected;
   }
+  function guard(identity:string|null,version:number,world=selected){
+    if(!identity||owner!==identity||generation!==version||world!==selected)throw Error('Your account or selected game changed. Open Saved games again.');
+  }
+  async function signer(intent:SocialReturn){
+    const identity=owner,version=generation,world=selected;
+    const {data:{user},error}=await client.auth.getUser();guard(identity,version,world);
+    const subject=user?.identities?.find(i=>i.provider==='google')?.identity_data?.sub;
+    if(error||user?.id!==identity||typeof subject!=='string')throw Error('Sign in with Google again to confirm saved game access.');
+    const root=await socialSigner(subject,identity!);guard(identity,version,world);
+    if(!root){status.textContent='Continue with the same Google account to protect your saved game…';await startSocialLogin(intent);return null;}
+    return root;
+  }
+  async function createGame(requestId?:string):Promise<{world_id:string}|false>{
+    if(!privyConfigured)throw Error('New game setup is temporarily unavailable. Your saved games are kept.');
+    const identity=owner,version=generation,world=selected;guard(identity,version,world);
+    const slot='copper-acorn.create:'+identity;
+    const request=sessionStorage.getItem(slot)||requestId||crypto.randomUUID();sessionStorage.setItem(slot,request);
+    const intent:SocialReturn={owner:identity!,world:null,request,created:Date.now()},root=await signer(intent);guard(identity,version,world);
+    if(!root)return false;
+    status.textContent='Preparing your new saved game…';
+    try{
+      const result=await bindSocialGame(raw,identity!,request,null,root,()=>guard(identity,version,world));guard(identity,version,world);
+      sessionStorage.removeItem(slot);clearSocialReturn();choose(result.world_id);return result;
+    }catch(error){if((error as {status?:number}).status===400)sessionStorage.setItem(slot,crypto.randomUUID());throw error;}
+  }
   async function open(enter=false){
-    await list();const save=saves.find(s=>s.world_id===selected);
-    if(!save){connected(null);status.textContent=saves.length?'Choose one of your saved games above.':'No saved game was found. New game setup is temporarily unavailable.';return false;}
+    const identity=owner,version=generation;
+    await list();guard(identity,version);const save=saves.find(s=>s.world_id===selected);
+    if(!save){connected(null);status.textContent=saves.length?'Choose one of your saved games above.':privyConfigured?'No saved game was found. Choose New game to open your first shop.':'No saved game was found. New game setup is temporarily unavailable.';return false;}
     choose(save.world_id);
     if(save.status!=='ready'&&!save.player_owned){status.textContent='This shop is still being prepared. Your progress is kept.';return false;}
     if(save.status!=='ready'){
       const deadline=Date.now()+110_000;let result:{ready:boolean;step?:string};
-      do{status.textContent='Preparing your shop · confirming setup…';result=await raw('/provision',{method:'POST',body:'{}'});if(!result.ready){status.textContent='Preparing your shop · confirming setup…';await new Promise(r=>setTimeout(r,1500));}}while(!result.ready&&Date.now()<deadline);
+      do{guard(identity,version,save.world_id);status.textContent='Preparing your shop · confirming setup…';result=await raw('/provision',{method:'POST',body:'{}'});if(!result.ready){status.textContent='Preparing your shop · confirming setup…';await new Promise(r=>setTimeout(r,1500));}}while(!result.ready&&Date.now()<deadline);
+      guard(identity,version,save.world_id);
       if(!result.ready)throw Error('Setup is saved and still pending. Use Open selected game to check it; your progress is kept.');
     }
-    if(save.player_owned&&!await device.ready()){connected(null);status.textContent='Access from this browser is temporarily unavailable. Your saved game is kept.';return false;}
+    if(save.player_owned&&!await device.ready()){
+      guard(identity,version,save.world_id);
+      if(!privyConfigured){connected(null);status.textContent='Access from this browser is temporarily unavailable. Your saved game is kept.';return false;}
+      const root=await signer({owner:identity!,world:save.world_id,request:crypto.randomUUID(),created:Date.now()});guard(identity,version,save.world_id);
+      if(!root)return false;
+      status.textContent='Restoring access to your saved game on this browser…';
+      await enableSocialDevice(raw,save.world_id,root,()=>guard(identity,version,save.world_id));guard(identity,version,save.world_id);clearSocialReturn();
+    }
+    guard(identity,version,save.world_id);
     if(save.status!=='ready')await list();
     const current=saves.find(s=>s.world_id===selected)!;
     if(!current.is_active){await raw('/select-save',{method:'POST',body:JSON.stringify({world_id:selected,target_id:selected,expected_active:saves.find(s=>s.is_active)?.world_id})});}
@@ -75,7 +116,6 @@ export function initOwnedAccount(connected:(c:GameConnection|null,enter?:boolean
     status.textContent='Your saved shop is ready. Your inventory and story are restored.';
     connected(connection,enter);return true;
   }
-  // shortcut: social setup is paused until provider callbacks and signing work; no custody or wallet fallback.
   async function run<T>(work:()=>Promise<T>){
     if(busy)return;const started=generation;busy=true;select.disabled=true;
     for(const b of root.querySelectorAll<HTMLButtonElement>('button'))b.disabled=true;
@@ -86,13 +126,25 @@ export function initOwnedAccount(connected:(c:GameConnection|null,enter?:boolean
   login.addEventListener('click',()=>void run(async()=>{if(selected)sessionStorage.setItem('copper-acorn.owned-return-world',selected);const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/'}});if(error)throw Error('Google login could not start.');}));
   select.addEventListener('change',()=>{check.disabled=busy||!select.value;});
   check.addEventListener('click',()=>void run(async()=>{if(select.value)choose(select.value);await open(true);}));
-  signout.addEventListener('click',()=>void run(async()=>{const {error}=await client.auth.signOut({scope:'local'});if(error)throw Error('Sign-out could not be confirmed.');}));
+  signout.addEventListener('click',()=>void run(async()=>{
+    const identity=owner;
+    try{await signOutSocial();}
+    finally{const {error}=await client.auth.signOut({scope:'local'});if(error)throw Error('Sign-out could not be confirmed.');if(identity)sessionStorage.removeItem('copper-acorn.create:'+identity);}
+  }));
   client.auth.onAuthStateChange((event,session)=>{
     if(session?.user.id===owner&&event!=='INITIAL_SESSION')return;
     generation++;owner=session?.user.id||null;state=null;saves=[];legacyCharacter=undefined;select.replaceChildren();root.querySelector<HTMLElement>('#owned-saves-label')!.hidden=true;connected(null);
     announce();
     login.hidden=!!owner;signout.hidden=!owner;check.hidden=true;
-    if(owner)setTimeout(()=>void run(()=>open()),0);else status.textContent='Continue with Google to find your saved games.';
+    if(owner)setTimeout(()=>void run(async()=>{
+      const intent=socialReturn();
+      if(privyConfigured&&intent?.owner===owner){
+        if(intent.world===null){const result=await createGame(intent.request);if(!result)return false;}
+        else choose(intent.world);
+        const result=await open(true);if(result)clearSocialReturn();return result;
+      }
+      return open();
+    }),0);else status.textContent='Continue with Google to find your saved games.';
   });
-  return{prepare:()=>run(()=>open(true)),loading:()=>busy,newGameAvailable:false};
+  return{prepare:()=>run(async()=>await createGame()?open(true):false),loading:()=>busy,newGameAvailable:privyConfigured};
 }
