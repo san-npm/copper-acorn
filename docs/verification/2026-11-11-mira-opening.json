@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-11",
+  "reported_ci": "https://github.com/san-npm/copper-acorn/actions/runs/43082137508/job/130737119042",
+  "base_commit": "ff82eccbfe7d5ad78a4c92950f103462497cee43",
+  "failure": "Ownership browser scenario never saw Accept order after Ingredient work",
+  "cause": "Conversation choices were enabled during the initial asynchronous order-book load, before the automatic greeting took ownership of the busy state. An early click could be lost as initialization disabled controls.",
+  "fix": "Keep choices disabled across the initial load and greeting; restore them after greeting or load failure.",
+  "regression_before": "Failed deterministically: Ingredient work was enabled while the initial read was held.",
+  "local_after": {
+    "hosted_browser_checks": 10,
+    "actual_sandbox_ownership_checks": 2,
+    "production_build": true,
+    "checks": [
+      "Hold initial read and greeting separately; choices stay disabled; the first work choice shows Accept order",
+      "Load failure restores choices so the user can retry",
+      "Actual contract crafting/sale, funded NPC delivery, PvP settlement and revocation"
+    ]
+  },
+  "files": [
+    {
+      "path": "web/src/mira-dialog.ts",
+      "sha256": "2a7c0cc873ca509dd76738a71fb68a0890af00e53cdde95d84bba1f71f068ad1"
+    },
+    {
+      "path": "web/tests/hosted-ownership.spec.ts",
+      "sha256": "ec4e0224d253ca52b19a6dc76a653cc37b61733a0cc9c6507a0409eb3b6f0c19"
+    }
+  ],
+  "new_live_model_requests": 0,
+  "owner_gameplay_performed": false,
+  "deployment": {
+    "origin": "https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43103615583",
+    "source_commit": "535692ad0237e6c1caddbd728267f1a9c5b29466",
+    "files_verified": 121,
+    "bytes": 25051485,
+    "approved_art_files": 76,
+    "backend_versions": {
+      "game-session": 25,
+      "game-api": 27,
+      "arena-api": 19
+    },
+    "jwt_required": true,
+    "access_checks": 19,
+    "earlier_origin_retained": true,
+    "worlds_before": 4,
+    "worlds_after": 4,
+    "owned_worlds": 0,
+    "provider_google_enabled": true,
+    "provider_origin_allowed": false,
+    "pending": "Owner must add the corrected exact origin before new-player Google authorization can start there. Current README game link remains the previously configured build."
+  },
+  "full_ci": {
+    "source_commit": "535692ad0237e6c1caddbd728267f1a9c5b29466",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43103554379",
+    "conclusion": "success",
+    "node": 130,
+    "rust": 34,
+    "artwork": 9,
+    "browsers": {
+      "default": 73,
+      "privy": 12,
+      "hosted": 10,
+      "ownership": 2
+    }
+  },
+  "gitleaks_git_findings": 0
+}

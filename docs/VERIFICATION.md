@@ -2,6 +2,10 @@
 
 The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
 
+## Mira opening race follow-up
+
+The subsequent [main CI run](https://github.com/san-npm/copper-acorn/actions/runs/43082137508/job/130737119042) passed build/contracts and 95 browser checks, then timed out in the second ownership scenario waiting for Mira's Accept order button. Choices were enabled during the initial read, before the automatic greeting disabled them; an early click could be lost. The fix keeps controls disabled through initialization and restores them on failure. A delayed-response regression fails before the fix and passes after it; ten hosted checks and both actual Sandbox ownership scenarios pass locally. [Detailed evidence](verification/2026-11-11-mira-opening.json). The [corrected source CI](https://github.com/san-npm/copper-acorn/actions/runs/43103554379) now passes all jobs, including the exact previously failing scenario. The old failed run remains in history. The [corrected hosted build](https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh/) has 121 verified files and 19 passing backend access checks; its new exact origin still needs the owner’s Privy setting before new-player Google authorization. The README game link retains the previous configured build until that step is complete.
+
 ## Submission preparation
 
 The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. [Submission material](SUBMISSION.md) includes the MP4, screenshots and draft text; nothing was submitted or posted.
@@ -12,7 +16,7 @@ The [friend onboarding check](verification/2026-11-11-friend-onboarding.json) co
 
 ## Automated checks
 
-The [release CI at `9c3c5ec`](https://github.com/san-npm/copper-acorn/actions/runs/43077448602) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 96 browser cases (73 default, 12 Privy fixtures, 9 hosted-controller and 2 actual Sandbox ownership scenarios).
+The [release CI at `535692a`](https://github.com/san-npm/copper-acorn/actions/runs/43103554379) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 97 browser cases (73 default, 12 Privy fixtures, 10 hosted-controller and 2 actual Sandbox ownership scenarios).
 
 - Node tests cover request validation, account/session isolation, economic rules, NPC conversations, arena actions, retries and once-only settlement.
 - Rust tests cover the item and referee contracts. Browser ownership tests execute actual Sandbox contracts for crafting, sales, funded NPC orders, PvP settlement and revocation.

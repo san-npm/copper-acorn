@@ -38,5 +38,14 @@ export function miraDialog(dialog:HTMLDialogElement,request:<T>(path:string,init
   pane.addEventListener('click',e=>{const b=(e.target as HTMLElement).closest<HTMLButtonElement>('[data-talk]');if(b)void talk({choice:b.dataset.talk});});
   form.addEventListener('submit',e=>{e.preventDefault();if(input.value.trim())void talk({message:input.value.trim()});});
   dialog.addEventListener('close',()=>{generation++;busy=false;pane.hidden=true;view=null;});
-  return {open(){generation++;busy=false;pane.hidden=false;view=null;render();status.textContent='Opening Mira’s order book…';const started=generation;void load().then(()=>{if(started===generation&&dialog.open)return talk({choice:'greet'});}).catch(e=>{if(started===generation)status.textContent=e instanceof Error?gameMessage(e.message):'Mira is unavailable.';});}};
+  return {open(){
+    generation++;busy=true;pane.hidden=false;view=null;render();status.textContent='Opening Mira’s order book…';
+    const started=generation;
+    void load().then(()=>{
+      if(started!==generation||!dialog.open)return;
+      busy=false;return talk({choice:'greet'});
+    }).catch(e=>{
+      if(started===generation){busy=false;render();status.textContent=e instanceof Error?gameMessage(e.message):'Mira is unavailable.';}
+    });
+  }};
 }

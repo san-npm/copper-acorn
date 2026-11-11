@@ -8,6 +8,8 @@ Reviewed identity/session checks, Google subject binding, browser signing and re
 
 ## Findings fixed
 
+The [Mira follow-up](verification/2026-11-11-mira-opening.json) fixes a later CI-discovered opening race: choices now stay disabled through the initial read and greeting, with recovery on failure. A held-response regression fails on the earlier source; the corrected source passes the complete Linux CI, including the actual Sandbox ownership scenario.
+
 | Case | Fix | Regression |
 | --- | --- | --- |
 | A completed chicken session hid a later completed PvP match and its result. | Valid PvP acceptance clears only the participants' completed practice slots. | `backend/arena-practice.test.ts`: knockout, reload, pending/confirmed settlement and old acceptance replay while newer training exists. |

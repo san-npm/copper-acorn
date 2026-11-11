@@ -64,6 +64,33 @@ test('no saved games means no dead Open button and no implicit allocation',async
   await page.goto('/');await expect(page.locator('#owned-status')).toContainText('No saved game was found');await expect(page.locator('#owned-check')).toBeHidden();await expect(page.locator('#owned-saves-label')).toBeHidden();await expect(page.locator('#new-game')).toBeDisabled();expect(writes).toEqual([]);
 });
 
+test('Mira keeps choices disabled through loading and greeting, then accepts the first work click',async({page})=>{
+  await page.goto('/');
+  await page.evaluate(async()=>{
+    const {miraDialog}=await import('/src/mira-dialog.ts');
+    const dialog=document.createElement('dialog');dialog.id='mira-opening-test';dialog.innerHTML='<p id="interaction-text">Mira opens her book.</p>';document.body.append(dialog);dialog.showModal();
+    let releaseLoad!:()=>void,releaseGreeting!:()=>void;
+    const load=new Promise<void>(resolve=>{releaseLoad=resolve;}),greeting=new Promise<void>(resolve=>{releaseGreeting=resolve;}),choices:string[]=[];
+    (window as any).__miraOpening={releaseLoad,releaseGreeting,choices};
+    const empty={thread:{messages:[]},orders:{completed:0,order:null},chat_available:false};
+    miraDialog(dialog,async(_path,init)=>{
+      if(!init){await load;return empty as any;}
+      const {choice}=JSON.parse(String(init.body));choices.push(choice);
+      if(choice==='greet'){await greeting;return empty as any;}
+      return {...empty,orders:{completed:0,order:{id:1,token_id:'moonmint',amount:'2',reward:'10',status:'offered'}}} as any;
+    },async()=>{throw Error('No player action expected');}).open();
+  });
+  const work=page.locator('#mira-opening-test [data-talk="work"]');
+  await expect(work).toBeDisabled();
+  await page.evaluate(()=>(window as any).__miraOpening.releaseLoad());
+  await expect.poll(()=>page.evaluate(()=>(window as any).__miraOpening.choices)).toEqual(['greet']);
+  await expect(work).toBeDisabled();
+  await page.evaluate(()=>(window as any).__miraOpening.releaseGreeting());
+  await work.click();
+  await expect(page.locator('#mira-opening-test .mira-order-actions button').first()).toHaveText('Accept order');
+  expect(await page.evaluate(()=>(window as any).__miraOpening.choices)).toEqual(['greet','work']);
+});
+
 test('Mira chat errors keep service names and diagnostics out of the conversation',async({page})=>{
   await page.goto('/');
   await page.evaluate(async()=>{
@@ -72,6 +99,7 @@ test('Mira chat errors keep service names and diagnostics out of the conversatio
     miraDialog(dialog,async()=>{throw Error('Jev inference failed: RPC token rejected');},async()=>{throw Error('No player action expected');}).open();
   });
   await expect(page.locator('#mira-language-test .mira-status')).toContainText('Your game could not be confirmed');
+  await expect(page.locator('#mira-language-test [data-talk="work"]')).toBeEnabled();
   expect(await page.locator('#mira-language-test').innerText()).not.toMatch(technical);
   expect(await page.locator('#mira-language-test input').getAttribute('placeholder')).not.toMatch(technical);
 });
