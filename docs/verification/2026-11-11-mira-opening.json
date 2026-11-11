@@ -28,5 +28,41 @@
   ],
   "new_live_model_requests": 0,
   "owner_gameplay_performed": false,
-  "deployment": "Pending review of the corrected build and its exact login origin"
+  "deployment": {
+    "origin": "https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43103615583",
+    "source_commit": "535692ad0237e6c1caddbd728267f1a9c5b29466",
+    "files_verified": 121,
+    "bytes": 25051485,
+    "approved_art_files": 76,
+    "backend_versions": {
+      "game-session": 25,
+      "game-api": 27,
+      "arena-api": 19
+    },
+    "jwt_required": true,
+    "access_checks": 19,
+    "earlier_origin_retained": true,
+    "worlds_before": 4,
+    "worlds_after": 4,
+    "owned_worlds": 0,
+    "provider_google_enabled": true,
+    "provider_origin_allowed": false,
+    "pending": "Owner must add the corrected exact origin before new-player Google authorization can start there. Current README game link remains the previously configured build."
+  },
+  "full_ci": {
+    "source_commit": "535692ad0237e6c1caddbd728267f1a9c5b29466",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43103554379",
+    "conclusion": "success",
+    "node": 130,
+    "rust": 34,
+    "artwork": 9,
+    "browsers": {
+      "default": 73,
+      "privy": 12,
+      "hosted": 10,
+      "ownership": 2
+    }
+  },
+  "gitleaks_git_findings": 0
 }
