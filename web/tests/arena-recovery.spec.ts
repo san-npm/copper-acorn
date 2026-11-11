@@ -85,8 +85,12 @@ for(const viewport of [{width:1440,height:900},{width:320,height:640}])test(`cou
   release();await expect.poll(()=>store.positions?.[world]).toEqual([posts[0].x,posts[0].y]);await expect.poll(()=>page.evaluate(key=>localStorage.getItem(key),key)).toBeNull();await expect(recovery).toBeHidden();
   expect(await self.evaluate(el=>el.getAnimations().includes((window as any).walkAnimation)||(window as any).walkAnimation.playState==='finished'&&!el.getAnimations().length)).toBe(true);
   fail=503;await clickFloor(960,500);await expect.poll(()=>posts.length).toBe(2);await clickFloor(980,500);expect(posts).toHaveLength(2);releaseFailure();
-  await expect(retry).toBeVisible();await expect(retry).toBeEnabled();await expect(page.locator('#arena-status')).toContainText('safe retry');
-  const pending=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),key);expect(pending).toEqual(posts[1]);await page.waitForTimeout(1700);await expect(recovery).toBeVisible();
+  await expect(retry).toBeVisible();await expect(retry).toBeEnabled();
+  await page.waitForResponse(r=>r.url().endsWith('/arena-walk-fixture')&&r.request().method()==='GET');
+  await expect(page.locator('#arena-status')).toContainText('same request');
+  const pending=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),key);expect(pending).toEqual(posts[1]);
+  await page.waitForResponse(r=>r.url().endsWith('/arena-walk-fixture')&&r.request().method()==='GET');
+  await expect(recovery).toBeVisible();expect(posts).toHaveLength(2);expect(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),key)).toEqual(pending);
   const rolledBack=await self.evaluate(el=>{const s=getComputedStyle(el),map=el.parentElement!;return [parseFloat(s.left)/map.clientWidth*1536,parseFloat(s.top)/map.clientHeight*1024];});
   expect(rolledBack[0]).toBeCloseTo(Number(posts[0].x),0);expect(rolledBack[1]).toBeCloseTo(Number(posts[0].y),0);
   fail=0;await retry.click();await expect.poll(()=>posts.length).toBe(3);expect(posts[2]).toEqual(pending);await expect.poll(()=>store.positions?.[world]).toEqual([pending.x,pending.y]);await expect(recovery).toBeHidden();

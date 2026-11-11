@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "base_commit": "39fa40ed4d27cc4f63bfe04b76aa184c4a88e381",
+  "failed_ci": "https://github.com/san-npm/copper-acorn/actions/runs/43116452266",
+  "cause": "A read-only background refresh replaces the temporary failure diagnostic with persistent same-request recovery guidance. The test expected the earlier message.",
+  "before": "Forcing that refresh reproduces the safe-retry assertion failure on the original test.",
+  "change": "Wait for read responses, assert same-request guidance, and verify the original pending body and absence of automatic resends across a second refresh.",
+  "local_browser_passed": 4,
+  "coverage": [
+    "1440px and 320px combat recovery",
+    "1440px and 320px courtyard prediction, rollback, same-body retry, queued steering and terminal failure",
+    "No automatic resend across both explicit read refreshes",
+    "Manual retry equals the originally stored request"
+  ],
+  "runtime_files_changed": false,
+  "hosted_url_changed": false,
+  "new_model_requests": 0,
+  "source_file": {
+    "path": "web/tests/arena-recovery.spec.ts",
+    "sha256": "313749b575965bbab4c3807164760c3a04368547b8b801dc82b7258df9ce38b2"
+  }
+}
