@@ -54,5 +54,10 @@
   ],
   "new_live_model_requests": 0,
   "mainnet_actions": 0,
-  "backend_held_player_keys_created": 0
+  "backend_held_player_keys_created": 0,
+  "secret_scan": {
+    "source_findings": 0,
+    "built_sdk_findings": 2,
+    "triage": "Both are unchanged MoonPay public client constants in pinned @privy-io/js-sdk-core 0.79.4. No funding/onramp method is called by this game. No application secret was added."
+  }
 }
