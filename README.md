@@ -58,6 +58,7 @@ The hosted build deploys from GitHub through Stasho. Backend origin/Auth setting
 ## Project notes
 
 - [Gameplay loop](docs/GAMEPLAY.md)
+- [Submission draft and demo capture](docs/SUBMISSION.md)
 - [Hackathon requirements and gaps](docs/HACKATHON_CHECKLIST.md)
 - [GitHub → Stasho setup](docs/STASHO.md)
 - [Release security self-review and known limits](docs/RELEASE_REVIEW.md)

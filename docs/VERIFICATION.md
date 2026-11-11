@@ -2,13 +2,17 @@
 
 The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
 
+## Submission preparation
+
+The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. [Submission material](SUBMISSION.md) includes the MP4, screenshots and draft text; nothing was submitted or posted.
+
 ## Onboarding follow-up
 
 The [friend onboarding check](verification/2026-11-11-friend-onboarding.json) covers 27 focused browser cases and a fresh build. It verifies the initial loading screen, refresh, saved sessions and exact-origin access checks. Public app configuration and the exact hosted origin are enabled. A hosted check with a fictional game identity reached real provider Google authorization, without backend writes. Real Google consent/signing/recovery remain unverified.
 
 ## Automated checks
 
-The earlier [release CI](https://github.com/san-npm/copper-acorn/actions/runs/43050192922) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 94 browser cases across the four configurations.
+The [release CI at `9c3c5ec`](https://github.com/san-npm/copper-acorn/actions/runs/43077448602) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 96 browser cases (73 default, 12 Privy fixtures, 9 hosted-controller and 2 actual Sandbox ownership scenarios).
 
 - Node tests cover request validation, account/session isolation, economic rules, NPC conversations, arena actions, retries and once-only settlement.
 - Rust tests cover the item and referee contracts. Browser ownership tests execute actual Sandbox contracts for crafting, sales, funded NPC orders, PvP settlement and revocation.
@@ -27,6 +31,6 @@ Existing hosted saves, inventories, contracts and keys are preserved. No owner b
 
 ## Remaining external checks
 
-Public first-time Privy activation is gated. The exact hosted origin is configured and real provider Google authorization startup is checked. Real Google consent/provider signing/recovery remain unverified. The owner's existing automatic login restores an older saved game and does not validate that new flow. The code fixes prevent unentered legacy saves from dismissing the chooser and allow pending old actions to reconcile before new-browser access is restored.
+The exact hosted origin is configured and real provider Google authorization startup is checked. Real Google consent/provider signing/recovery remain unverified. The owner's existing automatic login restores an older saved game and does not validate that new flow. The code fixes prevent unentered legacy saves from dismissing the chooser and allow pending old actions to reconcile before new-browser access is restored.
 
 No human two-player playtest, large-load benchmark, mainnet deployment, X post or hackathon submission is claimed.

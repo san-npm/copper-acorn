@@ -2,7 +2,7 @@
 
 Sources: [official rules](https://nearhackathon.com/HACKATHON.md), [Games track](https://nearhackathon.com/#tracks), [example prompt](https://github.com/nearai/near-hackathon-prompt-examples/blob/main/tracks/09-games.md).
 
-The official rules say the track hints/integrations and example prompts are optional (Q-011). Testnet-only entries qualify (Q-010). This is a requirements review, not certification or a submission.
+The official rules say the track hints/integrations and example prompts are optional (Q-011). Testnet-only entries qualify (Q-010). This is a requirements review, not certification or a submission. [Submission text, media and remaining inputs](SUBMISSION.md) are prepared separately.
 
 | Official requirement | Evidence / remaining work |
 | --- | --- |

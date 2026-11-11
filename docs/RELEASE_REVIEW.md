@@ -4,7 +4,7 @@ This is a source review and automated verification of a testnet prototype. Expec
 
 ## Scope
 
-Reviewed identity/session checks, Google subject binding, browser signing and recovery, per-owner database isolation, operation retries, item/Copper conservation, merchant pricing/investment, funded quests/NPC orders, arena permissions, deadlines and result settlement. The review started from `8c2180b`; the fixes and regressions are included with this report. Approved character artwork is unchanged.
+Reviewed identity/session checks, Google subject binding, browser signing and recovery, per-owner database isolation, operation retries, item/Copper conservation, merchant pricing/investment, funded quests/NPC orders, arena permissions, deadlines and result settlement. The review started from `8c2180b`; the fixes and regressions are included with this report. The onboarding follow-up is verified at `9c3c5ec`. Approved character artwork is unchanged. The frontend compiler also rejects unused locals and parameters; no runtime rewrite was needed to pass those checks.
 
 ## Findings fixed
 
@@ -36,4 +36,4 @@ The referee attests server-authoritative combat and enforces once-only awards. I
 
 ## Not verified
 
-Real first-time Google/Privy consent, actual provider raw signing/recovery, a real two-human playtest, production-scale load and an independent review. Provider settings currently report an empty allowed-origin list; public ownership activation stays gated. The owner did not have time to complete manual onboarding during this review. An authenticated read of provider settings succeeded; the attempted minimal configuration PATCH returned 405 without changing the list. The documented Dashboard path is prepared in ONBOARDING.md. No owner browser was controlled, no existing hosted inventory was reset and no new model request was sent.
+Real first-time Google/Privy consent, actual provider raw signing/recovery, a real two-human playtest, production-scale load and an independent review remain unverified. The owner configured the exact hosted origin on 11 November; public settings confirm it and Google authorization startup was checked on the live build with a fictional game identity and no backend writes. This does not establish completed new-player provisioning. No owner browser was controlled, no existing hosted inventory was reset and no new model request was sent.
