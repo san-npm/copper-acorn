@@ -4,9 +4,13 @@
 
 The owner rejected the replacement designs and authorized publication of the restored local character/action set. This release uses the exact 70 approved PNG/manifest files, including all eight characters, the seated spectator atlas and five action sets. Builds verify their hashes; the retired redraw helpers refuse to overwrite them. Private source packs remain excluded. The restoration does not resolve the third-party licensing restrictions documented in `ASSET_CREDITS.md`.
 
-Privy activation remains gated pending real Google consent/signing/recovery; no Privy App ID is enabled in the public build. Existing saves, keys and contracts are preserved. Deployment and verification results will be recorded after publication.
+Published through the native GitHub → Stasho workflow [42989656886](https://github.com/san-npm/copper-acorn/actions/runs/42989656886), deployment `deploy_EeelxnLT8xDd`. All107hosted files match the 24,372,724-byte build, including all70approved files.121Node checks, nine artwork checks, eight existing-save browser cases and the GitHub web/contract checks pass. The compiled and hosted welcome screens and isolated character harness load all8appearances/four views without page errors. Google/S256 routing targets the new exact origin; this is not a completed human consent check.
 
-[Current game](https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/) uses the original artwork. Its native GitHub deployment and 96-file build verification are recorded below. The public frontend has not yet been updated for Privy; fresh social onboarding stays gated there.
+Backend session21/game23/arena15 remain JWT-protected. Sixteen public origin/auth/settings checks pass for the new origin, previous origin, local preview and unrelated-site rejection. Supabase Google is enabled; earlier return URLs are preserved. Four earlier worlds/four legacy wallets/zero newly owned wallets remain after publication. No migration, economic action, model call or purchase was made for this release.
+
+Privy activation remains gated pending real Google consent/signing/recovery; no Privy App ID is enabled in the public build. Existing saves, keys and contracts are preserved. Updating the published-origin metadata leaves all107frontend files byte-for-byte identical.
+
+[Current game](https://bafybeidntahfg4ojtmb4ub433kqiufiunfivincqzfzuliegk5okpq6s5i.ipfs.aleph.sh/) uses the restored approved character/action artwork. Privy signing code is included but public activation remains gated. Earlier release records below are historical.
 
 ## Privy integration — local preview
 

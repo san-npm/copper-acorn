@@ -4,7 +4,7 @@ A pixel-art alchemy shop prototype for **NEAR Hackathon — Games With Real Econ
 
 Includes a guild quest chain, two side orders, and a shared arena with eight classes, turn-based duels and a passive training chicken.
 
-[Play the hosted build](https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/) · [Release checks](docs/VERIFICATION.md)
+[Play the hosted build](https://bafybeidntahfg4ojtmb4ub433kqiufiunfivincqzfzuliegk5okpq6s5i.ipfs.aleph.sh/) · [Release checks](docs/VERIFICATION.md)
 
 ## Where NEAR fits
 
