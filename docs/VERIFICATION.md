@@ -2,6 +2,10 @@
 
 The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
 
+## Map refresh test follow-up
+
+The following [main run](https://github.com/san-npm/copper-acorn/actions/runs/43118870856) passed the arena recovery checks, then timed out waiting for Leave in the map journey. The fixture clicked a new resource while Refresh ledger was still busy and could read retained text from the previous closed dialog. The application intentionally blocks interactions during that refresh. The test now waits until the refresh control is enabled and verifies the visible resource dialog and its exact title. A private controlled four-second read delay reproduces the previous Leave timeout and passes with the corrected synchronization. All three map scenarios pass locally. Runtime code, artwork and the game address remain unchanged. Failed browser jobs also print their fictional fixture UI context to make later failures diagnosable. [Evidence](verification/2026-11-12-map-refresh.json).
+
 ## Arena recovery test follow-up
 
 A later [readiness CI](https://github.com/san-npm/copper-acorn/actions/runs/43116452266) failed because a fixture expected the temporary “safe retry” diagnostic. A normal read-only arena refresh replaces that text with the persistent same-request guidance. Holding the fixture until that refresh reproduces the old assertion failure deterministically. The updated test waits for two refreshes and verifies that the exact original request is retained, no automatic POST is sent, and manual retry sends the same body. Both desktop/mobile walking and combat recovery cases pass locally. Runtime code and the hosted address are unchanged. [Evidence](verification/2026-11-12-arena-polling.json).

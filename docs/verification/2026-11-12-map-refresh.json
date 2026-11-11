@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-12",
+  "base_commit": "1b20280c95491e9430eed830e9775b04fa0620ad",
+  "failed_ci": "https://github.com/san-npm/copper-acorn/actions/runs/43118870856",
+  "cause": "The fixture did not wait for ledger refresh completion before resource navigation, and its text assertions could match the previous closed dialog. openInteraction intentionally rejects a busy state.",
+  "change": [
+    "Wait for Refresh ledger to become enabled after each click",
+    "Assert that the intended resource dialog is visible and has the matching title",
+    "Wait for the dialog to close before refreshing",
+    "Print bounded error-context.md from fictional browser fixtures on CI failure"
+  ],
+  "local": {
+    "map_scenarios_passed": 3,
+    "duration_seconds": 22.6,
+    "controlled_delayed_read_seconds": 4,
+    "old_leave_wait_failed": true,
+    "fixed_delayed_scenario_passed": true,
+    "fixed_delayed_scenario_seconds": 7.4,
+    "private_probe_leave_timeout_ms": 3000,
+    "permanent_test_timeout_unchanged": true
+  },
+  "files": [
+    {
+      "path": "web/tests/map.spec.ts",
+      "sha256": "47f5175b070e33cc656a6dbbe905da177fd0a84e5fc670d75c2b70660f1ad27f"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "29215568418bf09d8234feb50e069940862ee1e82af74e22b2009878cc710b4a"
+    }
+  ],
+  "runtime_files_changed": false,
+  "approved_artwork_changed": false,
+  "hosted_address_changed": false,
+  "new_model_requests": 0
+}

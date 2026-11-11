@@ -41,3 +41,12 @@ jobs:
       - run: PRIVY_TEST_ORIGIN=http://127.0.0.1:5190 npx playwright test --config playwright.privy.config.ts
       - run: npx playwright test --config playwright.hosted-owned.config.ts
       - run: npx playwright test --config playwright.owned.config.ts
+      - name: Show failed browser context
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for path in Path('.local').rglob('error-context.md'):
+              print(str(path))
+              print(path.read_text()[:20000])
+          PY
