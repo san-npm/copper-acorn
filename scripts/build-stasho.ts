@@ -11,9 +11,9 @@ assert.ok(Object.keys(environment).every(k=>[...required,...social].includes(k))
 for(const name of social)if(environment[name])assert.match(environment[name],/^[A-Za-z0-9_-]{8,100}$/);
 if(environment.VITE_PUBLIC_PRIVY_CLIENT_ID)assert.ok(environment.VITE_PUBLIC_PRIVY_APP_ID);
 const artwork=JSON.parse(await readFile(new URL('../deploy/approved-art.json',import.meta.url),'utf8'));
-assert.equal(Object.keys(artwork.files).length,70);
+assert.equal(Object.keys(artwork.files).length,76);
 for(const [file,hash] of Object.entries(artwork.files)){
-  assert.match(file,/^assets\/(characters|actions)\/([a-z-]+\.png|manifest\.json)$/);
+  assert.match(file,/^assets\/(characters|actions|market)\/([a-z-]+\.png|manifest\.json)$/);
   assert.equal(createHash('sha256').update(await readFile(new URL('../web/public/'+file,import.meta.url))).digest('hex'),hash,'Approved artwork changed: '+file);
 }
 const result=spawnSync('npm',['run','build','--','--mode','playtest'],{stdio:'inherit',env:{...process.env,...environment,VITE_PUBLIC_LOCAL_SANDBOX:'false',VITE_PUBLIC_PLAYER_OWNERSHIP:'true'}});

@@ -1,5 +1,13 @@
 # Release checks — 10 November 2026
 
+## Merchant and gathering correction — 11 November2026
+
+The three market merchants now use the matching locally reviewed character artwork, including eye-only blink variants. Their full portraits remain intact; the scene clips them against the actual painted counters and awnings. All76 pinned artwork files pass the build check (the original70 character/action files are unchanged).
+
+Read-only hosted inspection found one confirmed Silver Dust collection in each of two older saves, dated5/6November. Both remain on market day1. The two newer saves report0/1 collected. The oldest save also lacks the newer market clock; its ledger now exposes the existing Next market day action, which replenishes gathering without discarding inventory. These are persistent in-game gathering limits, not a hosting allowance or a calendar reset. No hosted progress or keys were changed. The popup and gather buttons now say “market day”, show the saved collection count, and explain replenishment. An oversized batch and an ingredient with no gathering allowance get distinct messages.
+
+123Node tests, nine artwork checks, the release build and11focused browser scenarios pass. Browser coverage includes first silver collection, one request, reload persistence, a zero-allowance save, merchant dialogue, map targets and movement. One stale asset-count expectation was updated to include all three blink images. Tests use a disposable local world; owner browsers and game servers are untouched. This is a focused correction, not a new full security or live social-onboarding audit.
+
 ## Approved character restoration — 11 November2026
 
 The owner rejected the replacement designs and authorized publication of the restored local character/action set. This release uses the exact 70 approved PNG/manifest files, including all eight characters, the seated spectator atlas and five action sets. Builds verify their hashes; the retired redraw helpers refuse to overwrite them. Private source packs remain excluded. The restoration does not resolve the third-party licensing restrictions documented in `ASSET_CREDITS.md`.

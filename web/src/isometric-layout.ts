@@ -54,10 +54,9 @@ export const occluders: Occluder[] = [
   { name: 'emberbloom-bed', outline: [[930, 798], [979, 725], [1069, 679], [1157, 735], [1199, 802], [1067, 869]], front: [[930, 805], [1067, 869]] },
 ];
 export const merchants = [
-  // Visible sprite rows between each painted awning and counter, using an origin at row112.
-  { id: 'mira', feet: [378, 739] as Point, window: [24,52] },
-  { id: 'rowan', feet: [1187, 477] as Point, window: [21,77] },
-  { id: 'bram', feet: [1398, 704] as Point, window: [0,41] },
+  { id: 'mira', feet: [378, 724] as Point },
+  { id: 'rowan', feet: [1187, 477] as Point },
+  { id: 'bram', feet: [1398, 689] as Point },
 ];
 // Each cabinet is a sale slot; visible bottles fill three rows, up to nine owned units.
 export const displays: Point[][] = [

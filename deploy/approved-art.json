@@ -1,6 +1,6 @@
 {
   "approved": "2026-11-11",
-  "source": "Owner-approved character and action sheets",
+  "source": "Owner-approved character, action and matching merchant sheets",
   "license": "Third-party artwork; excluded from the source-code license. See docs/ASSET_CREDITS.md.",
   "files": {
     "assets/characters/arena-spectators.png": "ce77fe1b063bafa5d22b4074b7765b6bbce1229aa5f57ba1be310c5efeb4b9b8",
@@ -72,6 +72,12 @@
     "assets/actions/water-sparkles.png": "abc2c4d583928594219b631486341ef6a947c83a57f46736c7395490c9e90884",
     "assets/actions/water-tools.png": "3b6e81de0315b96aa068570a66a500172c96a9a273e72dcf9bfeb5c095108347",
     "assets/actions/waterfall.png": "914c530edf07e1df6ac009795dc0ed51a93fe08733b552d6b32e7a5413724e1e",
-    "assets/actions/workshop-floor.png": "1c0000f08ebad7aaf49cf5589d98405337096d828cee7c15e40ab2b8503e3249"
+    "assets/actions/workshop-floor.png": "1c0000f08ebad7aaf49cf5589d98405337096d828cee7c15e40ab2b8503e3249",
+    "assets/market/mira.png": "a0b8ff8e66afed93e4b94f64dd716bf137960890f6de323a2a286c67751b6b1c",
+    "assets/market/mira-blink.png": "04a695b59e7a05ed2410d87d4722df6a2c46a67c810d437a0b5bda58596a0901",
+    "assets/market/rowan.png": "04982769b6ee0e7f2739127b41b20125b454dd88b373b072de4c956546e807b1",
+    "assets/market/rowan-blink.png": "f6e482222c93860a0e117b412a6c3e9050c6d7da9ea110f614f151a8456ffb35",
+    "assets/market/bram.png": "e95d6eadf431531622fc3974c3af46a32eebc891f3cc68fd1b7d1f5bda5ab101",
+    "assets/market/bram-blink.png": "330fd0c44e0a16cefbebb9322137d658becc9fc4bf446366402cd5de0f607669"
   }
 }
