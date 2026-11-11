@@ -14,7 +14,7 @@ async function sdkClient(){
   return sdkObject??= (async()=>{
     const {default:Privy,LocalStorage}=await import('@privy-io/js-sdk-core');
     return new Privy({appId,clientId,storage:new LocalStorage(),sessions:{cookieWriteBehavior:'never'}});
-  })();
+  })().catch(error=>{sdkObject=undefined;throw error;});
 }
 
 export function socialReturn():SocialReturn|null{

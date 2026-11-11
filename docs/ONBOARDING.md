@@ -1,11 +1,15 @@
 # Google access with Privy
 
-The owner selected Privy on 10 November 2026. The integration is implemented locally; live Google consent, root signing and recovery still need verification before public activation. Earlier hosted shops keep their existing keys and assets. No automatic custody migration is performed.
+The owner selected Privy on 10 November 2026. The integration is included in the public source; live Google consent, root signing and recovery still need verification before public activation. Earlier hosted shops keep their existing keys and assets. No automatic custody migration is performed.
+
+## Verified state
+
+As of 11 November, the provider reports Google enabled, an empty `allowed_domains` list and `user-controlled-server-wallets-only` mode. The public build intentionally has no Privy App ID enabled. Browser fixtures cover creation, cancellation, exact-request recovery, identity rejection and two-browser replacement; they do not establish real Google consent or provider signatures. Do not mark first-time onboarding complete from an automatically restored older shop.
 
 ## Setup
 
 1. Create a free Privy application and enable Google under Authentication. Keep paid upgrades, billing and automatic top-ups off. Use the default user-controlled wallet mode; do not add an application signer or developer-owned wallets.
-2. Set allowed origins to the exact published game origin and `http://127.0.0.1:5189`. Use exact origins, not a wildcard shared IPFS gateway. Keep HttpOnly app-domain cookies disabled for this static hosting setup. A separate Web client is optional; the real browser SDK's default client was verified to initialize and start Google authorization with the App ID alone.
+2. Under Configuration → App settings → Domains, set allowed origins to the exact published game origin and `http://127.0.0.1:5194`. Use exact origins, not a wildcard shared IPFS gateway. Keep HttpOnly app-domain cookies disabled for this static hosting setup. A separate Web client is optional; the real browser SDK's default client was verified to initialize and start Google authorization with the App ID alone.
 3. Copy the public App ID. **No Privy app secret or token-verification public key is used.** For a local test, put these public settings in the ignored `web/.env.privy-local`:
 
    ```dotenv
@@ -14,7 +18,7 @@ The owner selected Privy on 10 November 2026. The integration is implemented loc
    VITE_PUBLIC_LOCAL_SANDBOX=false
    ```
 
-   Also copy the two public Supabase settings from `deploy/public-env.json` into that file. Run `npm run dev -- --mode privy-local --port 5189`. A separately configured Web client may use `VITE_PUBLIC_PRIVY_CLIENT_ID`. Never put server credentials in any `VITE_PUBLIC_` setting.
+   Also copy the two public Supabase settings from `deploy/public-env.json` into that file. Run `npm run dev -- --mode privy-local --port 5194`. A separately configured Web client may use `VITE_PUBLIC_PRIVY_CLIENT_ID`. Never put server credentials in any `VITE_PUBLIC_` setting.
 4. Test first setup, cancellation, another-browser recovery, renewal and normal play. For publication, add only the public Privy App ID (and optional Client ID) to `deploy/public-env.json`, deploy the backend change, and use the existing GitHub → Stasho workflow. A new CID requires exact-origin updates in Supabase and Privy; a stable domain avoids that repetition.
 
 Without an App ID, existing saved games remain available and new social games remain disabled. Do not enable public onboarding merely because a build passes.
@@ -35,7 +39,7 @@ These guarantees depend on the Google account, Privy's user-controlled configura
 
 Privy's published Developer free allowance is 0–499 monthly active users and 50,000 monthly signatures. Signature usage is a separate limit; 499 users alone does not guarantee zero charges. Keep billing upgrades disabled and check the provider's usage dashboard. The app uses root signatures during setup/recovery/renewal, rather than every game action. It does not implement a provider-wide usage meter or override Privy's billing settings.
 
-The existing allocation cap is ten hosted worlds including older wallets, with two new player-owned slots per Google account. That is separate from Privy's allowance. Testnet funding and provider availability can also prevent setup.
+The existing allocation cap is ten hosted worlds including older wallets, with two new player-owned slots per Google account. Each development world also has a 1,000-operation economic journal and128NPC-request allowance; the shared arena retains 128 profiles and 256 PvP matches. That is separate from Privy's allowance. Testnet funding and provider availability can also prevent setup.
 
 Run `npx playwright test --config playwright.privy.config.ts` for isolated fixtures covering the actual SDK import, ownership proofs, lost acknowledgements, non-exportable keys, normal action signing, renewal, two-browser restoration, identity changes, callback rejection, iframe boundaries and the saved-game controller. These tests use fictional identities and no paid signatures. Real consent, recovery and provider configuration must still be exercised before calling this complete.
 

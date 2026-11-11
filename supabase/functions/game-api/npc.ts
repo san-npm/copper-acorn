@@ -8,22 +8,27 @@ const hash=(v:unknown)=>createHash('sha256').update(JSON.stringify(v)).digest('h
 export async function npc(c:Context,body:Record<string,unknown>|null,apiKey:string){
   const contract=namesFor(c).contract;
   if(body)for(const prefix of ['mira-expire-','mira-offer-']){const prior=await operation(c,prefix+body.request_id);if(prior&&(await reconcile(c,prior)).status!=='confirmed')throw Error('Mira’s previous action is awaiting confirmation.');}
-  let orders:Orders=await view(contract,'mira_orders_view',{},c.fetcher);
-  const saved=await c.db.from('game_npc_threads').select('thread').eq('world_id',c.world.id).eq('npc','mira').maybeSingle();
-  if(saved.error)throw Error('Conversation could not be restored.');
-  const thread:Thread=saved.data?.thread||{turn:0,messages:[]};
+  const stored=async()=>{
+    const orders:Orders=await view(contract,'mira_orders_view',{},c.fetcher);
+    const saved=await c.db.from('game_npc_threads').select('thread').eq('world_id',c.world.id).eq('npc','mira').maybeSingle();
+    if(saved.error)throw Error('Conversation could not be restored.');
+    const thread:Thread=saved.data?.thread||{turn:0,messages:[]};
+    return {orders,thread};
+  };
   const availability=async()=>{
     const {data,error}=await c.db.from('game_npc_budget').select('*').eq('singleton',true).single();
     return !!apiKey&&!error&&data.requests_used<data.request_limit&&data.tokens_used+data.tokens_reserved+3000<=data.token_limit;
   };
-  if(!body)return {thread,orders,chat_available:await availability()};
+  if(!body)return {...await stored(),chat_available:await availability()};
   const input:NpcInput=body.message!==undefined?{message:body.message as string}:{choice:body.choice as 'greet'|'work'|'potions'|'hint'};
-  if('message' in input)conversationQuestion(input.message,thread,orders);
+  if('message' in input)conversationQuestion(input.message,{turn:0,messages:[]},{completed:0,last_offer_day:null,order:null});
   else if(!['greet','work','potions','hint'].includes(input.choice))throw Error('Choose an available conversation.');
   const params={p_owner:c.owner,p_session:c.session,p_world:c.world.id,p_request:body.request_id};
   const turn=await dbCall(c,'begin_npc_turn',{...params,p_hash:hash(input)});
   if(!turn.claimed){if(turn.status==='done')return turn.result;throw Error('This message is awaiting confirmation. Use the same request to check it.');}
   try{
+    // Read mutable context only after this conversation owns the turn.
+    let {orders,thread}=await stored();
     let result:NoulResult|undefined;
     if('message' in input){
       if(!apiKey)throw Error('Jev chat is unavailable. Use a conversation choice.');
@@ -31,7 +36,14 @@ export async function npc(c:Context,body:Record<string,unknown>|null,apiKey:stri
       // Keep 1,000 tokens of the 3,000-token reservation for service prompt overhead.
       while(new TextEncoder().encode(requestBody(question)).length>2000&&(question.state.history as unknown[]).length)(question.state.history as unknown[]).shift();
       if(new TextEncoder().encode(requestBody(question)).length>2000)throw Error('Use a shorter game message.');
-      const reserved=await dbCall(c,'reserve_npc_judgment',{...params,p_hash:hash(question)});
+      let reserved;
+      try{reserved=await dbCall(c,'reserve_npc_judgment',{...params,p_hash:hash(input)});}
+      catch(error){
+        // Earlier releases hashed mutable context; reuse their saved result after the input-bound claim.
+        const prior=await c.db.from('game_npc_judgments').select('result').eq('world_id',c.world.id).eq('request_id',body.request_id).maybeSingle();
+        if(prior.error||!prior.data?.result)throw error;
+        reserved={result:prior.data.result};
+      }
       if(reserved.result)result=reserved.result;
       else if(reserved.claimed){
         result=await evaluate(question,apiKey,c.fetcher);

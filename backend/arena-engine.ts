@@ -107,6 +107,7 @@ export function arenaStep(original:Store,id:string,identity:ArenaIdentity|undefi
             if(active(s,id)||active(s,invite.from))failure('A player is already in a duel.',409);
             rankReady(s,[id,invite.from]);
             if(Object.keys(s.matches).length>=256)failure('Local match history is full. Existing games were preserved.',409);
+            if(s.practice){delete s.practice[id];delete s.practice[invite.from];}
             const duel=makeDuel(randomUUID(),[s.profiles[invite.from],s.profiles[id]],now,randomInt(2));s.matches[duel.id]=duel;
             s.invites=s.invites.filter(i=>![i.from,i.to].some(p=>p===id||p===invite.from));
           }else s.invites=s.invites.filter(i=>i.id!==invite.id);

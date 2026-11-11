@@ -31,7 +31,7 @@ test('an earlier Google save opens, crafts, sells and reloads without a new acco
     return route.fulfill({json:body,headers:{'access-control-allow-origin':'*'}});
   });
   await page.goto('/');await expect(page.locator('#copper')).toHaveText('40');await expect(page.locator('#character-name')).toHaveText('Magician');
-  await page.getByRole('button',{name:'Saved games',exact:true}).click();await expect(page.locator('#owned-saves')).toHaveValue(world);await expect(page.locator('#owned-check')).toBeEnabled();
+  await expect(page.locator('#games-dialog')).toBeVisible();await expect(page.locator('#owned-saves')).toHaveValue(world);await expect(page.locator('#owned-check')).toBeEnabled();
   expect(await page.locator('#games-dialog').innerText()).not.toMatch(technical);await page.locator('#owned-check').click();await expect(page.locator('#games-dialog')).not.toBeVisible();
   expect(writes).toEqual([]);
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();await page.getByRole('button',{name:'Brew Healing Tonic',exact:true}).click();await expect(page.locator('#copper')).toHaveText('39');

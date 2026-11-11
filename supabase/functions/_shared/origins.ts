@@ -18,6 +18,6 @@ export const previousOrigins = [
 ];
 
 export function gameOrigins(configured = '') {
-  return [...new Set(['http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5175', 'http://localhost:5175', 'http://127.0.0.1:5189', publishedOrigin, ...previousOrigins,
+  return [...new Set(['http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5175', 'http://localhost:5175', 'http://127.0.0.1:5189', 'http://127.0.0.1:5194', publishedOrigin, ...previousOrigins,
     ...configured.split(',').map(s => s.trim()).filter(Boolean)])];
 }

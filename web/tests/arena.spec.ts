@@ -16,7 +16,7 @@ test('two saved alchemists challenge, move, cast, resume and finish without chan
   const api=spawn(resolve('target/debug/game-api'),[],{env:{...process.env,GAME_API_PORT:String(apiPort)},stdio:'ignore'});
   const values={GAME_API_PORT:String(apiPort),VITE_PUBLIC_LOCAL_SANDBOX:'true',VITE_PUBLIC_SUPABASE_URL:'',VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY:''};
   const previous=Object.fromEntries(Object.keys(values).map(key=>[key,process.env[key]]));
-  const contexts=await Promise.all([browser.newContext({recordVideo:{dir:'.local/arena-polish/videos',size:{width:1280,height:900}}}),browser.newContext()]),pages=await Promise.all(contexts.map(c=>c.newPage()));
+  const contexts=await Promise.all([browser.newContext(),browser.newContext()]),pages=await Promise.all(contexts.map(c=>c.newPage()));
   let server:Awaited<ReturnType<typeof createViteServer>>|undefined;
   const errors:string[]=[];for(const p of pages)p.on('pageerror',e=>errors.push(e.message));
   try{

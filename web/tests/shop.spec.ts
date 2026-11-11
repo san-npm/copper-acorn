@@ -89,7 +89,7 @@ test('opening shop loop settles on the local chain and recovers a lost response 
   const canvas = (await page.locator('#game canvas').boundingBox())!;
   const mint = spots.find(spot => spot.id === 'moonmint')!;
   await page.locator('#game canvas').click({ position: { x: mint.at[0] * canvas.width / WORLD.width, y: mint.at[1] * canvas.height / WORLD.height } });
-  await expect(page.locator('#interaction-detail')).toContainText('patch needs until the next market day');
+  await expect(page.locator('#interaction-detail')).toContainText('This save has collected 4/4 Moonmint');
   await expect(page.locator('#interaction-confirm')).toBeDisabled();
   await page.getByRole('button', {name: 'Leave', exact: true}).click();
   expect(await page.evaluate(() => sessionStorage.getItem('copper-acorn.pending'))).toBeNull();
@@ -130,9 +130,8 @@ test('disabled Google provider explains setup without starting OAuth or saving a
   await page.route('https://example.supabase.co/auth/v1/settings', route => route.fulfill({ json: { external: { google: false } } }));
   await page.goto('/');
   await openAccount(page);
-  await page.getByText('Development session', { exact: true }).click();
   await page.getByRole('button', { name: 'Check account setup', exact: true }).click();
-  await expect(page.locator('#account-status')).toContainText('Google login needs owner setup');
+  await expect(page.locator('#account-status')).toContainText('Google sign-in is unavailable');
   await expect(page.getByRole('button', { name: 'Continue with Google', exact: true })).toBeDisabled();
   await expect(page.locator('#account-save')).toBeHidden();
   expect(writes).toEqual([]);
@@ -143,7 +142,6 @@ test('enabled Google starts PKCE with this game as the return URL (simulated pro
   await page.route('https://example.supabase.co/auth/v1/authorize?*', route => route.abort());
   await page.goto('/');
   await openAccount(page);
-  await page.getByText('Development session', { exact: true }).click();
   await page.getByRole('button', { name: 'Check account setup', exact: true }).click();
   await expect(page.locator('#account-signin')).toBeEnabled();
   const request = page.waitForRequest('https://example.supabase.co/auth/v1/authorize?*');
@@ -199,7 +197,7 @@ test('restored Google session checks an existing managed wallet without allocati
   await page.goto('/');
   await openAccount(page);
   await expect(page.locator('#account-status')).toContainText('Your saved shop is ready');
-  await expect(page.locator('#account-wallet-id')).toHaveText(account);
+  await expect(page.locator('#online-account')).not.toContainText(account);
   expect(methods).toEqual(['GET']);
   await page.getByRole('button', { name: 'Check account setup', exact: true }).click();
   await expect.poll(() => methods).toEqual(['GET', 'GET']);
@@ -216,17 +214,19 @@ test('selected shop setup stays isolated and read-only until activation (simulat
   delete state.batch_limit;delete state.alchemist;
   Object.assign(state.environment,{network:'testnet',world_id:world,is_active:false});
   Object.assign(state.player.balances,{copper:'40',sunleaf:'4',spring_water:'3'});state.player.account_id=account;
-  const calls:string[]=[];let writes=0;
+  const calls:string[]=[];let writes=0,prepared=false;
   await page.route('https://example.supabase.co/auth/v1/user',r=>r.fulfill({json:user}));
+  await page.route('https://example.supabase.co/auth/v1/settings',r=>r.fulfill({json:{external:{google:true}}}));
   await page.route('https://example.supabase.co/functions/v1/game-session**',r=>{
     expect(new URL(r.request().url()).searchParams.get('world_id')).toBe(world);
-    return r.fulfill({json:{world:{id:world,status:'pending',is_active:false},wallet:{account_id:account,funded_at:'2026-11-05T00:00:00Z'}}});
+    return r.fulfill({json:{world:{id:world,status:prepared?'ready':'pending',is_active:state.environment.is_active},wallet:{account_id:account,funded_at:'2026-11-05T00:00:00Z'}}});
   });
   await page.route('https://example.supabase.co/functions/v1/game-api/**',r=>{
     const url=new URL(r.request().url()),path=url.pathname.split('/game-api')[1];
     expect(url.searchParams.get('world_id')).toBe(world);calls.push(path);
-    if(path==='/provision')return r.fulfill({json:{ready:true}});
+    if(path==='/provision'){prepared=true;return r.fulfill({json:{ready:true}});}
     if(path==='/state')return r.fulfill({json:state});
+    if(path==='/saves')return r.fulfill({json:{saves:[{world_id:world,alchemist:null,is_active:state.environment.is_active}],limit:2}});
     writes++;return r.abort();
   });
   await page.goto('/?world_id='+world);
@@ -235,11 +235,14 @@ test('selected shop setup stays isolated and read-only until activation (simulat
   await expect(page.locator('#network-label')).toContainText('Shop preview');
   await expect(page.locator('#account-status')).toContainText('current shop remains active');
   expect(calls).toContain('/provision');
-  if(await page.locator('#games-dialog').evaluate((d:HTMLDialogElement)=>d.open))await page.locator('#close-games').click();
+  await expect(page.getByRole('dialog',{name:'Welcome to Copper Acorn',exact:true})).toBeVisible();
+  await expect(page.locator('#gather-sunleaf')).toBeDisabled();await expect(page.locator('#refill')).toBeDisabled();
+  await expect(page.getByRole('button',{name:'Continue game',exact:true})).toBeHidden();
+  state.environment.is_active=true;await page.getByRole('button',{name:'Check account setup',exact:true}).click();
+  await expect(page.locator('#network-label')).toContainText('Saved shop');
+  await page.getByRole('button',{name:'Continue game',exact:true}).click();
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();
-  await expect(page.locator('#brew-healing_tonic')).toBeDisabled();await expect(page.locator('#gather-sunleaf')).toBeDisabled();await expect(page.locator('#refill')).toBeDisabled();
-  state.environment.is_active=true;await page.locator('#refresh').click();
-  await expect(page.locator('#network-label')).toContainText('Saved shop');await expect(page.locator('#brew-healing_tonic')).toBeEnabled();
+  await expect(page.locator('#brew-healing_tonic')).toBeEnabled();
   expect(writes).toBe(0);
 });
 
@@ -297,6 +300,7 @@ test('online shop restores server inventory and pending receipts across reload, 
   await page.goto('/');
   await expect(page.locator('#network-label')).toContainText('Saved shop');
   await expect(page.locator('#copper')).toHaveText('40');
+  await page.getByRole('button',{name:'Continue game',exact:true}).click();
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();
   await page.getByRole('button',{name:'Brew Healing Tonic',exact:true}).click();
   await expect(page.locator('#action-status')).toContainText('Refresh ledger');

@@ -7,7 +7,7 @@ test('scheduled merchant turn uses cached Jev and is idempotent across duplicate
   await page.addInitScript(() => localStorage.setItem('copper-acorn.sandbox-character','goblin'));
   await page.clock.install();
   await page.goto('/');
-  await expect(page.locator('#market-clock')).toContainText('No new API calls');
+  await expect(page.locator('#market-clock')).toContainText('Market paused');
   const before = await (await request.get('http://127.0.0.1:3101/api/state')).json();
   await page.getByRole('button',{name:'Start market',exact:true}).click();
   const sent = page.waitForResponse(r=>r.url().endsWith('/api/action') && r.request().method()==='POST');

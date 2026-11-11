@@ -1,0 +1,202 @@
+{
+  "review_date": "2026-11-11",
+  "base_commit": "8c2180bad1f35951b0612ad17efb15f1a81f9aa3",
+  "scope": "Source review and automated verification; not an independent audit or certification",
+  "implementation_sha256": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "b2744c7da455ed502c26b6eea444a99fc4259e0791955ff203d48d00307e29ae"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "36662f4a72a4e96c294b79de1af2c8ce2dfcbafda82ac3ce81f222b5019c53e7"
+    },
+    {
+      "path": "backend/arena-engine.ts",
+      "sha256": "387f37d064ed052c36e710e84439a4cefe0a5fc6a65afde6f05b75db773f9974"
+    },
+    {
+      "path": "backend/arena-practice.test.ts",
+      "sha256": "034a6e036d6cc1f1b9429bc55eea030041c87e8f119cb66ae285f659b114b713"
+    },
+    {
+      "path": "backend/hosted-npc.test.ts",
+      "sha256": "ac98e1881a32fe9a9a5fedd21d2cf36e085ca227f5300e911a36afff709dd526"
+    },
+    {
+      "path": "deploy/approved-art.json",
+      "sha256": "262f2aac507aaca548d0f92b3fe0b89e478cb48a888e814825ae155ea3987001"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fd6f52818d8b7673d19bb54a4f670b0e5f33e5085d68f0be09d51bf285940c6"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "22cb625ce9b454e44cb6b1340553b4b129025a06808612172dc40ec73988585d"
+    },
+    {
+      "path": "supabase/functions/game-api/npc.ts",
+      "sha256": "68bb0177a5280e16ed37a4ded422dd97333345e80206db663cb32ff25958d25b"
+    },
+    {
+      "path": "web/src/main.ts",
+      "sha256": "34f439f6f65fd2ec83c8501624295730b43bafbc216f1225bf47c23b4337a83e"
+    },
+    {
+      "path": "web/src/privy.ts",
+      "sha256": "4d3ae9fecc3cd3e022a224e0fcaa76d6ba845fefdc3e6bb93ccda10d656a1117"
+    },
+    {
+      "path": "web/src/social-access.ts",
+      "sha256": "a34b21945ea864a1951c336a9cbab74a736220c51cc772c0fff7b5f46f132bf0"
+    },
+    {
+      "path": "web/tests/arena.spec.ts",
+      "sha256": "249c030f5068ea2e5ee6041003fd824c3ceb3a445f77352cff9a84726ba2e9c1"
+    },
+    {
+      "path": "web/tests/hosted-ownership.spec.ts",
+      "sha256": "b2d3891558e715d6341d9ef0d7630daadb2ec9f61729ab1a435dc7ba3ca5bdb4"
+    },
+    {
+      "path": "web/tests/legacy.ts",
+      "sha256": "3fb4103ab2c67a8d037d292741d4b5838a24c7a9ef1f85b5ef5569555f58800c"
+    },
+    {
+      "path": "web/tests/map.spec.ts",
+      "sha256": "6f8729c95ea32585762ca5dd1567f6e69ab6a25d1d932908f8cc0b63dbfe492e"
+    },
+    {
+      "path": "web/tests/player.spec.ts",
+      "sha256": "c1e3c1dd4433d939d58ccba340fe9cd46c4cb40c91215b5d07d676fc3c3736cb"
+    },
+    {
+      "path": "web/tests/privy-access.spec.ts",
+      "sha256": "91e87a02e947a417fb9b6ad9946efae97b9dc8ce9ce1285ceb767b0205a7c5eb"
+    },
+    {
+      "path": "web/tests/recovery.spec.ts",
+      "sha256": "ff328024fa1d144d0d38d342e5583fe69307a8812ecbeb8f2a20a9c8c64abb84"
+    },
+    {
+      "path": "web/tests/shop.spec.ts",
+      "sha256": "a832546a13086cd96f18768189485e3983bfe5c0ba502d0d357d92a9941a50bb"
+    },
+    {
+      "path": "web/tests/startup.spec.ts",
+      "sha256": "d6146ee5eff53672a77f43609bc6aea5a16a7bec2eef458626439ffafdf8c26c"
+    }
+  ],
+  "automated": {
+    "node": {
+      "passed": 130,
+      "failed": 0
+    },
+    "rust": {
+      "passed": 34,
+      "failed": 0
+    },
+    "artwork": {
+      "passed": 9,
+      "pinned_files": 76
+    },
+    "stasho_build": "passed",
+    "deno_typechecks": [
+      "game-session",
+      "game-api",
+      "arena-api"
+    ],
+    "browser": {
+      "local_full_before_last_guard_fix": {
+        "passed": 72,
+        "failed": 1,
+        "failure": "Inactive preview dismissed the chooser; subsequently fixed through enterGame guard"
+      },
+      "local_shop_and_startup_after_fix": {
+        "passed": 14,
+        "failed": 0
+      },
+      "hosted_controller": {
+        "passed": 8,
+        "failed": 0
+      },
+      "privy_fictional_provider": {
+        "passed": 11,
+        "failed": 0
+      },
+      "sandbox_player_ownership": {
+        "passed": 2,
+        "failed": 0
+      },
+      "github_full": "Pending first CI run of the browser job",
+      "local_ci_fixture_regressions": {
+        "passed": 13,
+        "failed": 0
+      },
+      "ci_attempt_before_fixture_fixes": {
+        "run": "https://github.com/san-npm/copper-acorn/actions/runs/43046057041",
+        "passed": 70,
+        "failed": 3,
+        "corrections": [
+          "Removed unasserted video capture requiring an absent ffmpeg binary",
+          "Measure current canvas bounds for each map click",
+          "Simulate real cross-tab sign-out by clearing shared session storage before broadcasting; await the late write before checking isolation"
+        ]
+      }
+    }
+  },
+  "security": {
+    "semgrep": {
+      "version": "1.176.0 OSS",
+      "files_scanned": 191,
+      "registry_rulesets": 9,
+      "community_rules": 68,
+      "findings": 11,
+      "triage": "Two local operator-URL warnings and nine local Sandbox/demo panic/unwrap warnings",
+      "limitations": [
+        "Pro unavailable",
+        "Four unparseable elttam rule files excluded",
+        "Two workflow rules partially parsed six generated shell steps; those steps were manually read"
+      ]
+    },
+    "gitleaks": {
+      "baseline_history_commits": 14,
+      "baseline_history_findings": 0,
+      "final_source_and_build": "passed",
+      "source_files": 350,
+      "source_findings": 0,
+      "build_findings": 0
+    },
+    "trivy": {
+      "version": "0.76.0",
+      "findings": {
+        "low": 1
+      },
+      "advisory": "CVE-2025-14505 / elliptic 6.6.1"
+    },
+    "npm": {
+      "low": 4,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "cargo_audit": {
+      "advisories": [
+        "RUSTSEC-2026-0387"
+      ],
+      "scope": "Native NEAR test VM dependency; absent from normal WASM contract tree"
+    }
+  },
+  "not_verified": [
+    "Real first-time Google/Privy consent",
+    "Actual provider root signing and another-browser recovery",
+    "Two-human playtest",
+    "Production load"
+  ],
+  "public_onboarding": "Gated; exact provider origins are not configured",
+  "existing_hosted_worlds_preserved": 4,
+  "new_live_model_requests": 0,
+  "mainnet_actions": 0,
+  "hackathon_submission": false
+}
