@@ -37,7 +37,7 @@ jobs:
       - run: google-chrome --version
       - run: cargo build --locked -p briarbridge-alchemy -p briarbridge-arena --target wasm32-unknown-unknown --release
       - run: cargo build --locked -p alchemy-sandbox --bin game-api
-      - run: npx playwright test
+      - run: npx playwright test --max-failures=1
       - run: PRIVY_TEST_ORIGIN=http://127.0.0.1:5190 npx playwright test --config playwright.privy.config.ts
       - run: npx playwright test --config playwright.hosted-owned.config.ts
       - run: npx playwright test --config playwright.owned.config.ts

@@ -16,8 +16,7 @@ test('isometric scene loads and every resource and shop location remains reachab
   await expect.poll(() => loaded.size).toBe(7);
   expect(loaded.has('/assets/isometric/world.png')).toBe(true);
   for (const name of ['mira', 'rowan', 'bram']) for(const suffix of ['', '-blink'])expect(loaded.has(`/assets/market/${name}${suffix}.png`)).toBe(true);
-  const bounds = (await canvas.boundingBox())!;
-  const click = (id: string) => { const spot = spots.find(s => s.id === id)!; return canvas.click({ position: { x: spot.at[0] * bounds.width / WORLD.width, y: spot.at[1] * bounds.height / WORLD.height } }); };
+  const click = async(id: string) => { const spot = spots.find(s => s.id === id)!, bounds=(await canvas.boundingBox())!; return canvas.click({ position: { x: spot.at[0] * bounds.width / WORLD.width, y: spot.at[1] * bounds.height / WORLD.height } }); };
   await click('cauldron');
   await page.getByRole('button', { name: 'Choose a recipe', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'A little careful brewing' })).toBeVisible();
@@ -45,7 +44,7 @@ test('isometric scene loads and every resource and shop location remains reachab
   page.on('request', request => { if (request.method() === 'POST') writes.push(request.url()); });
   for (const id of ['sunleaf', 'moonmint', 'emberbloom', 'spring_water', 'wood_essence', 'silver_dust']) {
     await click(id);
-    await expect(page.locator('#interaction-detail')).toContainText('This save has collected');
+    await expect(page.locator('#interaction-detail'),id).toContainText('This save has collected');
     await expect(page.locator('#interaction-confirm')).toBeDisabled();
     await page.getByRole('button', {name: 'Leave', exact: true}).click();
     await page.getByRole('button', { name: 'Refresh ledger', exact: true }).click();

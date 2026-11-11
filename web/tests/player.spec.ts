@@ -127,10 +127,14 @@ test('failed saves keep the old character; a delayed save cannot restore a signe
   // A second tab can sign out while this tab's modal is saving.
   await page.evaluate(() => {
     sessionStorage.setItem('test-signed-out', 'true');
+    localStorage.removeItem('sb-example-auth-token');
     new BroadcastChannel('sb-example-auth-token').postMessage({ event: 'SIGNED_OUT', session: null });
   });
   await expect(page.getByRole('dialog')).not.toBeVisible();
+  await expect(page.locator('#account-signout')).toBeHidden();
+  const completed=page.waitForResponse(response=>response.url().endsWith('/auth/v1/user')&&response.request().method()==='PUT'&&response.status()===200);
   release();
+  await completed;
   await expect(page.locator('#account-signout')).toBeHidden();
   await expect(page.locator('#game canvas')).toHaveAttribute('aria-label', /No character selected/);
   await expect(page.locator('#character-name')).toHaveText('Choose your alchemist');
@@ -165,6 +169,7 @@ test('signing out closes a resource prompt and clears its selected action (simul
   await expect(page.locator('#interaction-dialog')).toBeVisible();
   await page.evaluate(()=>{
     sessionStorage.setItem('test-signed-out','true');
+    localStorage.removeItem('sb-example-auth-token');
     new BroadcastChannel('sb-example-auth-token').postMessage({event:'SIGNED_OUT',session:null});
   });
   await expect(page.locator('#interaction-dialog')).not.toBeVisible();
