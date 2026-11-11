@@ -39,15 +39,21 @@ test('isometric scene loads and every resource and shop location remains reachab
     for (const item of state.catalog) if (item.kind === 'ingredient') item.gathered_today = item.gather_cap;
     return route.fulfill({ json: state });
   });
-  await page.getByRole('button', { name: 'Refresh ledger', exact: true }).click();
+  const refresh = page.getByRole('button', { name: 'Refresh ledger', exact: true });
+  await refresh.click();
+  await expect(refresh).toBeEnabled();
   const writes: string[] = [];
   page.on('request', request => { if (request.method() === 'POST') writes.push(request.url()); });
-  for (const id of ['sunleaf', 'moonmint', 'emberbloom', 'spring_water', 'wood_essence', 'silver_dust']) {
+  for (const [id, name] of Object.entries({sunleaf:'Sunleaf', moonmint:'Moonmint', emberbloom:'Emberbloom', spring_water:'Spring Water', wood_essence:'Wood Essence', silver_dust:'Silver Dust'})) {
     await click(id);
+    await expect(page.locator('#interaction-dialog'), id).toBeVisible();
+    await expect(page.locator('#interaction-title'), id).toHaveText(name);
     await expect(page.locator('#interaction-detail'),id).toContainText('This save has collected');
     await expect(page.locator('#interaction-confirm')).toBeDisabled();
     await page.getByRole('button', {name: 'Leave', exact: true}).click();
-    await page.getByRole('button', { name: 'Refresh ledger', exact: true }).click();
+    await expect(page.locator('#interaction-dialog')).toBeHidden();
+    await refresh.click();
+    await expect(refresh).toBeEnabled();
     await expect(page.locator('#action-status')).not.toContainText('This save has collected');
   }
   await page.screenshot({ path: '.local/redesigned-market-desktop.png', fullPage: true });
