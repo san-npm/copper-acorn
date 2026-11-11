@@ -2,6 +2,10 @@
 
 The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
 
+## Mira opening race follow-up
+
+The subsequent [main CI run](https://github.com/san-npm/copper-acorn/actions/runs/43082137508/job/130737119042) passed build/contracts and 94 browser checks, then timed out in the second ownership scenario waiting for Mira's Accept order button. Choices were enabled during the initial read, before the automatic greeting disabled them; an early click could be lost. The fix keeps controls disabled through initialization and restores them on failure. A delayed-response regression fails before the fix and passes after it; ten hosted checks and both actual Sandbox ownership scenarios pass locally. [Detailed evidence](verification/2026-11-11-mira-opening.json). The earlier full green run remains baseline evidence, not a claim that the failing run passed.
+
 ## Submission preparation
 
 The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. [Submission material](SUBMISSION.md) includes the MP4, screenshots and draft text; nothing was submitted or posted.
