@@ -21,7 +21,7 @@ The official rules say the track hints/integrations and example prompts are opti
 | --- | --- |
 | One contract for all item types | NEP-245 methods, transfers, metadata and callback resolution in `contract/src/lib.rs`. One contract per world; no independent standards certification. |
 | NPC wallet, inventory, adaptive price and bankruptcy | Contract and services enforce finite balances, stock/demand quotes, closure and investment. |
-| Social login without normal-loop wallet/gas prompts | Existing Google-saved hosted shops work. Privy integration is in the public source; **real first-login signing and recovery remain unverified and gated pending exact-origin configuration.** Local demo skips OAuth. |
+| Social login without normal-loop wallet/gas prompts | Existing Google-saved hosted shops work. Privy integration is in the public source; **the hosted origin is now configured and Google authorization startup is checked; real first-login signing and recovery remain unverified.** Local demo skips OAuth. |
 | Readable price file and reasoning tooltip | `contract/src/economy.rs`; UI has an expandable “Why this price?” explanation, rather than a literal hover tooltip. |
 | Week-in-a-minute demo | Intentionally omitted at the owner's request. Optional example feature, not an eligibility requirement. |
 | Design loop first | Original development followed a paper loop; the current loop is summarized in `GAMEPLAY.md`. |
