@@ -1,5 +1,11 @@
 # Release checks — 10 November 2026
 
+## Approved character restoration — 11 November2026
+
+The owner rejected the replacement designs and authorized publication of the restored local character/action set. This release uses the exact 70 approved PNG/manifest files, including all eight characters, the seated spectator atlas and five action sets. Builds verify their hashes; the retired redraw helpers refuse to overwrite them. Private source packs remain excluded. The restoration does not resolve the third-party licensing restrictions documented in `ASSET_CREDITS.md`.
+
+Privy activation remains gated pending real Google consent/signing/recovery; no Privy App ID is enabled in the public build. Existing saves, keys and contracts are preserved. Deployment and verification results will be recorded after publication.
+
 [Current game](https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/) uses the original artwork. Its native GitHub deployment and 96-file build verification are recorded below. The public frontend has not yet been updated for Privy; fresh social onboarding stays gated there.
 
 ## Privy integration — local preview

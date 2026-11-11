@@ -44,6 +44,8 @@ from original_actors import actor as tactics_actor
 
 
 def build():
+    if (ROOT / 'deploy/approved-art.json').exists():
+        raise RuntimeError('Approved artwork is pinned; this retired redraw must not replace it.')
     OUTPUT.mkdir(parents=True, exist_ok=True); PREVIEW.mkdir(parents=True, exist_ok=True)
     columns = 7
     entries = []; sheets = {}; stills = {}

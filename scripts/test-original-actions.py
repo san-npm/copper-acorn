@@ -1,4 +1,4 @@
-"""Check the packaged original animation sheets and their runtime contract."""
+"""Check the approved packaged animation sheets and their runtime contract."""
 import hashlib
 import json
 import unittest
@@ -23,10 +23,11 @@ class ActionArtTests(unittest.TestCase):
             self.assertTrue(all(50<=t<=2000 for t in action['durations']))
             wanted.update(action['files'].values())
             wanted.update(action['id']+'-'+suffix+'.png' for suffix in ('tools','effects'))
+            wanted.add(action['id']+'-resource.png')
         self.assertEqual(set(metadata['sha256']),wanted)
         for file in wanted:
             self.assertEqual(hashlib.sha256((OUT/file).read_bytes()).hexdigest(),metadata['sha256'][file],file)
-            with Image.open(OUT/file) as image:self.assertEqual(image.size,(2048,1024),file)
+            with Image.open(OUT/file) as image:self.assertEqual(image.size,(256,1024) if file.endswith('-resource.png') else (2048,1024),file)
 
     def test_working_actors_move_in_all_views_without_clipped_pixels(self):
         metadata=json.loads((OUT/'manifest.json').read_text())

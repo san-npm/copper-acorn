@@ -28,7 +28,7 @@ npm run dev:ownership
 
 Open **http://127.0.0.1:5181/?owned=1**. Create a game, choose an alchemist and nickname, brew a Healing Tonic, list it and serve its buyer. Walk through the portal and click the chicken to train. Local saves belong to this running disposable Sandbox; they are separate from hosted Google accounts.
 
-Characters, merchants and action sheets now use original coordinate drawings included in the repository. Builds need no artwork downloads or model credits. See [asset credits](docs/ASSET_CREDITS.md). To regenerate this art, install `requirements-art.txt` in a Python environment, then run `python3 scripts/build-characters.py` followed by `python3 scripts/build-original-actions.py`.
+The approved character and action sheets are included and pinned in `deploy/approved-art.json`. Builds verify their hashes and need no artwork downloads or model credits. The retired redraw scripts refuse to overwrite them. Character artwork has third-party licensing restrictions; see [asset credits](docs/ASSET_CREDITS.md).
 
 ## Check the code
 
