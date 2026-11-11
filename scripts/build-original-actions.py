@@ -81,6 +81,8 @@ def effects(action,direction,frame):
 
 
 def build():
+    if (ROOT / 'deploy/approved-art.json').exists():
+        raise RuntimeError('Approved artwork is pinned; this retired redraw must not replace it.')
     OUT.mkdir(parents=True,exist_ok=True)
     records=[];hashes={}
     for action,(name,durations) in ACTIONS.items():

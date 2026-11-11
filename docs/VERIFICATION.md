@@ -1,6 +1,26 @@
 # Release checks — 10 November 2026
 
-[Current game](https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/) uses the original artwork. Native GitHub deployment [42879664780](https://github.com/san-npm/copper-acorn/actions/runs/42879664780), `deploy_jFX4UdZGw4XX`, succeeded; all96hosted files match the 24,294,718-byte build. CI passed119Node,34contract and9art checks. Hosted Google/S256 redirect routing, mocked existing-save opening,320px layout and held-response movement pass; controlled first motion26.9ms, not a network-latency claim. Session19/game21/arena13 retain JWT verification and all earlier origins; Google settings/returns are preserved and13public access checks pass. Four earlier worlds/wallets are unchanged. No human social-account setup is claimed.
+## Approved character restoration — 11 November2026
+
+The owner rejected the replacement designs and authorized publication of the restored local character/action set. This release uses the exact 70 approved PNG/manifest files, including all eight characters, the seated spectator atlas and five action sets. Builds verify their hashes; the retired redraw helpers refuse to overwrite them. Private source packs remain excluded. The restoration does not resolve the third-party licensing restrictions documented in `ASSET_CREDITS.md`.
+
+Privy activation remains gated pending real Google consent/signing/recovery; no Privy App ID is enabled in the public build. Existing saves, keys and contracts are preserved. Deployment and verification results will be recorded after publication.
+
+[Current game](https://bafybeif4dj4wtc6feoiws4qt7oevbhc5o6s7gikcjz4fwvhozqsjqru6kq.ipfs.aleph.sh/) uses the original artwork. Its native GitHub deployment and 96-file build verification are recorded below. The public frontend has not yet been updated for Privy; fresh social onboarding stays gated there.
+
+## Privy integration — local preview
+
+The selected provider is implemented on the local `work/privy-login` branch. Checks pass: 121 Node tests, nine new browser cases and eight existing hosted-save browser cases, plus builds with social access both enabled and absent. The new tests cover per-user root creation, ownership proof replay, exact setup bytes after lost responses/reload, non-exportable device keys, normal signed actions without root signatures, renewal, another-browser restoration, pending actions, account changes, callback rejection, iframe boundaries and the save controller's expired-challenge retry. Existing checks still cover opening an earlier shop, crafting, selling and reloading it.
+
+The real Privy SDK initialized with the owner's public App ID and no Client ID, and started Google authorization successfully. Google is enabled in the provider's public configuration. This checks routing, not completed consent, live signing or recovery. No Privy app secret or verification PEM is used. No new Jev/model request or paid signature was made.
+
+Backend session20/game22/arena14 are active with JWT verification retained. The local preview origin `http://127.0.0.1:5189` is allowed; previous origins and Google returns are preserved. All 13 public origin/authentication/settings checks pass. The pre-test inventory count remains four older worlds/four legacy wallets/zero newly owned wallets. No player assets or keys were migrated. The local preview's Google/S256 return target and visible game language passed an isolated headless-browser check. Preserved owner previews on ports5178/5181 still return200; their browsers were not operated.
+
+Manual Google consent, actual root signatures, starter funding and real recovery remain required before public activation. Restrict the Privy application's allowed origins before publishing. Four existing low-severity npm advisories remain; the dependency check found no moderate/high/critical advisory. This was a focused integration review, not another full security audit. Contract and artwork source were not changed.
+
+## Previously published original-art release
+
+Native GitHub deployment [42879664780](https://github.com/san-npm/copper-acorn/actions/runs/42879664780), `deploy_jFX4UdZGw4XX`, succeeded; all96hosted files matched the 24,294,718-byte build. CI passed119Node,34contract and9art checks. Hosted Google/S256 redirect routing, mocked existing-save opening,320px layout and held-response movement passed; controlled first motion26.9ms was not a network-latency claim. Backend versions at that checkpoint were session19/game21/arena13. Four earlier worlds/wallets were unchanged. No human social-account setup was claimed.
 
 ## Original artwork update
 

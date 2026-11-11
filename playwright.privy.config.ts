@@ -1,0 +1,3 @@
+import {defineConfig} from '@playwright/test';
+const origin=process.env.PRIVY_TEST_ORIGIN||'http://127.0.0.1:5189';
+export default defineConfig({testDir:'./web/tests',testMatch:'privy-access.spec.ts',workers:1,timeout:45_000,outputDir:'.local/privy-results',use:{baseURL:origin,channel:'chrome',headless:true,trace:'retain-on-failure'},webServer:{command:`VITE_PUBLIC_PLAYER_OWNERSHIP=true VITE_PUBLIC_LOCAL_SANDBOX=false VITE_PUBLIC_PRIVY_APP_ID=fixture_app VITE_PUBLIC_PRIVY_CLIENT_ID= VITE_PUBLIC_SUPABASE_URL=https://example.supabase.co VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_fixture npm run dev -- --port ${new URL(origin).port}`,url:origin,timeout:30_000,gracefulShutdown:{signal:'SIGTERM',timeout:5_000}}});

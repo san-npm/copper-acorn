@@ -21,6 +21,7 @@
     "@near-js/crypto": "2.5.1",
     "@near-js/transactions": "2.5.1",
     "@near-js/utils": "2.5.1",
+    "@privy-io/js-sdk-core": "0.79.4",
     "@supabase/supabase-js": "2.118.0",
     "borsh": "1.0.0",
     "buffer": "6.0.3",

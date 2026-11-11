@@ -6,6 +6,6 @@
 - Read `docs/HACKATHON_CHECKLIST.md` before making eligibility/completion claims. New social onboarding and final submission remain incomplete.
 - Use the existing code and minimal changes. Preserve request IDs/bytes on unknown outcomes; confirm authoritative state before payouts/progression/portal exit.
 - `npm test` and `npm run build` verify Node rules/types/frontend. Rust contract tests are listed in README. Use focused browser checks for changed flows.
-- Private packs and `.local/` stay out of git. Use the original coordinate art; do not restore the retired third-party playtest downloads or overlays.
+- Private source packs and `.local/` stay out of git. The owner-approved compiled character/action sheets are pinned in `deploy/approved-art.json`; do not replace or regenerate their designs without review. Their third-party license restrictions remain documented in `docs/ASSET_CREDITS.md`.
 - Never operate/restart an owner's browser or preserved game servers to test a change. Use disposable ports; the local demo ports can be overridden.
 - Stasho's native GitHub import needs owner setup. Verify its generated workflow and hosted result; do not replace setup with guessed API endpoints or extra keys.

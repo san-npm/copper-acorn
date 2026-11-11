@@ -4,7 +4,6 @@
     64,
     124
   ],
-  "opaqueHeight": 112,
   "columns": 7,
   "directions": [
     "south",
@@ -12,7 +11,6 @@
     "east",
     "north"
   ],
-  "idleColumn": 0,
   "walkColumns": [
     1,
     2,
@@ -22,56 +20,55 @@
     6
   ],
   "walkFps": 8,
-  "status": "original alchemist redraw",
-  "artSource": "original local pixel drawing",
+  "artSource": "Owner-provided Mana Seed files; local derivative study, release rights uncleared",
   "characters": [
     {
       "id": "goblin",
       "name": "Goblin",
       "file": "goblin.png",
-      "sha256": "ec1306b8e9db1499181fe0fec60ab4a41fbee7dc7e529bd2aee3093eb6ec5300"
+      "sha256": "07d93825f822d954fd5b344778300acda295c27330b202bcdbfecc77d3c6d888"
     },
     {
       "id": "magician",
       "name": "Magician",
       "file": "magician.png",
-      "sha256": "c6ae72b1aaf604008a61f444335987cd3eb008336e944e161fa905cd471f01ea"
+      "sha256": "02d6a9c98f0b40f5e5cd57679e055530a5b312fe5532e74b8f48cdaf271f3aed"
     },
     {
       "id": "dwarf",
       "name": "Dwarf",
       "file": "dwarf.png",
-      "sha256": "8efdf5ef4387f94f944f37a2789439b28ede3abc44b46e1840e2592401447d7f"
+      "sha256": "b07540f5c136436c9add64168016b8367878269ffde7b25b5bab973423d19d3c"
     },
     {
       "id": "skeleton",
       "name": "Liche",
       "file": "skeleton.png",
-      "sha256": "9e98caaeae20590c1fc4be88395db0352ece8cdb774cc8f30479a7b45d324cd9"
+      "sha256": "f7fde569ef94e6b43bc068ef92502bcd2f4b46735a504e4f371ffd453b78e7e2"
     },
     {
       "id": "lizard",
       "name": "Lizardman",
       "file": "lizard.png",
-      "sha256": "2d0b49030f25af0ae939fbb03689b78a4363208699eea5ab3afd8531a19083dc"
+      "sha256": "a76215af351a78690fb7fd27ffbb4403b4a6603efe04a0c55fe925f9e5a4be27"
     },
     {
       "id": "vampire",
       "name": "Vampire",
       "file": "vampire.png",
-      "sha256": "a0b08e6fb60f321120688f43d108dfd975fe14d889f767f571121adf95cd9dca"
+      "sha256": "85aa5dd7aa14100cfe994958fc45d99343c7ea618fc3e4dc7100fde6021740f9"
     },
     {
       "id": "elf",
       "name": "Elf",
       "file": "elf.png",
-      "sha256": "d168779852d9d20fa7c6b6fba613a6af30110ea2960c3c542c3d22b60302287b"
+      "sha256": "486a92cb6918b4b5a1cb68a517a71e35bece02f6c768c6e28b27de92e36e3beb"
     },
     {
       "id": "dark-elf",
       "name": "Dark Elf",
       "file": "dark-elf.png",
-      "sha256": "839e65b72a7ff31839d7f2361c8260fca9e3df2d4f18c9d5169b5757c00c2bd0"
+      "sha256": "812484546b11216ad316855fe3c949842a590bc06cb75d2692a922d2a6efb781"
     }
   ]
 }

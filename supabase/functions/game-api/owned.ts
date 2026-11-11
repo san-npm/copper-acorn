@@ -2,6 +2,7 @@ import {Buffer} from 'node:buffer';
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {verifyWalletProof,challengeMessage,inspectPlayerTransaction} from '../../../backend/wallet-proof.ts';
+import {implicitAccount} from '../../../backend/player-identity.ts';
 import {gameplayMethods} from '../../../backend/player-action.ts';
 import {dbCall,operation,reconcile,publicOperation,key,namesFor,type Context,type Record as OperationRecord} from './game.ts';
 import {rpc,view,account,sign,actions,NEAR,RpcError} from './near.ts';
@@ -17,8 +18,13 @@ export async function linkWallet(c:Context,body:any,origin:string){
   if(error||!data)throw Error('Wallet challenge unavailable.');
   const exactReplay=data.used_at&&data.proof_hash===createHash('sha256').update(JSON.stringify(body.proof)).digest('hex');
   let proofHash;try{proofHash=verifyWalletProof(data,body.proof,c.owner,c.session,origin,exactReplay?Math.min(Date.now(),Date.parse(data.expires_at)-1):Date.now());}catch(e){throw rejected((e as Error).message);}
-  const access=await rpc('query',{request_type:'view_access_key',finality:'final',account_id:body.proof.account_id,public_key:body.proof.public_key},c.fetcher);
-  if(access.permission!=='FullAccess')throw rejected('Prove ownership with your wallet’s full-access key.');
+  try{
+    const access=await rpc('query',{request_type:'view_access_key',finality:'final',account_id:body.proof.account_id,public_key:body.proof.public_key},c.fetcher);
+    if(access.permission!=='FullAccess')throw rejected('Prove ownership with your wallet’s full-access key.');
+  }catch(e){
+    // A first transfer creates this exact implicit account and its corresponding full-access key.
+    if(!(e instanceof RpcError&&e.causeName==='UNKNOWN_ACCOUNT'&&body.proof.account_id===implicitAccount(body.proof.public_key)))throw e;
+  }
   return {world_id:await dbCall(c,'bind_owned_wallet',{p_owner:c.owner,p_session:c.session,p_challenge:body.challenge_id,p_account:body.proof.account_id,p_key:body.proof.public_key,p_proof:proofHash})};
 }
 export async function ownedWallet(c:Context){

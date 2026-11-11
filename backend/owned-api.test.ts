@@ -6,6 +6,8 @@ import {createClient} from '@supabase/supabase-js';
 import {KeyPair,KeyType} from '@near-js/crypto';
 import {actionCreators,createTransaction,encodeTransaction,decodeSignedTransaction,SignedTransaction,Signature} from '@near-js/transactions';
 import {baseEncode} from '@near-js/utils';
+import {implicitAccount} from './player-identity.ts';
+import {nep413Digest} from './wallet-proof.ts';
 import {gameplayMethods,playerCall} from './player-action.ts';
 import {signedPlayerAction,linkWallet,walletChallenge} from '../supabase/functions/game-api/owned.ts';
 import {npc} from '../supabase/functions/game-api/npc.ts';
@@ -133,4 +135,23 @@ test('wallet linking requires a FullAccess NEP-413 proof; an exact lost-response
   t.mock.timers.enable({apis:['Date'],now:Date.now()+120_000});
   assert.equal((await linkWallet({...f.c},body,origin)).world_id,f.c.world.id);assert.deepEqual(f.keys(),[]);
   await assert.rejects(linkWallet(f.c,body,'https://attacker.example'),/another session/);
+});
+test('only an unknown implicit account matching the proven Ed25519 key may be linked before starter funding',async()=>{
+  for(const [cause,matching,allowed] of [['UNKNOWN_ACCOUNT',true,true],['UNKNOWN_ACCOUNT',false,false],['UNKNOWN_ACCESS_KEY',true,false],['HTTP_ERROR',true,false],['NETWORK_ERROR',true,false]] as const){
+    const f=fixture(),origin='https://game.example',challenge=await walletChallenge(f.c,{request_id:randomUUID(),world_id:null},origin);
+    const public_key=f.playerKey.getPublicKey().toString(),account_id=matching?implicitAccount(public_key):'1'.repeat(64);
+    const hash=nep413Digest({...challenge,nonce:Buffer.from(challenge.nonce,'base64')});
+    const body={challenge_id:challenge.id,proof:{account_id,public_key,signature:Buffer.from(f.playerKey.sign(hash).signature).toString('base64')}};
+    const original=f.c.fetcher;
+    f.c.fetcher=async(input,init)=>{
+      if(new URL(String(input)).hostname==='test.rpc.fastnear.com'){
+        if(cause==='NETWORK_ERROR')throw Error('Simulated offline lookup');
+        return Response.json({error:{cause:{name:cause}}});
+      }
+      return original(input,init);
+    };
+    if(allowed)assert.equal((await linkWallet(f.c,body,origin)).world_id,f.c.world.id);
+    else await assert.rejects(linkWallet(f.c,body,origin));
+    assert.deepEqual(f.keys(),[]);assert.deepEqual(f.broadcasts,[]);
+  }
 });

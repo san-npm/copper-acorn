@@ -371,6 +371,12 @@ test('new save preparation is owned, preserves the previous save and does not ac
   assert.equal((await switched.json()).world_id,saves[1].id);assert.equal(full.signed(),0);
 });
 
+test('preserved legacy shops do not consume the two player-owned save slots',async()=>{
+  const savedWorlds=[{id:world,status:'ready',contract_id:null,is_active:true,ownership_mode:'legacy'},{id:crypto.randomUUID(),status:'ready',contract_id:null,is_active:false,ownership_mode:'owned'}];
+  const f=fixture({savedWorlds}),response=await createGameHandler(config,f.fetcher)(request('/saves'));
+  assert.equal(response.status,200);const body=await response.json();assert.equal(body.limit,3);assert.equal(body.saves.length,2);assert.equal(body.saves[0].player_owned,false);assert.equal(body.saves[1].player_owned,true);assert.equal(f.signed(),0);
+});
+
 test('inactive shops allow explicit setup and history reads, but cannot sign economic actions',async()=>{
   const f=fixture({inactive:true}),handler=createGameHandler(config,f.fetcher),query='?world_id='+world;
   assert.equal((await handler(request('/state'))).status,409);

@@ -1,5 +1,5 @@
 import {Buffer} from 'node:buffer';
-import {serialize} from 'borsh';
+import {challengePayload} from './player-identity.ts';
 import {PublicKey,KeyType} from '@near-js/crypto';
 import {decodeSignedTransaction,encodeTransaction,createTransaction} from '@near-js/transactions';
 import {baseEncode} from '@near-js/utils';
@@ -11,8 +11,7 @@ export const testnetAccount=(v:unknown):v is string=>typeof v==='string'&&v.leng
 export type WalletChallenge={id:string;nonce:string;origin:string;expires_at:string;session_id:string;user_id:string};
 export const challengeMessage=(c:WalletChallenge)=>`Link this NEAR testnet wallet to Copper Acorn.\nChallenge: ${c.id}\nSite: ${c.origin}\nExpires: ${c.expires_at}\nThis message does not transfer assets.`;
 export function nep413Digest(p:{message:string;nonce:Uint8Array;recipient:string;callbackUrl:string}){
-  const schema={struct:{tag:'u32',message:'string',nonce:{array:{type:'u8',len:32}},recipient:'string',callbackUrl:{option:'string'}}} as const;
-  return createHash('sha256').update(serialize(schema,{tag:2**31+413,...p})).digest();
+  return createHash('sha256').update(challengePayload(p)).digest();
 }
 export function verifyWalletProof(c:WalletChallenge,proof:{account_id:string;public_key:string;signature:string},owner:string,session:string,origin:string,now=Date.now()){
   if(c.user_id!==owner||c.session_id!==session||c.origin!==origin||!Number.isFinite(Date.parse(c.expires_at))||Date.parse(c.expires_at)<=now)throw Error('Wallet challenge expired or belongs to another session.');
