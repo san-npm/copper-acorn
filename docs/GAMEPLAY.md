@@ -8,6 +8,8 @@ You inherit the Copper Acorn, an alchemy shop in Briarbridge. The guild asks you
 | About 5 minutes | Complete a market day, replenish ingredients, observe prices and merchant cash, and deliver a quest order. |
 | Each session | Advance the guild commission, help neighbours, improve the shop's stock, or visit the arena. Trading continues after the story objectives. |
 
+Gathering allowances belong to each saved shop and reset when its in-game market day advances. Reopening the game or waiting for a calendar day does not reset them. Start the market in the ledger to progress the day.
+
 Six ingredients produce three potions: Healing Tonic, Focus Draught and Restoration Elixir. Brewing consumes the recipe and a Copper fee. Selling transfers actual goods and Copper; listing alone is not a sale. Shop shelves display confirmed stock.
 
 The main quest starts with brewing and selling a tonic, then supplying two Focus Draughts and one Restoration Elixir. Mira's tonic order and Rowan's water order are optional. Rewards come from finite funded balances.

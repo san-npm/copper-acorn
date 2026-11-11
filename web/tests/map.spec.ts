@@ -13,9 +13,9 @@ test('isometric scene loads and every resource and shop location remains reachab
   await page.goto('/');
   const canvas = page.locator('#game canvas');
   await expect(canvas).toHaveAttribute('aria-label', /Goblin/);
-  await expect.poll(() => loaded.size).toBe(4);
+  await expect.poll(() => loaded.size).toBe(7);
   expect(loaded.has('/assets/isometric/world.png')).toBe(true);
-  for (const name of ['mira', 'rowan', 'bram']) expect(loaded.has(`/assets/market/${name}.png`)).toBe(true);
+  for (const name of ['mira', 'rowan', 'bram']) for(const suffix of ['', '-blink'])expect(loaded.has(`/assets/market/${name}${suffix}.png`)).toBe(true);
   const bounds = (await canvas.boundingBox())!;
   const click = (id: string) => { const spot = spots.find(s => s.id === id)!; return canvas.click({ position: { x: spot.at[0] * bounds.width / WORLD.width, y: spot.at[1] * bounds.height / WORLD.height } }); };
   await click('cauldron');
@@ -45,11 +45,11 @@ test('isometric scene loads and every resource and shop location remains reachab
   page.on('request', request => { if (request.method() === 'POST') writes.push(request.url()); });
   for (const id of ['sunleaf', 'moonmint', 'emberbloom', 'spring_water', 'wood_essence', 'silver_dust']) {
     await click(id);
-    await expect(page.locator('#interaction-detail')).toContainText('This patch needs until the next market day');
+    await expect(page.locator('#interaction-detail')).toContainText('This save has collected');
     await expect(page.locator('#interaction-confirm')).toBeDisabled();
     await page.getByRole('button', {name: 'Leave', exact: true}).click();
     await page.getByRole('button', { name: 'Refresh ledger', exact: true }).click();
-    await expect(page.locator('#action-status')).not.toContainText('This patch needs until the next market day');
+    await expect(page.locator('#action-status')).not.toContainText('This save has collected');
   }
   await page.screenshot({ path: '.local/redesigned-market-desktop.png', fullPage: true });
   expect(writes).toEqual([]); expect(errors).toEqual([]); expect(failed).toEqual([]);

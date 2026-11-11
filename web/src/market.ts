@@ -3,7 +3,7 @@ import type { Action, GameState } from './types';
 import { characterUrl, type Character } from './characters';
 import { itemUrl } from './icons';
 import { Navigation, distance, inside, type Point } from './navigation';
-import { WORLD, ACTOR, ARENA_GATE, spots, surfaces, solids, portalBase, merchants, displays, type Spot } from './isometric-layout';
+import { WORLD, ACTOR, ARENA_GATE, spots, surfaces, solids, occluders, portalBase, merchants, displays, type Spot } from './isometric-layout';
 import { actionUrl, workKind, type WorkArt } from './action-art';
 import {TownAmbient} from './ambient';
 
@@ -34,7 +34,7 @@ export class MarketScene extends Phaser.Scene {
   preload() {
     this.load.image('arena-portal',new URL('assets/ui/arena-portal.png',document.baseURI).href);
     this.load.image('isometric-world', new URL('assets/isometric/world.png', document.baseURI).href);
-    for (const name of ['mira', 'rowan', 'bram']) for(const suffix of ['', '-blink'])this.load.image(`merchant-${name}${suffix}`, new URL(`assets/market/${name}${suffix}.png`, document.baseURI).href);
+    for (const name of ['mira', 'rowan', 'bram']) for(const suffix of ['', '-blink'])this.load.image(`merchant-${name}${suffix}-source`, new URL(`assets/market/${name}${suffix}.png`, document.baseURI).href);
     for (const c of this.characters) this.load.spritesheet(`character-${c.id}`, characterUrl(c.file), { frameWidth: ACTOR.frame, frameHeight: ACTOR.frame });
     for (const id of ['healing_tonic', 'focus_draught', 'restoration_elixir']) this.load.image(`stock-${id}`, itemUrl(id));
     for (const art of this.workArt) {
@@ -172,7 +172,21 @@ export class MarketScene extends Phaser.Scene {
     for (const c of this.characters) if (this.characterAvailable(c.id)) for (let row = 0; row < 4; row++) {
       this.anims.create({ key: `${c.id}-${row}`, frames: this.anims.generateFrameNumbers(`character-${c.id}`, { start: row * 7 + 1, end: row * 7 + 6 }), frameRate: 8, repeat: -1 });
     }
-    for (const m of merchants) this.merchantSprites.set(m.id,this.add.sprite(...m.feet,`merchant-${m.id}`).setOrigin(.5,112/128).setScale(ACTOR.scale).setDepth(2).setCrop(0,m.window[0],128,m.window[1]-m.window[0]));
+    for (const m of merchants) {
+      // Clip against the painted counter and awning rather than cutting through the actor's face.
+      for(const suffix of ['', '-blink']){
+        const texture=this.textures.createCanvas(`merchant-${m.id}${suffix}`,ACTOR.frame,ACTOR.frame)!;
+        const ctx=texture.context;
+        ctx.drawImage(this.textures.get(`merchant-${m.id}${suffix}-source`).getSourceImage() as HTMLImageElement,0,0);
+        ctx.save();ctx.globalCompositeOperation='destination-out';
+        ctx.setTransform(1/ACTOR.scale,0,0,1/ACTOR.scale,ACTOR.frame/2-m.feet[0]/ACTOR.scale,ACTOR.feet-m.feet[1]/ACTOR.scale);
+        for(const shape of occluders.filter(s=>s.name===m.id+'-counter'||s.name===m.id+'-awning')){
+          ctx.beginPath();shape.outline.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fill();
+        }
+        ctx.restore();texture.refresh();
+      }
+      this.merchantSprites.set(m.id,this.add.sprite(...m.feet,`merchant-${m.id}`).setOrigin(.5,ACTOR.feet/ACTOR.frame).setScale(ACTOR.scale).setDepth(2));
+    }
     const actor = this.actor(...WORLD.spawn, '__WHITE', 1);
     this.player = actor.sprite; this.shadow = actor.shadow;
     this.tools = this.add.sprite(0, 0, '__WHITE').setVisible(false);

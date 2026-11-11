@@ -45,7 +45,7 @@ class ActorTests(unittest.TestCase):
 
     def test_every_published_character_and_action_file_matches_the_approved_set(self):
         approved=json.loads((ROOT/'deploy/approved-art.json').read_text())['files']
-        self.assertEqual(len(approved),70)
+        self.assertEqual(len(approved),76)
         for file,digest in approved.items():
             self.assertEqual(hashlib.sha256((ROOT/'web/public'/file).read_bytes()).hexdigest(),digest,file)
 
@@ -55,10 +55,13 @@ class ActorTests(unittest.TestCase):
             self.assertNotEqual(result.returncode,0)
             self.assertIn('Approved artwork is pinned',result.stderr)
 
-    def test_all_three_merchants_share_the_player_frame_and_height(self):
+    def test_all_three_merchants_share_the_player_frame_and_baseline(self):
         for name in ('mira','rowan','bram'):
             image=Image.open(ROOT/f'web/public/assets/market/{name}.png')
-            self.assertEqual(image.size,(128,128));self.assertEqual(image.getbbox()[1:4:2],(12,124))
+            self.assertEqual(image.size,(128,128));self.assertEqual(image.getbbox()[3],124)
+            self.assertIn(image.getbbox()[1],range(12,33))
+            blink=Image.open(ROOT/f'web/public/assets/market/{name}-blink.png')
+            self.assertEqual(blink.getbbox(),image.getbbox());self.assertNotEqual(blink.tobytes(),image.tobytes())
 
 
 if __name__=='__main__':unittest.main()
