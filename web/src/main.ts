@@ -271,7 +271,7 @@ function renderInteraction() {
   if (kind === 'gather') {
     const resource = item(target);
     const available = resource ? BigInt(resource.gather_cap) - BigInt(resource.gathered_today) : 0n;
-    const problem = gatheringProblem(resource,quantity,state?.world.day||0);
+    const problem = gatheringProblem(resource,quantity,state?.world.day||0,!!state?.market);
     if(state?.batch_limit)el('gather-quantity').innerHTML=quantityPicker('gather-amount',Math.min(state.batch_limit,Number(available)));
     el('interaction-detail').textContent = !state ? 'Sign in with Google to open your saved inventory.' : problem || (lowMana() ? 'Mana is low. Refill before gathering.' : `Collect ${quantity===1?'one unit':quantity+' units'} · ${available} left this market day · ${owned(target)} in your satchel`);
     confirm.disabled = !state || busy || unresolved || preview() || !!problem || lowMana();
@@ -411,7 +411,7 @@ async function act(action: Action, label: string) {
   if (!['choose_alchemist','refill','rescue'].includes(action.kind) && !picker.requireSelection()) return;
   if (action.kind === 'gather') {
     const resource = item(action.token_id);
-    const problem=gatheringProblem(resource,Number(action.amount||'1'),state.world.day);
+    const problem=gatheringProblem(resource,Number(action.amount||'1'),state.world.day,!!state.market);
     if(problem){message(problem);return;}
   }
   if (['gather', 'brew', 'list', 'unlist', 'trade', 'invest', 'deliver'].includes(action.kind) && lowMana()) { message('Mana is low. Refill before your next action.'); return; }
@@ -519,10 +519,10 @@ function render() {
   document.querySelectorAll<HTMLButtonElement>('[data-panel]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.panel === panel)));
   if (!state) return;
   const s = state;
-  const clock = el('market-clock'); clock.hidden = !s.market;
+  const clock = el('market-clock'); clock.hidden = false;
   if (s.market) {
     clock.innerHTML=`<div class="market-compact"><span>Market ${marketRunning?'open':'paused'} · ${s.market.day_ticks}/10</span><button id="market-toggle" ${disabled(s.market.blocked)}>${marketRunning?'Pause market':'Start market'}</button></div><details class="market-log"><summary>Merchant activity</summary>${s.market.events.slice(-4).reverse().map(e=>`<p>Day ${e.day+1} · ${escape(e.decision.merchant)} · ${escape(gameMessage(e.decision.reason,'Checking stock and customer demand.'))}</p>`).join('')}</details>`;
-  }
+  } else clock.innerHTML=`<div class="market-compact"><span>Restock gathering spots for tomorrow</span><button id="legacy-next-day" ${disabled()}>Next market day</button></div>`;
   const active = document.activeElement?.id;
   el('copper').textContent = s.player.balances.copper;
   el('day-label').textContent = `Market day ${s.world.day + 1}`;
@@ -554,6 +554,7 @@ document.querySelectorAll<HTMLButtonElement>('[data-panel]').forEach(b => b.addE
 el('refill').addEventListener('click', () => void act({ kind: 'refill' }, 'Refilling Mana…'));
 el('rescue').addEventListener('click',()=>void act({kind:'rescue'}, 'Requesting the guild’s one-time rescue…'));
 el('market-clock').addEventListener('click', event => {
+  if ((event.target as HTMLElement).id === 'legacy-next-day') { void act({kind:'next_day'},'Opening the next market day…'); return; }
   if ((event.target as HTMLElement).id === 'market-toggle') { marketRunning = !marketRunning; marketSeconds = 0; render(); }
 });
 setInterval(() => {

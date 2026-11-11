@@ -42,3 +42,25 @@ test('a save without silver gathering does not promise replenishment',async({pag
   await expect(page.locator('#interaction-confirm')).toBeDisabled();
   expect(writes).toEqual([]);
 });
+
+
+test('older saves without the market clock can start the next day and replenish silver',async({page,request})=>{
+  const before=await (await request.get('http://127.0.0.1:3101/api/state')).json();
+  await page.addInitScript(()=>localStorage.setItem('copper-acorn.sandbox-character','skeleton'));
+  await page.route('**/api/state*',async route=>{
+    const response=await route.fetch(),state=await response.json();
+    delete state.market;delete state.batch_limit;delete state.alchemist;
+    await route.fulfill({json:state});
+  });
+  const writes:any[]=[];page.on('request',r=>{if(r.method()==='POST')writes.push(r.postDataJSON());});
+  await page.goto('/');
+  const advance=page.getByRole('button',{name:'Next market day',exact:true});
+  await expect(advance).toBeEnabled();
+  await advance.click();
+  await expect(page.locator('#day-label')).toHaveText(`Market day ${before.world.day+2}`);
+  await expect(page.locator('#gather-silver_dust')).toBeEnabled();
+  const after=await (await request.get('http://127.0.0.1:3101/api/state')).json();
+  expect(after.catalog.find((i:any)=>i.token_id==='silver_dust').gathered_today).toBe('0');
+  expect(after.player.balances.silver_dust).toBe(before.player.balances.silver_dust);
+  expect(writes).toHaveLength(1);expect(writes[0].action).toEqual({kind:'next_day'});
+});
