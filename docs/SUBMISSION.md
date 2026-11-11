@@ -36,7 +36,7 @@ Built Copper Acorn at NEAR HACKATHON: gather herbs, brew potions and run a shop.
 
 @NEARProtocol #NEARHackathon
 
-Play: https://bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh/
+Play: https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh/
 
 Code: https://github.com/san-npm/copper-acorn
 

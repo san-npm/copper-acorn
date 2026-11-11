@@ -42,13 +42,19 @@
     },
     "jwt_required": true,
     "access_checks": 19,
-    "earlier_origin_retained": true,
     "worlds_before": 4,
     "worlds_after": 4,
     "owned_worlds": 0,
     "provider_google_enabled": true,
-    "provider_origin_allowed": false,
-    "pending": "Owner must add the corrected exact origin before new-player Google authorization can start there. Current README game link remains the previously configured build."
+    "provider_origin_allowed": true,
+    "pending": "Completed real Google consent, first-game provisioning/root signing and recovery remain unverified.",
+    "provider_previous_origin_allowed": false,
+    "backend_previous_origin_retained": true,
+    "main_followup": {
+      "source_commit": "aa46b5d8c8dbaa369919aeaeb4639e0927fddec7",
+      "run": "https://github.com/san-npm/copper-acorn/actions/runs/43106161264",
+      "same_verified_cid": true
+    }
   },
   "full_ci": {
     "source_commit": "535692ad0237e6c1caddbd728267f1a9c5b29466",
@@ -64,5 +70,27 @@
       "ownership": 2
     }
   },
-  "gitleaks_git_findings": 0
+  "gitleaks_git_findings": 0,
+  "main_ci": {
+    "source_commit": "aa46b5d8c8dbaa369919aeaeb4639e0927fddec7",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43106161223",
+    "conclusion": "success"
+  },
+  "live_sdk_start": {
+    "base": "https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh",
+    "new_game_enabled": true,
+    "real_provider_google_authorization_reached": true,
+    "backend_writes": 0,
+    "page_errors": 0,
+    "real_google_consent": false,
+    "root_signing": false
+  },
+  "provider_settings": {
+    "google_enabled": true,
+    "game_origin_allowed": true,
+    "previous_origin_allowed": false,
+    "allowed_domains": [
+      "https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh"
+    ]
+  }
 }
