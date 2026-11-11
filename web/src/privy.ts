@@ -30,6 +30,10 @@ export function clearSocialReturn(){sessionStorage.removeItem(intentKey);}
 async function client(){
   if(!privyConfigured)throw Error('New game setup is temporarily unavailable. Your saved games are kept.');
   return instance??= (async()=>{
+    const settings=await fetch('https://auth.privy.io/api/v1/apps/'+appId,{headers:{'privy-app-id':appId},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10_000)});
+    if(!settings.ok)throw Error('New game setup could not be checked. Try again shortly.');
+    const config=await settings.json();
+    if(config.google_oauth!==true||!Array.isArray(config.allowed_domains)||!config.allowed_domains.includes(location.origin))throw Error('This game address is still being prepared. Try again shortly; your saved games are kept.');
     const sdk=await sdkClient();
     await sdk.initialize();
     const iframe=document.createElement('iframe'),target=new URL(sdk.embeddedWallet.getURL());

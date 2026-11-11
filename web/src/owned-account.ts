@@ -13,6 +13,7 @@ export function initOwnedAccount(connected:(c:GameConnection|null,enter?:boolean
   root.innerHTML='<h3>Your saved games</h3><p>Continue with Google to find your alchemist, shop and story.</p><p id="owned-status" role="status">Sign in to find your games.</p><button id="owned-login">Continue with Google</button><label id="owned-saves-label" hidden>Saved game <select id="owned-saves"></select></label><button id="owned-check" hidden>Open selected game</button><button id="owned-signout" hidden>Sign out</button>';
   const status=root.querySelector<HTMLElement>('#owned-status')!,button=(id:string)=>root.querySelector<HTMLButtonElement>('#owned-'+id)!;
   const login=button('login'),check=button('check'),signout=button('signout'),select=root.querySelector<HTMLSelectElement>('#owned-saves')!;
+  login.disabled=true;status.textContent='Restoring your saved games…';
   const url=import.meta.env.VITE_PUBLIC_SUPABASE_URL,key=import.meta.env.VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if(!url||!key){login.disabled=true;status.textContent='Online accounts are not configured in this build.';return{prepare:async()=>false,loading:()=>false};}
   const client=createClient(url,key,{auth:{flowType:'pkce'}});
@@ -135,7 +136,7 @@ export function initOwnedAccount(connected:(c:GameConnection|null,enter?:boolean
     if(session?.user.id===owner&&event!=='INITIAL_SESSION')return;
     generation++;owner=session?.user.id||null;state=null;saves=[];legacyCharacter=undefined;select.replaceChildren();root.querySelector<HTMLElement>('#owned-saves-label')!.hidden=true;connected(null);
     announce();
-    login.hidden=!!owner;signout.hidden=!owner;check.hidden=true;
+    login.hidden=!!owner;login.disabled=false;signout.hidden=!owner;check.hidden=true;
     if(owner)setTimeout(()=>void run(async()=>{
       const intent=socialReturn();
       if(privyConfigured&&intent?.owner===owner){

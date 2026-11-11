@@ -1,13 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-startup>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#192c35" />
+    <style>html[data-startup] body>:not(#startup-screen){visibility:hidden}#startup-screen{display:none}html[data-startup] #startup-screen{display:grid;position:fixed;inset:0;place-items:center;background:#19333d;color:#fff0cf;font:18px monospace;z-index:2147483647}</style>
     <link rel="preload" href="/assets/fonts/pixelify-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>Copper Acorn · Briarbridge Alchemy</title>
   </head>
   <body>
+    <div id="startup-screen" role="status">Opening Copper Acorn…</div>
+    <noscript><style>html[data-startup] #startup-screen{display:none}html[data-startup] body>noscript{visibility:visible}</style>JavaScript is needed to open your shop.</noscript>
     <a class="skip-link" href="#ledger">Skip to shop controls</a>
     <header class="topbar">
       <div class="brand"><img class="shop-emblem" src="/assets/items/healing_tonic.png" width="48" height="48" alt=""><div><span class="eyebrow">BRIARBRIDGE ALCHEMY</span><h1>Copper Acorn</h1></div></div>

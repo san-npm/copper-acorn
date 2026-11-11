@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-11",
+  "base_commit": "83f1c70632cd7cc519187a02df9a77361b01e96d",
+  "scope": "Friend onboarding: new-game configuration and first-paint/refresh behavior",
+  "changes": [
+    "Include the existing public app ID",
+    "Require enabled Google and exact allowed origin before initializing access; retry after configuration without signing early",
+    "Hide game controls behind the startup screen until the welcome or local setup dialog is ready",
+    "Disable Google button while the initial saved session is being restored"
+  ],
+  "tests": {
+    "privy_fictional_provider": 12,
+    "hosted_controller": 9,
+    "startup": 5,
+    "ambience": 1
+  },
+  "files": [
+    {
+      "path": "web/index.html",
+      "sha256": "e9cff6f8c04a69aa7cb2d1ab5b8b3bd017c9854674161c37601fc343dcc2f090"
+    },
+    {
+      "path": "web/src/main.ts",
+      "sha256": "71aa0ad0c5873789c3cc035a61ff0b98953e2706bf31e95545f4da3cc501df32"
+    },
+    {
+      "path": "web/src/owned-account.ts",
+      "sha256": "4b83c6e838726123a61cb2a758d6eb7364b04bbb4d86c54d8641874335c2b06a"
+    },
+    {
+      "path": "web/src/privy.ts",
+      "sha256": "4736b139019dd404add8df0b78c0d6b10a5ca4acd1f0a47160ba9781b0a96aed"
+    },
+    {
+      "path": "deploy/public-env.json",
+      "sha256": "4b3c5cd9023747086f77963886242939914270b0d33a75fc730159ed61f9d26b"
+    },
+    {
+      "path": "web/tests/hosted-ownership.spec.ts",
+      "sha256": "527e408f37bcf599c7f23093598effbc47fb0a87bedeca03225a64c614bf71f4"
+    },
+    {
+      "path": "web/tests/privy-access.spec.ts",
+      "sha256": "14c14d10d1c5efd46225ed45b5cc6945dc39cfe397330fbb3824733775dd0946"
+    },
+    {
+      "path": "web/tests/ambience.spec.ts",
+      "sha256": "1a8ba7f415234b878a7b41d22c2e059e69b7ce7621dbcb2cf910446717d4b91e"
+    }
+  ],
+  "provider_settings": {
+    "google_enabled": true,
+    "game_origin_allowed": true,
+    "allowed_domains": [
+      "https://bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh",
+      "https://www.bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh"
+    ]
+  },
+  "pending": [
+    "Real Google consent, root signing, funding and recovery"
+  ],
+  "new_live_model_requests": 0,
+  "mainnet_actions": 0,
+  "backend_held_player_keys_created": 0,
+  "secret_scan": {
+    "source_findings": 0,
+    "built_sdk_findings": 2,
+    "triage": "Both are unchanged MoonPay public client constants in pinned @privy-io/js-sdk-core 0.79.4. No funding/onramp method is called by this game. No application secret was added."
+  },
+  "publication": {
+    "urls": [
+      "https://bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh"
+    ],
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43074489968",
+    "attempt": 2,
+    "source_commit": "b278e7efd1da7d265035ce7350f4447a784654a2",
+    "files_verified": 121,
+    "artifact_bytes": 25051471,
+    "approved_artwork_files": 76,
+    "backend_versions": {
+      "game-session": 24,
+      "game-api": 26,
+      "arena-api": 18
+    },
+    "jwt_required": true,
+    "access_checks": 19,
+    "worlds_before": 4,
+    "worlds_after": 4,
+    "player_owned_worlds": 0
+  },
+  "live_sdk_start": {
+    "base": "https://bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh",
+    "new_game_enabled": true,
+    "real_provider_google_authorization_reached": true,
+    "backend_writes": 0,
+    "page_errors": 0,
+    "real_google_consent": false,
+    "root_signing": false
+  },
+  "ci_fixture_note": "A random middle-brightness initial frame made the old ambience comparison phase-dependent. Measure the full sampled pixel range with the same visibility thresholds; no production animation changed."
+}

@@ -2,9 +2,13 @@
 
 The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
 
+## Onboarding follow-up
+
+The [friend onboarding check](verification/2026-11-11-friend-onboarding.json) covers 27 focused browser cases and a fresh build. It verifies the initial loading screen, refresh, saved sessions and exact-origin access checks. Public app configuration and the exact hosted origin are enabled. A hosted check with a fictional game identity reached real provider Google authorization, without backend writes. Real Google consent/signing/recovery remain unverified.
+
 ## Automated checks
 
-[Release CI](https://github.com/san-npm/copper-acorn/actions/runs/43050192922) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 94 browser cases across the four configurations.
+The earlier [release CI](https://github.com/san-npm/copper-acorn/actions/runs/43050192922) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 94 browser cases across the four configurations.
 
 - Node tests cover request validation, account/session isolation, economic rules, NPC conversations, arena actions, retries and once-only settlement.
 - Rust tests cover the item and referee contracts. Browser ownership tests execute actual Sandbox contracts for crafting, sales, funded NPC orders, PvP settlement and revocation.
@@ -23,6 +27,6 @@ Existing hosted saves, inventories, contracts and keys are preserved. No owner b
 
 ## Remaining external checks
 
-Public first-time Privy activation is gated. Exact allowed origins are not yet configured, and real Google consent/provider signing/recovery remain unverified. The owner's existing automatic login restores an older saved game and does not validate that new flow. The code fixes prevent unentered legacy saves from dismissing the chooser and allow pending old actions to reconcile before new-browser access is restored.
+Public first-time Privy activation is gated. The exact hosted origin is configured and real provider Google authorization startup is checked. Real Google consent/provider signing/recovery remain unverified. The owner's existing automatic login restores an older saved game and does not validate that new flow. The code fixes prevent unentered legacy saves from dismissing the chooser and allow pending old actions to reconcile before new-browser access is restored.
 
 No human two-player playtest, large-load benchmark, mainnet deployment, X post or hackathon submission is claimed.

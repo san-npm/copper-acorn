@@ -140,7 +140,11 @@ test('a second browser restores the same root and replaces only the earlier limi
 });
 
 async function mockSdk(page:Page){
-  await page.route('https://auth.privy.io/**',r=>r.fulfill({contentType:'text/html',body:'<p>isolated signer fixture</p>'}));
+  await page.route('https://auth.privy.io/**',r=>{
+    const headers={'access-control-allow-origin':'*','access-control-allow-headers':'privy-app-id'};
+    if(r.request().method()==='OPTIONS')return r.fulfill({status:204,headers});
+    return new URL(r.request().url()).pathname.startsWith('/api/v1/apps/')?r.fulfill({headers,json:{google_oauth:true,allowed_domains:[new URL(page.url()).origin]}}):r.fulfill({contentType:'text/html',body:'<p>isolated signer fixture</p>'});
+  });
   await page.route(/@privy-io_js-sdk-core\.js/,r=>r.fulfill({contentType:'text/javascript',body:`
     export class LocalStorage{}
     const user={id:'did:privy:fixture-user',needsWallet:!!window.needsWallet,linked_accounts:[{type:'google_oauth',subject:'google-subject'}]};
@@ -178,6 +182,15 @@ test('a failed SDK construction can be retried in the same page',async({page})=>
   const sign=()=>page.evaluate(async()=>{try{const {socialSigner}=await import('/src/privy.ts');return (await socialSigner('google-subject','owner'))?.account;}catch(e){return (e as Error).message;}});
   expect(await sign()).toBe('Transient SDK setup failure');expect(await sign()).toBe(f.account);
   expect(f.counts().signatures).toBe(0);
+});
+
+test('new-game access rejects unconfigured or unrelated origins and retries after configuration without signing early',async({page})=>{
+  const f=await fixture(page);await mockSdk(page);let domains:string[]=[];
+  await page.route('https://auth.privy.io/api/v1/apps/**',r=>r.fulfill({headers:{'access-control-allow-origin':'*'},json:{google_oauth:true,allowed_domains:domains}}));
+  const sign=()=>page.evaluate(async()=>{try{const {socialSigner}=await import('/src/privy.ts');const root=await socialSigner('google-subject','owner');if(!root)throw Error('Signer missing');await root.sign(new Uint8Array(32));return root.account;}catch(e){return (e as Error).message;}});
+  expect(await sign()).toContain('still being prepared');expect(f.counts().signatures).toBe(0);expect(await page.locator('iframe').count()).toBe(0);
+  domains=[new URL(page.url()).origin+'.example'];expect(await sign()).toContain('still being prepared');expect(f.counts().signatures).toBe(0);
+  domains=[new URL(page.url()).origin];expect(await sign()).toBe(f.account);expect(f.counts().signatures).toBe(1);
 });
 
 test('first root creation uses a per-user idempotency key and verifies the raw signature',async({page})=>{
