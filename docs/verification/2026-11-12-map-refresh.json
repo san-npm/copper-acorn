@@ -7,7 +7,8 @@
     "Wait for Refresh ledger to become enabled after each click",
     "Assert that the intended resource dialog is visible and has the matching title",
     "Wait for the dialog to close before refreshing",
-    "Print bounded error-context.md from fictional browser fixtures on CI failure"
+    "Print bounded error-context.md from fictional browser fixtures on CI failure",
+    "Apply the same refresh readiness wait to the quest scenario before opening its cauldron"
   ],
   "local": {
     "map_scenarios_passed": 3,
@@ -27,6 +28,10 @@
     {
       "path": ".github/workflows/ci.yml",
       "sha256": "29215568418bf09d8234feb50e069940862ee1e82af74e22b2009878cc710b4a"
+    },
+    {
+      "path": "web/tests/week.spec.ts",
+      "sha256": "d4de2920bc45c74265a81de381e50ce788e95de0acbefb69507b6d11ca80b547"
     }
   ],
   "runtime_files_changed": false,

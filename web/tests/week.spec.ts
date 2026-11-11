@@ -124,6 +124,7 @@ test('connected guild trials and two optional orders consume goods, pay once and
   for(let n=0;n<2;n++) await act({kind:'gather',token_id:'sunleaf'});
   await act({kind:'gather',token_id:'spring_water'});
   await page.getByRole('button',{name:'Refresh ledger',exact:true}).click();
+  await expect(page.locator('#refresh')).toBeEnabled();
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();
   await clickAction('Brew Healing Tonic',{kind:'brew',token_id:'healing_tonic'});
   await page.getByRole('button',{name:'Shelves',exact:true}).click();
