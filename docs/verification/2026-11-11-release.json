@@ -61,7 +61,7 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "92e761e573d4fadac1ab9ddfec23227c3299f53080f8d4017c04aad25d72e5bd"
+      "sha256": "5fff83507841a49734bf52cb5c1ed51d11eca6c182c86928cfa21dff7d78e56c"
     },
     {
       "path": "playwright.config.ts",

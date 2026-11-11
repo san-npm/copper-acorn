@@ -34,7 +34,7 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chrome
+      - run: google-chrome --version
       - run: cargo build --locked -p briarbridge-alchemy -p briarbridge-arena --target wasm32-unknown-unknown --release
       - run: cargo build --locked -p alchemy-sandbox --bin game-api
       - run: npx playwright test
