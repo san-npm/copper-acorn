@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-11",
+  "runtime_source_commit": "9c3c5ecb473d749d264152cca67fb84da5b0ada1",
+  "runtime_ci": "https://github.com/san-npm/copper-acorn/actions/runs/43077448602",
+  "runtime_ci_success": true,
+  "changes": [
+    "Enforce noUnusedLocals and noUnusedParameters in the existing frontend build",
+    "Replace obsolete walkthrough selectors with current player-owned local flow; require loopback before launching",
+    "Refresh stale provider/deployment/asset provenance notes and prepare submission draft/media"
+  ],
+  "fresh_checks": {
+    "node_passed": 130,
+    "stasho_build": true,
+    "strict_unused_check": true,
+    "frontend_matches_deployed_files": 121,
+    "frontend_matches_deployed_bytes": 25051471,
+    "walkthrough": {
+      "source": "isolated local Sandbox; browser-held disposable keys",
+      "real_google_login": false,
+      "live_inference": false,
+      "initial_copper": "40",
+      "after_crafting_and_sale": "52",
+      "sold_tonics": 1,
+      "arena_opened": true,
+      "page_errors": 0,
+      "video": "walkthrough.webm"
+    },
+    "recorder_rejects_non_local": true,
+    "gitleaks_source_findings": 0,
+    "local_markdown_links": true
+  },
+  "runtime_tests": {
+    "node": 130,
+    "rust": 34,
+    "artwork": 9,
+    "browsers": 96
+  },
+  "files": [
+    {
+      "path": "scripts/record-local-walkthrough.mjs",
+      "sha256": "a9978f09a94aa289adaa2ef607269b7d9a82afbfb7a0bbd688bd8daa3da5cf36"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "sha256": "e3aff96a8e7c65101b2216d3036b6d14f80fa813d2e61627feaa6022a8ca182d"
+    },
+    {
+      "path": "docs/demo/town.png",
+      "sha256": "565878f7aaf7f7b2c8257a24d1692f420d686ebe4fb061a0215a275130fd58be"
+    },
+    {
+      "path": "docs/demo/crafted-sale.png",
+      "sha256": "9dc2ea7e49c3328b1a881fc5197672f7a8b5b08cd8c6b9dcae8d05656eb3654a"
+    },
+    {
+      "path": "docs/demo/arena.png",
+      "sha256": "71bf4529e10a7a0a967cf5de7c298f8b836f18de6d824936ef7ac6139e961f09"
+    },
+    {
+      "path": "docs/demo/walkthrough.mp4",
+      "sha256": "60e2f0cac7c821a93e5d2335f0ea3a773c1ed982258a7b7dbe8b7cb1d0fdfee0"
+    }
+  ],
+  "media": {
+    "origin": "Actual isolated local Sandbox capture; MP4 conversion only",
+    "duration_seconds": 21.28,
+    "real_google_login": false,
+    "live_inference": false,
+    "public_testnet_transactions": false
+  },
+  "not_verified": [
+    "Completed fresh Google account provisioning/root signing and recovery",
+    "Human two-player playtest or load benchmark",
+    "Third-party artwork permission"
+  ],
+  "submission_sent": false,
+  "social_post_sent": false,
+  "new_model_requests": 0
+}

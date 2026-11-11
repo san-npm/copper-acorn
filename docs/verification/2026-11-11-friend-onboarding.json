@@ -86,7 +86,13 @@
     "access_checks": 19,
     "worlds_before": 4,
     "worlds_after": 4,
-    "player_owned_worlds": 0
+    "player_owned_worlds": 0,
+    "main_followup": {
+      "source_commit": "9c3c5ecb473d749d264152cca67fb84da5b0ada1",
+      "run": "https://github.com/san-npm/copper-acorn/actions/runs/43077448522",
+      "conclusion": "success",
+      "same_verified_cid": true
+    }
   },
   "live_sdk_start": {
     "base": "https://bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh",
@@ -97,5 +103,19 @@
     "real_google_consent": false,
     "root_signing": false
   },
-  "ci_fixture_note": "A random middle-brightness initial frame made the old ambience comparison phase-dependent. Measure the full sampled pixel range with the same visibility thresholds; no production animation changed."
+  "ci_fixture_note": "A random middle-brightness initial frame made the old ambience comparison phase-dependent. Measure the full sampled pixel range with the same visibility thresholds; no production animation changed.",
+  "full_ci": {
+    "source_commit": "9c3c5ecb473d749d264152cca67fb84da5b0ada1",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43077448602",
+    "conclusion": "success",
+    "node": 130,
+    "rust": 34,
+    "artwork": 9,
+    "browsers": {
+      "default": 73,
+      "privy": 12,
+      "hosted": 9,
+      "ownership": 2
+    }
+  }
 }
