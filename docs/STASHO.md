@@ -1,6 +1,6 @@
 # Deploy from GitHub
 
-Connected and verified on 10 November 2026. The [reviewed setup PR](https://github.com/san-npm/copper-acorn/pull/1) is merged; the [first native deployment](https://github.com/san-npm/copper-acorn/actions/runs/42872260231) succeeded. [Current game](https://bafybeievcuwakpltpmgz5gw3hdvstygempknjj27wy7tgj7jzmf2ynnp4a.ipfs.aleph.sh/).
+Connected and verified on 10 November 2026. The [reviewed setup PR](https://github.com/san-npm/copper-acorn/pull/1) is merged; the [first native deployment](https://github.com/san-npm/copper-acorn/actions/runs/42872260231) succeeded. [Current game](https://bafybeid6rjjrd62guu463w7irbp3g6zf5sunhui7xxmh6gvtdawnvgvree.ipfs.aleph.sh/).
 
 The repository root is the application root. Stasho publishes the static frontend; Supabase provides Auth, persistence and the shared arena backend.
 

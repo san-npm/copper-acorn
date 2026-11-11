@@ -38,7 +38,7 @@ The two-browser and ownership test suites exercise challenges, movement, casting
 | Game service | Validates identity and requests, runs deterministic combat, keeps durable operation records and submits NPC/referee actions. |
 | Jev | Classifies free-text NPC intent when a server-side allowance is available. Code controls goods, prices and payments. Authored choices/recorded judgments support free repeatable checks. |
 
-The local route uses actual contracts on an isolated Sandbox, not public testnet receipts. Its browser-held signing keys are for a disposable local game and have no social recovery. Hosted older shops use NEAR testnet. Public first-time Google/Privy ownership remains gated until the provider's exact-origin policy and real setup/recovery are verified; existing hosted saves are preserved. Do not share an owner's login to let judges in.
+The local route uses actual contracts on an isolated Sandbox, not public testnet receipts. Its browser-held signing keys are for a disposable local game and have no social recovery. Hosted older shops use NEAR testnet and retain their original immutable contract versions. The local route exercises the current contracts. Public first-time Google/Privy ownership remains gated until the provider's exact-origin policy and real setup/recovery are verified; existing hosted saves are preserved. Do not share an owner's login to let judges in.
 
 ## Checks and limitations
 

@@ -4,6 +4,8 @@ The release review covers the public source and the fixes described in [RELEASE_
 
 ## Automated checks
 
+[Release CI](https://github.com/san-npm/copper-acorn/actions/runs/43050192922) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 94 browser cases across the four configurations.
+
 - Node tests cover request validation, account/session isolation, economic rules, NPC conversations, arena actions, retries and once-only settlement.
 - Rust tests cover the item and referee contracts. Browser ownership tests execute actual Sandbox contracts for crafting, sales, funded NPC orders, PvP settlement and revocation.
 - The default browser suite covers map/artwork, interactions, quests, shelf stock, saved-game UI, market turns and recovery. Separate configurations cover the hosted controller and Privy adapter using fictional provider identities.

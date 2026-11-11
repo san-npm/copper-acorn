@@ -4,7 +4,7 @@ A pixel-art alchemy shop prototype for **NEAR Hackathon — Games With Real Econ
 
 Includes a guild quest chain, two side orders, and a shared arena with eight classes, turn-based duels and a passive training chicken.
 
-[Play the hosted build](https://bafybeievcuwakpltpmgz5gw3hdvstygempknjj27wy7tgj7jzmf2ynnp4a.ipfs.aleph.sh/) · [Judge guide](docs/JUDGE_GUIDE.md) · [Release checks](docs/VERIFICATION.md)
+[Play the hosted build](https://bafybeid6rjjrd62guu463w7irbp3g6zf5sunhui7xxmh6gvtdawnvgvree.ipfs.aleph.sh/) · [Judge guide](docs/JUDGE_GUIDE.md) · [Release checks](docs/VERIFICATION.md)
 
 ## Where NEAR fits
 
@@ -37,7 +37,7 @@ npm test
 npm run build
 cargo test --locked -p briarbridge-alchemy -p briarbridge-arena --lib
 npx playwright install chrome
-npx playwright test web/tests/arena-recovery.spec.ts
+npx playwright test
 PRIVY_TEST_ORIGIN=http://127.0.0.1:5190 npx playwright test --config playwright.privy.config.ts
 npx playwright test --config playwright.hosted-owned.config.ts
 npx playwright test --config playwright.owned.config.ts
@@ -47,7 +47,7 @@ Embedded backend WebAssembly modules are included for Node tests and Edge Functi
 
 ## Current limits
 
-Google login restores existing hosted shops. The [Privy integration](docs/ONBOARDING.md) for new player-owned games is in this repository. Public activation remains gated: the provider's exact-origin policy and real Google setup/signing/recovery still need verification. Existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
+Google login restores existing hosted shops. The [Privy integration](docs/ONBOARDING.md) for new player-owned games is in this repository. Public activation remains gated: the provider's exact-origin policy and real Google setup/signing/recovery still need verification. Existing older shops still use their original backend-held keys and immutable contract versions. The local ownership demo uses browser-held keys. No completed migration is claimed.
 
 Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established. Two independent automated browsers exercise the shared arena, including combat and reconnect; this is not a two-human playtest.
 

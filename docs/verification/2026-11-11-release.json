@@ -129,7 +129,17 @@
         "passed": 2,
         "failed": 0
       },
-      "github_full": "Pending first CI run of the browser job",
+      "github_full": {
+        "status": "passed",
+        "run": "https://github.com/san-npm/copper-acorn/actions/runs/43050192922",
+        "head_commit": "446e319601648d2e78738d45e8e828c7de0903f1",
+        "default": 73,
+        "privy_fictional_provider": 11,
+        "hosted_controller": 8,
+        "sandbox_player_ownership": 2,
+        "total_passed": 94,
+        "failed": 0
+      },
       "local_ci_fixture_regressions": {
         "passed": 13,
         "failed": 0
@@ -198,5 +208,54 @@
   "existing_hosted_worlds_preserved": 4,
   "new_live_model_requests": 0,
   "mainnet_actions": 0,
-  "hackathon_submission": false
+  "hackathon_submission": false,
+  "reviewed_release_commit": "be90e1feefc181cc491de7226387648fd17e5095",
+  "publication": {
+    "urls": [
+      "https://bafybeid6rjjrd62guu463w7irbp3g6zf5sunhui7xxmh6gvtdawnvgvree.ipfs.aleph.sh"
+    ],
+    "cid": "bafybeid6rjjrd62guu463w7irbp3g6zf5sunhui7xxmh6gvtdawnvgvree",
+    "deployment_id": "deploy_LnL6jaXQxs7V",
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43053065614",
+    "source_commit": "be90e1feefc181cc491de7226387648fd17e5095",
+    "files_verified": 107,
+    "artifact_bytes": 24375126,
+    "approved_files": 76,
+    "hosted_access_checks": 19,
+    "hosted_ui": {
+      "characters": 8,
+      "views": 4,
+      "page_errors": 0,
+      "google_pkce_return": "passed; authorization navigation intercepted, no human consent"
+    },
+    "backend": {
+      "functions": [
+        {
+          "slug": "game-session",
+          "version": 23,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "slug": "game-api",
+          "version": 25,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "slug": "arena-api",
+          "version": 17,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        }
+      ],
+      "worlds_before": 4,
+      "worlds_after": 4,
+      "legacy": 4,
+      "player_owned": 0,
+      "google_enabled": true,
+      "auth_return_origins": 21
+    },
+    "origin_source_sha256": "64c0f24d73ad3ea01d9d26104b00ac09d59d25494deb18c75dc3897381055e7f"
+  }
 }
