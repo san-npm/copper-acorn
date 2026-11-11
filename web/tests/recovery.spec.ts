@@ -1,4 +1,4 @@
-import {test,expect,openAccount,type Page,type APIRequestContext} from './legacy';
+import {test,expect,openAccount,enterSavedGame,type Page,type APIRequestContext} from './legacy';
 
 async function savedShop(page:Page,request:APIRequestContext) {
   const state=await(await request.get('/api/state')).json();
@@ -18,18 +18,19 @@ async function savedShop(page:Page,request:APIRequestContext) {
   await page.route('https://example.supabase.co/auth/v1/user',r=>r.fulfill({json:user}));
   await page.route('https://example.supabase.co/auth/v1/logout**',r=>r.fulfill({status:204,body:''}));
   await page.route('https://example.supabase.co/functions/v1/game-session',r=>r.fulfill({json:{world:{id:world,status:'ready'},wallet:{account_id:account,funded_at:'2026-11-05T00:00:00Z',funding_requested_at:'2026-11-05T00:00:00Z'}}}));
-  return {state,world,brew:()=>Object.assign(state.player.balances,{copper:'39',sunleaf:'2',spring_water:'2',healing_tonic:'1'})};
+  return {state,world,saves:{saves:[{world_id:world,is_active:true,alchemist:null}],limit:2},brew:()=>Object.assign(state.player.balances,{copper:'39',sunleaf:'2',spring_water:'2',healing_tonic:'1'})};
 }
 
 test('confirmed brew stays locked until an interrupted stock refresh succeeds',async({page,request})=>{
   const f=await savedShop(page,request);let offline=false,writes=0;
   await page.route('https://example.supabase.co/functions/v1/game-api/**',r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state')return offline?r.fulfill({status:503,json:{error:'Saved shop is temporarily unavailable.'}}):r.fulfill({json:f.state});
     expect(path).toBe('/action');writes++;f.brew();offline=true;
     return r.fulfill({json:{status:'confirmed',result:{hash:'confirmed-brew'},error:null}});
   });
-  await page.goto('/');await expect(page.locator('#network-label')).toContainText('Saved shop');
+  await page.goto('/');await enterSavedGame(page);
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();
   await page.getByRole('button',{name:'Brew Healing Tonic',exact:true}).click();
   await expect(page.locator('#action-status')).toContainText('Action confirmed');
@@ -46,11 +47,12 @@ test('refresh locks actions and ignores repeated clicks until its saved snapshot
   const gate=new Promise<void>(resolve=>release=resolve);
   await page.route('https://example.supabase.co/functions/v1/game-api/**',async r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state') {reads++;const snapshot=structuredClone(f.state);if(hold)await gate;return r.fulfill({json:snapshot});}
     writes++;return r.abort();
   });
   try {
-    await page.goto('/');await expect(page.locator('#network-label')).toContainText('Saved shop');
+    await page.goto('/');await enterSavedGame(page);
     await page.getByRole('button',{name:'Cauldron',exact:true}).click();
     hold=true;const before=reads;
     await page.locator('#refresh').evaluate((b:HTMLButtonElement)=>{b.click();b.click();});
@@ -66,6 +68,7 @@ test('server pending journal survives twenty simulated offline minutes and reloa
   await page.clock.install();
   await page.route('https://example.supabase.co/functions/v1/game-api/**',r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state')return r.fulfill({json:f.state});
     if(path==='/action') {
       writes++;requestId=r.request().postDataJSON().request_id;
@@ -76,7 +79,7 @@ test('server pending journal survives twenty simulated offline minutes and reloa
     f.brew();f.state.pending_operation=null;
     return r.fulfill({json:{status:'confirmed',result:{hash:'same-pending-brew'},error:null}});
   });
-  await page.goto('/');await expect(page.locator('#network-label')).toContainText('Saved shop');
+  await page.goto('/');await enterSavedGame(page);
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();await page.locator('#brew-healing_tonic').click();
   await expect(page.locator('#action-status')).toContainText('Refresh ledger');
   await page.clock.fastForward(20*60*1000);
@@ -92,10 +95,11 @@ test('damaged or foreign browser pending data cannot post malformed or cross-wor
   const f=await savedShop(page,request);let writes=0;
   await page.route('https://example.supabase.co/functions/v1/game-api/**',r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state')return r.fulfill({json:f.state});
     writes++;return r.fulfill({status:400,json:{error:'No malformed request should be sent.'}});
   });
-  await page.goto('/');await expect(page.locator('#network-label')).toContainText('Saved shop');
+  await page.goto('/');await enterSavedGame(page);
   for(const value of ['{damaged',JSON.stringify({world_id:f.world,request_id:null})]) {
     await page.evaluate(value=>sessionStorage.setItem('copper-acorn.pending',value),value);
     await page.locator('#refresh').click();await expect(page.locator('#refresh')).toBeEnabled();
@@ -114,6 +118,7 @@ test('request lost before journaling retries only the original ID after login re
   await page.route('https://example.supabase.co/functions/v1/game-session',async r=>{await new Promise(resolve=>setTimeout(resolve,100));await r.fallback();});
   await page.route('https://example.supabase.co/functions/v1/game-api/**',r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state')return r.fulfill({json:f.state});
     if(path.startsWith('/actions/'))return r.fulfill({status:404,json:{error:'Action was not recorded.'}});
     expect(path).toBe('/action');bodies.push(r.request().postDataJSON());
@@ -122,7 +127,7 @@ test('request lost before journaling retries only the original ID after login re
     if(!recorded){recorded=true;commits++;f.brew();}
     return r.fulfill({json:{status:'confirmed',result:{hash:'original-request-once'},error:null}});
   });
-  await page.goto('/');await expect(page.locator('#network-label')).toContainText('Saved shop');
+  await page.goto('/');await enterSavedGame(page);
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();await page.locator('#brew-healing_tonic').click();
   await expect(page.locator('#action-status')).toContainText('Refresh ledger');
   await page.reload();await expect(page.locator('#network-label')).toContainText('Saved shop');
@@ -137,17 +142,18 @@ test('late saved snapshot cannot restore stock or controls after sign-out',async
   const gate=new Promise<void>(resolve=>release=resolve);
   await page.route('https://example.supabase.co/functions/v1/game-api/**',async r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state'){if(hold)await gate;return r.fulfill({json:f.state});}
-    if(path==='/saves')return r.fulfill({json:{saves:[],limit:2}});
     writes++;return r.abort();
   });
   try {
-    await page.goto('/');await expect(page.locator('#network-label')).toContainText('Saved shop');
+    await page.goto('/');await enterSavedGame(page);
     hold=true;await page.locator('#refresh').click();await expect(page.locator('#refresh')).toBeDisabled();
     await page.evaluate(()=>sessionStorage.setItem('test-signed-out','true'));
     await openAccount(page);await page.getByRole('button',{name:'Sign out',exact:true}).click();
-    await expect(page.locator('#copper')).toHaveText('—');release();await page.locator('#close-games').click();
-    await expect(page.locator('#refresh')).toBeEnabled();await page.locator('#refresh').click();
+    await expect(page.locator('#copper')).toHaveText('—');release();
+    await expect(page.locator('#games-dialog')).toBeVisible();await expect(page.locator('#close-games')).toBeHidden();
+    await expect(page.locator('#refresh')).toBeEnabled();await page.locator('#refresh').evaluate((button:HTMLButtonElement)=>button.click());
     await expect(page.locator('#action-status')).toContainText('Sign in');
     await expect(page.locator('[data-owned="healing_tonic"]')).toHaveCount(0);
     await expect(page.locator('#market-clock')).toBeHidden();await expect(page.locator('#rescue')).toBeHidden();
@@ -161,6 +167,7 @@ test('a failed saved action without a receipt restores stock and keeps its failu
   f.state.pending_operation={request_id:id,status:'pending'};
   await page.route('https://example.supabase.co/functions/v1/game-api/**',r=>{
     const path=new URL(r.request().url()).pathname.split('/game-api')[1];
+    if(path==='/saves')return r.fulfill({json:f.saves});
     if(path==='/state')return r.fulfill({json:f.state});
     if(path==='/actions/'+id) {
       f.state.pending_operation=null;
@@ -170,6 +177,7 @@ test('a failed saved action without a receipt restores stock and keeps its failu
   });
   await page.goto('/');await expect(page.locator('#action-status')).toContainText('recipe was rejected');
   await expect(page.locator('#copper')).toHaveText('40');await expect(page.locator('[data-owned="healing_tonic"]')).toHaveText('0');
+  await enterSavedGame(page);
   await page.getByRole('button',{name:'Cauldron',exact:true}).click();await expect(page.locator('#brew-healing_tonic')).toBeEnabled();
   expect(writes).toBe(0);
 });

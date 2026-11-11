@@ -4,7 +4,7 @@ A pixel-art alchemy shop prototype for **NEAR Hackathon — Games With Real Econ
 
 Includes a guild quest chain, two side orders, and a shared arena with eight classes, turn-based duels and a passive training chicken.
 
-[Play the hosted build](https://bafybeievcuwakpltpmgz5gw3hdvstygempknjj27wy7tgj7jzmf2ynnp4a.ipfs.aleph.sh/) · [Release checks](docs/VERIFICATION.md)
+[Play the hosted build](https://bafybeievcuwakpltpmgz5gw3hdvstygempknjj27wy7tgj7jzmf2ynnp4a.ipfs.aleph.sh/) · [Judge guide](docs/JUDGE_GUIDE.md) · [Release checks](docs/VERIFICATION.md)
 
 ## Where NEAR fits
 
@@ -38,24 +38,29 @@ npm run build
 cargo test --locked -p briarbridge-alchemy -p briarbridge-arena --lib
 npx playwright install chrome
 npx playwright test web/tests/arena-recovery.spec.ts
-npx playwright test --config playwright.privy.config.ts
+PRIVY_TEST_ORIGIN=http://127.0.0.1:5190 npx playwright test --config playwright.privy.config.ts
+npx playwright test --config playwright.hosted-owned.config.ts
+npx playwright test --config playwright.owned.config.ts
 ```
 
 Embedded backend WebAssembly modules are included for Node tests and Edge Function packaging. After changing a contract, rebuild the WebAssembly targets and run `node scripts/bundle-contract.ts`.
 
 ## Current limits
 
-Google login restores existing hosted shops. A [Privy integration](docs/ONBOARDING.md) for new player-owned games is prepared locally; live social setup and recovery remain unverified and gated pending provider configuration. Existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
+Google login restores existing hosted shops. The [Privy integration](docs/ONBOARDING.md) for new player-owned games is in this repository. Public activation remains gated: the provider's exact-origin policy and real Google setup/signing/recovery still need verification. Existing older shops still use their original backend-held keys. The local ownership demo uses browser-held keys. No completed migration is claimed.
 
-Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established.
+Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established. Two independent automated browsers exercise the shared arena, including combat and reconnect; this is not a two-human playtest.
 
-The hosted build includes the responsive walking correction and deploys from GitHub through Stasho. Backend origin/Auth settings still need an exact-URL update when a new build changes the CID.
+Hosted development quotas are 10 saved worlds globally, two owned saves per Google account, 1,000 durable economic operations per world and 128 NPC requests per world. The shared arena keeps up to 128 profiles and 256 PvP matches. These are application limits, not Stasho limits or a concurrent-user benchmark.
+
+The hosted build deploys from GitHub through Stasho. Backend origin/Auth settings still need an exact-URL update when a new build changes the CID.
 
 ## Project notes
 
 - [Gameplay loop](docs/GAMEPLAY.md)
 - [Hackathon requirements and gaps](docs/HACKATHON_CHECKLIST.md)
 - [GitHub → Stasho setup](docs/STASHO.md)
+- [Release security self-review and known limits](docs/RELEASE_REVIEW.md)
 - [Security reporting](SECURITY.md)
 
 Started during the hackathon development window, in November 2026. Built with AI coding assistance, NEAR SDK, Phaser, Supabase, Privy and TypeSafe/Jev; lockfiles pin dependencies. This public snapshot omits private development logs, credentials and original third-party art packs.

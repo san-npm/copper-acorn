@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './web/tests',
-  testIgnore:['player-ownership.spec.ts','hosted-ownership.spec.ts'],
+  testIgnore:['player-ownership.spec.ts','hosted-ownership.spec.ts','privy-access.spec.ts'],
   fullyParallel: false,
   workers: 1,
   retries: 0,

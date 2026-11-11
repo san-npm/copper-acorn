@@ -6,7 +6,7 @@ import {challengePayload} from '../../backend/player-identity.ts';
 import {gameplayMethods,deviceKey,stored} from './player-device.ts';
 import type {PlayerSigner} from './privy.ts';
 import type {GameConnection} from './account';
-import type {GameState} from './types';
+import type {GameState,Operation} from './types';
 
 type Challenge={id:string;message:string;nonce:string;recipient:string;callbackUrl:string;expires_at:string};
 type Binding={challenge:Challenge;proof:{account_id:string;public_key:string;signature:string}};
@@ -78,8 +78,14 @@ export async function enableSocialDevice(request:GameConnection,world:string,sig
 async function authorizeDevice(request:GameConnection,world:string,signer:PlayerSigner,guard:()=>void){
   guard();const access=await request<Access>('/device');guard();
   if(access.account_id!==signer.account)throw Error('Use the Google account that created this game. Your saved game is kept.');
-  const state=await request<GameState>('/state');guard();
-  if(state.pending_operation)throw Error('An earlier game action is awaiting confirmation. Refresh the ledger before restoring access.');
+  let state=await request<GameState>('/state');guard();
+  if(state.pending_operation){
+    const id=state.pending_operation.request_id;
+    if(typeof id!=='string'||!/^[A-Za-z0-9_-]{1,100}$/.test(id))throw Error('An earlier game action is awaiting confirmation. Open this game again to check it.');
+    const result=await request<Operation>('/actions/'+encodeURIComponent(id));guard();
+    state=await request<GameState>('/state');guard();
+    if(!['confirmed','failed'].includes(result.status)||state.pending_operation)throw Error('An earlier game action is awaiting confirmation. Open this game again to check it.');
+  }
   const slot='owned:'+world,approvalSlot=slot+':approval';
   let device=await stored<Awaited<ReturnType<typeof deviceKey>>>(slot);guard();
   if(!device){device=await deviceKey();guard();await stored(slot,device);guard();}

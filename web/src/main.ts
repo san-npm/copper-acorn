@@ -110,7 +110,7 @@ function batchAmount() {return quantity>1?{amount:String(quantity)}:{};}
 function quantityPicker(id:string,max=state?.batch_limit||1) {
   return `<div class="quantity-bar"><label for="${id}">Quantity</label><select id="${id}" ${disabled(max<1)}>${Array.from({length:Math.max(1,max)},(_,i)=>`<option value="${i+1}" ${quantity===i+1?'selected':''}>${i+1}</option>`).join('')}</select><span>${max>0?`Up to ${max} at once`:'Nothing available'}</span></div>`;
 }
-function inGame(){return !!state&&(!accountOwner||!!online)&&(state.batch_limit!==10||entryWorld===state.environment.world_id);}
+function inGame(){return !!state&&(!accountOwner||!!online)&&(!online&&state.batch_limit!==10||entryWorld===state.environment.world_id);}
 function rememberEntry(id:string){sessionStorage.setItem('copper-acorn.enter-world',id);entryWorld=id;}
 function enterGame(){
   if(!state||busy||unresolved||preview())return;
@@ -127,7 +127,7 @@ async function openGames() {
   el('games-intro').textContent=starting?(accountOwner?'Continue a saved shop or create a new alchemist. Each game keeps its own story.':localSandbox?'Open your alchemy shop. Continue a saved game or begin a new one.':'Log in to find your games. Continue your shop or begin a new adventure.'):'Each game keeps its own nickname, character, shop and progress.';
   el('close-games').hidden=starting;
   const resume=el<HTMLButtonElement>('continue-game');
-  resume.hidden=!starting||!state?.alchemist||preview()||!!accountOwner&&!online;resume.disabled=busy||unresolved;
+  resume.hidden=!starting||!state||state.batch_limit===10&&!state.alchemist||preview()||!!accountOwner&&!online;resume.disabled=busy||unresolved;
   resume.textContent=`Continue ${state?.alchemist?.nickname||'game'}`;
   el('online-account').hidden=starting&&!import.meta.env.VITE_PUBLIC_SUPABASE_URL;
   const newButton=el<HTMLButtonElement>('new-game');
@@ -625,15 +625,15 @@ async function connect() {
         if(version!==connectionVersion)return;
         delete bootDialog.dataset.boot;bootRetry.hidden=true;
       }
-      if(enteringOnline&&state){enteringOnline=false;rememberEntry(state.environment.world_id);el<HTMLDialogElement>('games-dialog').close();}
+      if(enteringOnline&&state){enteringOnline=false;enterGame();}
       if(inGame()){
         const dialog=el<HTMLDialogElement>('games-dialog');if(dialog.classList.contains('startup'))dialog.close();picker.enter();
-      }else if(!localSandbox||state?.batch_limit===10||missingLocalWorld)void openGames();
+      }else if(online||usedOnline||!localSandbox||state?.batch_limit===10||missingLocalWorld)void openGames();
     }
   }
 }
 accountUI=initAccount((connection,enter=false) => {
-  enteringOnline=!!connection&&enter;
+  enteringOnline=!!connection&&(enter||enteringOnline);
   arena.reset();
   if (interactionDialog.open) interactionDialog.close();
   interaction = null;

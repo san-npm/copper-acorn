@@ -21,8 +21,16 @@ async function account(page: Page, character: unknown) {
     return route.fulfill({ json: { world: { id: world, status: 'ready' },wallet:{account_id:wallet,funded_at:'2026-11-05T00:00:00Z'} } });
   });
   await page.route('https://example.supabase.co/functions/v1/game-api/state*',route=>route.fulfill({json:state}));
+  await page.route('https://example.supabase.co/functions/v1/game-api/saves*',route=>route.fulfill({json:{saves:[{world_id:world,is_active:true,alchemist:null}],limit:2}}));
   await page.route('https://example.supabase.co/auth/v1/logout**', route => route.fulfill({ status: 204, body: '' }));
   return { user, methods, token };
+}
+
+async function enterSavedGame(page:Page){
+  await expect(page.locator('#network-label')).toContainText('Saved shop');
+  await expect(page.locator('#character-status')).not.toContainText('Restoring your character');
+  if(await page.locator('#character-dialog').evaluate((dialog:HTMLDialogElement)=>dialog.open))await page.locator('#cancel-character').click();
+  await page.getByRole('button',{name:'Continue game',exact:true}).click();
 }
 
 test('first visit selects all eight in the actual map, preserves inventory and restores a local choice', async ({ page }) => {
@@ -76,6 +84,8 @@ test('account appearance saves only cosmetic metadata, restores the fresh profil
     return route.fulfill({ json: user });
   });
   await page.goto('/');
+  await enterSavedGame(page);
+  await page.getByRole('button',{name:'Choose character',exact:true}).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.getByRole('radio', { name: 'Lizardman', exact: true }).check();
   await page.getByRole('button', { name: 'Use this character', exact: true }).click();
@@ -103,6 +113,7 @@ test('failed saves keep the old character; a delayed save cannot restore a signe
     return route.fulfill({ json: { ...user, user_metadata: { character_id: 'goblin' } } });
   });
   await page.goto('/');
+  await enterSavedGame(page);
   await expect(page.locator('#character-name')).toHaveText('Magician');
   await page.getByRole('button', { name: 'Choose character', exact: true }).click();
   await page.getByRole('radio', { name: 'Goblin', exact: true }).check();
@@ -146,6 +157,7 @@ test('signing out closes a resource prompt and clears its selected action (simul
   const writes: string[] = [];
   page.on('request', request => { if (request.method()==='POST' && new URL(request.url()).pathname.endsWith('/action')) writes.push(request.url()); });
   await page.goto('/');
+  await enterSavedGame(page);
   const canvas=page.locator('#game canvas');
   await expect(canvas).toHaveAttribute('aria-label', /Magician/);
   const bounds=(await canvas.boundingBox())!, spot=spots.find(s=>s.id==='sunleaf')!;
@@ -219,6 +231,7 @@ test('same-account Auth notifications preserve a pending shop trade (simulated A
   let started!: () => void, release!: () => void, reads = 0;
   const sent = new Promise<void>(resolve => { started = resolve; }), gate = new Promise<void>(resolve => { release = resolve; });
   await page.route('https://example.supabase.co/functions/v1/game-api/**', async route => {
+    if(new URL(route.request().url()).pathname.endsWith('/saves'))return route.fulfill({json:{saves:[{world_id:world,is_active:true,alchemist:null}],limit:2}});
     if (route.request().url().endsWith('/state')) { reads++; return route.fulfill({ json: state }); }
     expect(route.request().postDataJSON().action).toEqual({ kind: 'brew', token_id: 'healing_tonic' });
     started(); await gate;
@@ -226,6 +239,7 @@ test('same-account Auth notifications preserve a pending shop trade (simulated A
     return route.fulfill({ json: { status: 'confirmed', result: { hash: 'simulated-receipt' } } });
   });
   await page.goto('/');
+  await enterSavedGame(page);
   await expect(page.locator('#copper')).toHaveText('40');
   await page.getByRole('button', { name: 'Cauldron', exact: true }).click();
   await page.getByRole('button', { name: 'Brew Healing Tonic', exact: true }).click();
@@ -256,12 +270,14 @@ test('an account switch cancels a walking interaction before it can act in the n
   await page.route('https://example.supabase.co/functions/v1/game-session', route => route.fulfill({ json: { world: { id: world(), status: 'ready' }, wallet: { account_id: `ca-${world().replaceAll('-', '')}.testnet`, funded_at: '2026-11-05T00:00:00Z' } } }));
   const actions: unknown[] = [];
   await page.route('https://example.supabase.co/functions/v1/game-api/**', route => {
+    if(new URL(route.request().url()).pathname.endsWith('/saves'))return route.fulfill({json:{saves:[{world_id:world(),is_active:true,alchemist:null}],limit:2}});
     if (route.request().url().endsWith('/state')) return route.fulfill({ json: { ...state, environment: { ...state.environment, world_id: world() } } });
     actions.push(route.request().postDataJSON());
     return route.fulfill({ status: 409, json: { error: 'This fixture must not submit actions.' } });
   });
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
+  await enterSavedGame(page);
   const canvas = page.locator('#game canvas');
   await expect(canvas).toHaveAttribute('aria-label', /Magician/);
   await expect(page.locator('#network-label')).toContainText('Saved shop');

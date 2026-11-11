@@ -15,7 +15,7 @@ The repository root is the application root. Stasho publishes the static fronten
 | Deploy target | Static site (IPFS) |
 | Node | 24 or newer |
 
-`build:stasho` builds the current source with the original character, merchant and animation art committed under `web/public/assets`. It performs no external artwork download. `deploy/public-env.json` contains the Supabase URL and intentionally public publishable browser key; it also permits a public Privy App ID and optional Client ID after onboarding verification. Never add a secret/service-role key there.
+`build:stasho` builds the current source with the pinned reviewed character, merchant and animation art committed under `web/public/assets`. It performs no external artwork download. `deploy/public-env.json` contains the Supabase URL and intentionally public publishable browser key; it also permits a public Privy App ID and optional Client ID after onboarding verification. Never add a secret/service-role key there.
 
 Stasho's [documented GitHub import](https://docs.stasho.xyz/guides/import-a-repo.html) requires the owner's dashboard. Agent keys cannot import a repository or edit encrypted build settings. In Stasho, choose **New Project**, install/authorize **stasho-deploy** for this repository if needed, select the repo, enter the settings above and choose **Deploy**. The app opens a setup PR containing its deployment workflow.
 

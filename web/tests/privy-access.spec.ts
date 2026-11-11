@@ -14,6 +14,7 @@ async function fixture(page:Page){
   const {challengeMessage}=await import('../../backend/wallet-proof');
   let signatures=0,links=0,lostLink=false,lostSend=false,expiredChallenge=false,rootQueries=0,session:any=null,pendingOperation:any=null;
   const challengeRequests:string[]=[];
+  const operationRequests:string[]=[];let reconciled=false,replacementPending=false;
   const grants=new Map<string,any>(),receipts=new Map<string,any>(),broadcasts:string[]=[],proofs:string[]=[];
   async function install(page:Page){
   await page.route('**/access-harness*',r=>r.fulfill({contentType:'text/html',body:'<div id="online-account"></div>'}));
@@ -32,6 +33,7 @@ async function fixture(page:Page){
     }
     if(path==='/device')return {account_id:account,contract_id:contract,session};
     if(path==='/state')return {pending_operation:pendingOperation};
+    if(path.startsWith('/actions/')){operationRequests.push(path);if(reconciled)pendingOperation=replacementPending?{request_id:'second-pending-request',status:'pending'}:null;return {status:reconciled?'confirmed':'pending'};}
     if(path==='/rpc')return grants.has(b.params.public_key)?{...grants.get(b.params.public_key),nonce:0,block_hash:baseEncode(new Uint8Array(32))}:{missing:true};
     if(path==='/action'){
       const state:any={player:{account_id:account,next_action:0},environment:{world_id:world,contract_id:contract},merchants:[]};
@@ -80,7 +82,7 @@ async function fixture(page:Page){
   },{account,publicKey});
   }
   await install(page);
-  return {install,root,account,publicKey,proofs,broadcasts,receipts,grants,challengeRequests,counts:()=>({signatures,links,rootQueries}),expireChallenge:()=>expiredChallenge=true,loseLink:()=>lostLink=true,loseSend:()=>lostSend=true,session:()=>session,expire:()=>{session.expires_at_ms=0;},pending:()=>{pendingOperation={status:'pending'};}};
+  return {install,root,account,publicKey,proofs,broadcasts,receipts,grants,challengeRequests,operationRequests,counts:()=>({signatures,links,rootQueries}),expireChallenge:()=>expiredChallenge=true,loseLink:()=>lostLink=true,loseSend:()=>lostSend=true,session:()=>session,expire:()=>{session.expires_at_ms=0;},pending:()=>{pendingOperation={request_id:'earlier-pending-request',status:'pending'};},confirmPending:(another=false)=>{reconciled=true;replacementPending=another;}};
 }
 
 async function enable(page:Page){return page.evaluate(async world=>{
@@ -144,6 +146,7 @@ async function mockSdk(page:Page){
     const user={id:'did:privy:fixture-user',needsWallet:!!window.needsWallet,linked_accounts:[{type:'google_oauth',subject:'google-subject'}]};
     export const getUserEmbeddedSolanaWallet=user=>user.needsWallet?null:({address:window.signer.publicKey.slice(8)}),getUserEmbeddedEthereumWallet=()=>null,getEntropyDetailsFromUser=()=>({entropyId:'fixture',entropyIdVerifier:'fixture'});
     export default class Privy{
+      constructor(){if(window.sdkFailure){window.sdkFailure=false;throw Error('Transient SDK setup failure');}}
       initialize=async()=>{};getAccessToken=async()=> 'fixture';user={get:async()=>({user})};auth={logout:async()=>{window.didLogout=true;}};
       embeddedWallet={getURL:()=> 'https://auth.privy.io/apps/fixture/embedded-wallets',onMessage:()=> window.iframeMessage?.(),createSolana:async opts=>{window.creationKey=opts.idempotencyKey;user.needsWallet=false;return{user};},getSolanaProvider:async()=>({request:async({params})=>{
         const bytes=Uint8Array.from(atob(params.message),c=>c.charCodeAt(0));
@@ -152,6 +155,30 @@ async function mockSdk(page:Page){
       }})};setMessagePoster(){}
     }` }));
 }
+
+test('a new browser reconciles the same pending action before restoring its device',async({page,browser})=>{
+  const f=await fixture(page);expect(await enable(page)).toBe('ready');const earlier=f.session().public_key;
+  f.pending();
+  const context=await browser.newContext();
+  try{
+    const second=await context.newPage();await f.install(second);
+    expect(await enable(second)).toContain('awaiting confirmation');
+    expect(f.counts().signatures).toBe(2);expect(f.grants.has(earlier)).toBe(true);
+    f.confirmPending(true);expect(await enable(second)).toContain('awaiting confirmation');
+    expect(f.counts().signatures).toBe(2);expect(f.grants.has(earlier)).toBe(true);
+    f.pending();f.confirmPending();expect(await enable(second)).toBe('ready');
+    expect(f.operationRequests).toEqual(Array(3).fill('/actions/earlier-pending-request'));
+    expect(f.counts().signatures).toBe(4);expect(f.grants.has(earlier)).toBe(false);expect(f.grants.size).toBe(1);
+    expect(f.broadcasts).toHaveLength(4);
+  }finally{await context.close();}
+});
+
+test('a failed SDK construction can be retried in the same page',async({page})=>{
+  const f=await fixture(page);await mockSdk(page);await page.evaluate(()=>{(window as any).sdkFailure=true;});
+  const sign=()=>page.evaluate(async()=>{try{const {socialSigner}=await import('/src/privy.ts');return (await socialSigner('google-subject','owner'))?.account;}catch(e){return (e as Error).message;}});
+  expect(await sign()).toBe('Transient SDK setup failure');expect(await sign()).toBe(f.account);
+  expect(f.counts().signatures).toBe(0);
+});
 
 test('first root creation uses a per-user idempotency key and verifies the raw signature',async({page})=>{
   const f=await fixture(page);await mockSdk(page);await page.evaluate(()=>{(window as any).needsWallet=true;});
