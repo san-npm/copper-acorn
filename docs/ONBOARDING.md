@@ -4,11 +4,11 @@ The owner selected Privy on 10 November 2026. The integration is included in the
 
 ## Verified state
 
-As of 11 November, the provider reports Google enabled, an empty `allowed_domains` list and `user-controlled-server-wallets-only` mode. The public build intentionally has no Privy App ID enabled. Browser fixtures cover creation, cancellation, exact-request recovery, identity rejection and two-browser replacement; they do not establish real Google consent or provider signatures. Do not mark first-time onboarding complete from an automatically restored older shop.
+As of 11 November, the provider reports Google enabled and an empty `allowed_domains` list. The onboarding follow-up includes the existing public Privy App ID. Before initialization, the client requires Google enabled and the exact current origin in that list; no root signing starts while configuration is missing. Failed checks can retry in-page after configuration is saved. Browser fixtures cover creation, cancellation, exact-request recovery, identity rejection and two-browser replacement; they do not establish real Google consent or provider signatures. Do not mark first-time onboarding complete from an automatically restored older shop.
 
 ## Setup
 
-1. Create a free Privy application and enable Google under Authentication. Keep paid upgrades, billing and automatic top-ups off. Use the default user-controlled wallet mode; do not add an application signer or developer-owned wallets.
+1. Use the existing Copper Acorn Privy application; Google is already enabled. Keep paid upgrades, billing and automatic top-ups off. Use user-controlled wallet mode; do not add an application signer or developer-owned wallets.
 2. Under Configuration → App settings → Domains, set allowed origins to the exact published game origin and `http://127.0.0.1:5194`. Use exact origins, not a wildcard shared IPFS gateway. Keep HttpOnly app-domain cookies disabled for this static hosting setup. A separate Web client is optional; the real browser SDK's default client was verified to initialize and start Google authorization with the App ID alone.
 3. Copy the public App ID. **No Privy app secret or token-verification public key is used.** For a local test, put these public settings in the ignored `web/.env.privy-local`:
 
@@ -19,7 +19,7 @@ As of 11 November, the provider reports Google enabled, an empty `allowed_domain
    ```
 
    Also copy the two public Supabase settings from `deploy/public-env.json` into that file. Run `npm run dev -- --mode privy-local --port 5194`. A separately configured Web client may use `VITE_PUBLIC_PRIVY_CLIENT_ID`. Never put server credentials in any `VITE_PUBLIC_` setting.
-4. Test first setup, cancellation, another-browser recovery, renewal and normal play. For publication, add only the public Privy App ID (and optional Client ID) to `deploy/public-env.json`, deploy the backend change, and use the existing GitHub → Stasho workflow. A new CID requires exact-origin updates in Supabase and Privy; a stable domain avoids that repetition.
+4. After saving the allowed origin, retry New game at that published address. The client checks current configuration without a rebuild. Test first setup, cancellation, another-browser recovery, renewal and normal play. `deploy/public-env.json` includes only public settings; use the existing GitHub → Stasho workflow for updates. A new CID requires exact-origin updates in Supabase and Privy; a stable domain avoids that repetition.
 
 Without an App ID, existing saved games remain available and new social games remain disabled. Do not enable public onboarding merely because a build passes.
 

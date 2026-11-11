@@ -47,7 +47,7 @@ Embedded backend WebAssembly modules are included for Node tests and Edge Functi
 
 ## Current limits
 
-Google login restores existing hosted shops. The [Privy integration](docs/ONBOARDING.md) for new player-owned games is in this repository. Public activation remains gated: the provider's exact-origin policy and real Google setup/signing/recovery still need verification. Existing older shops still use their original backend-held keys and immutable contract versions. The local ownership demo uses browser-held keys. No completed migration is claimed.
+Google login restores existing hosted shops. The [Privy integration](docs/ONBOARDING.md) for new player-owned games includes the public app configuration. New-game setup requires the provider to allow the exact game address; it refuses to initialize without that setting. Real Google setup/signing/recovery still need verification. Existing older shops still use their original backend-held keys and immutable contract versions. The local ownership demo uses browser-held keys. No completed migration is claimed.
 
 Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established. Two independent automated browsers exercise the shared arena, including combat and reconnect; this is not a two-human playtest.
 

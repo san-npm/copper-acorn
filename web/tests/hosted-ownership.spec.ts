@@ -5,6 +5,19 @@ import {baseEncode} from '@near-js/utils';
 const technical=/\b(?:NEAR|Jev|wallet|crypto|blockchain|testnet|Sandbox|onchain|gas|token|Supabase|RPC|contract|transaction|signature|inference)\b/i;
 const world='20000000-0000-4000-8000-000000000099';
 
+test('the first paint and refresh show loading until the welcome screen is ready',async({page})=>{
+  let release!:()=>void,gate=new Promise<void>(resolve=>{release=resolve;});
+  await page.route('**/src/main.ts',async route=>{await gate;await route.continue();});
+  try{
+    for(let attempt=0;attempt<2;attempt++){
+      if(attempt)await page.reload({waitUntil:'commit'});else await page.goto('/',{waitUntil:'commit'});
+      await expect(page.locator('#startup-screen')).toBeVisible();await expect(page.locator('#saved-games')).toBeHidden();await expect(page.locator('main')).toBeHidden();
+      release();await expect(page.locator('#games-dialog')).toBeVisible();await expect(page.locator('#owned-login')).toBeEnabled();await expect(page.locator('#startup-screen')).toBeHidden();
+      gate=new Promise<void>(resolve=>{release=resolve;});
+    }
+  }finally{release();await page.unrouteAll({behavior:'wait'});}
+});
+
 test('an earlier Google save opens, crafts, sells and reloads without a new account or wallet',async({page,request})=>{
   const original=await(await request.get('http://127.0.0.1:3911/api/state')).json(),localWorld=original.environment.world_id;
   const user={id:'10000000-0000-4000-8000-000000000099',aud:'authenticated',role:'authenticated',user_metadata:{character_id:'magician'}},expires=Math.floor(Date.now()/1000)+3600;

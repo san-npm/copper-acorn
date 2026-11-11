@@ -48,6 +48,7 @@ if(bootDialog){
   el('games-status').textContent='Preparing your shop…';
   bootDialog.addEventListener('cancel',event=>{if(bootDialog.dataset.boot)event.preventDefault();});
   bootDialog.showModal();
+  document.documentElement.removeAttribute('data-startup');
 }
 async function startupStep<T>(work:()=>Promise<T>,label:string):Promise<T>{
   for(;;){
@@ -669,4 +670,5 @@ if(playerDevice){
 }
 if (localSandbox) void connect();
 else void openGames();
+document.documentElement.removeAttribute('data-startup');
 if (import.meta.hot) import.meta.hot.dispose(() => { connectionVersion++; arena.destroy();game.destroy(true); });

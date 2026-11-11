@@ -1,4 +1,5 @@
 {
   "VITE_PUBLIC_SUPABASE_URL": "https://mllobbddenuhuxukbrdl.supabase.co",
-  "VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_ixgOp81Zsqb7ARTzVqk_ww_LZzMB5f2"
+  "VITE_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_ixgOp81Zsqb7ARTzVqk_ww_LZzMB5f2",
+  "VITE_PUBLIC_PRIVY_APP_ID": "cmwb6q4fv01n70gl83fchhofn"
 }

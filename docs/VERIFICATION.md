@@ -2,6 +2,10 @@
 
 The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
 
+## Onboarding follow-up
+
+The [friend onboarding check](verification/2026-11-11-friend-onboarding.json) covers 26 focused browser cases and a fresh build. It verifies the initial loading screen, refresh, saved sessions and exact-origin access checks. Public app configuration is present, while real account setup still requires the provider Dashboard setting and a real Google/signing/recovery check.
+
 ## Automated checks
 
 [Release CI](https://github.com/san-npm/copper-acorn/actions/runs/43050192922) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 94 browser cases across the four configurations.
