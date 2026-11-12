@@ -151,8 +151,9 @@ async function mockSdk(page:Page){
     export const getUserEmbeddedSolanaWallet=user=>user.needsWallet?null:({address:window.signer.publicKey.slice(8)}),getUserEmbeddedEthereumWallet=()=>null,getEntropyDetailsFromUser=()=>({entropyId:'fixture',entropyIdVerifier:'fixture'});
     export default class Privy{
       constructor(){if(window.sdkFailure){window.sdkFailure=false;throw Error('Transient SDK setup failure');}}
-      initialize=async()=>{};getAccessToken=async()=> 'fixture';user={get:async()=>({user})};auth={logout:async()=>{window.didLogout=true;}};
-      embeddedWallet={getURL:()=> 'https://auth.privy.io/apps/fixture/embedded-wallets',onMessage:()=> window.iframeMessage?.(),createSolana:async opts=>{window.creationKey=opts.idempotencyKey;user.needsWallet=false;return{user};},getSolanaProvider:async()=>({request:async({params})=>{
+      initialize=async()=>{};getAccessToken=async()=> window.oauthRequired&&!sessionStorage.getItem('fixture-signer-session')?null:'fixture';user={get:async()=>({user})};auth={logout:async()=>{window.didLogout=true;},oauth:{loginWithCode:async(code,state)=>{if(code!=='fictional-code'||state!=='fictional-state')throw Error('Unexpected callback');window.codeExchanges=(window.codeExchanges||0)+1;sessionStorage.setItem('fixture-signer-session','ready');},generateURL:async()=>{throw Error('Unexpected repeated login');}}};
+      embeddedWallet={getURL:()=> 'https://auth.privy.io/apps/fixture/embedded-wallets',onMessage:()=>{window.iframeAccepted=true;window.iframeMessage?.();},createSolana:async opts=>{window.creationKey=opts.idempotencyKey;user.needsWallet=false;return{user};},getSolanaProvider:async()=>({request:async({params})=>{
+        if(window.objectReply){window.iframeAccepted=false;window.dispatchEvent(new MessageEvent('message',{origin:'https://auth.privy.io',source:document.querySelector('iframe').contentWindow,data:{event:'fixture-signing-response'}}));if(!window.iframeAccepted)throw Error('Setup approval reply was ignored');}
         const bytes=Uint8Array.from(atob(params.message),c=>c.charCodeAt(0));
         const signature=await window.fixtureSign([...bytes]);
         return {signature:btoa(String.fromCharCode(...signature))};
@@ -209,9 +210,12 @@ test('social signer requires the same Google subject and accepts iframe response
     window.dispatchEvent(new MessageEvent('message',{origin:'https://evil.example',source:iframe.contentWindow,data}));
     window.dispatchEvent(new MessageEvent('message',{origin:'https://auth.privy.io',source:window,data}));
     window.dispatchEvent(new MessageEvent('message',{origin:'https://auth.privy.io',source:iframe.contentWindow,data}));
+    window.dispatchEvent(new MessageEvent('message',{origin:'https://evil.example',source:iframe.contentWindow,data:JSON.parse(data)}));
+    window.dispatchEvent(new MessageEvent('message',{origin:'https://auth.privy.io',source:window,data:JSON.parse(data)}));
+    window.dispatchEvent(new MessageEvent('message',{origin:'https://auth.privy.io',source:iframe.contentWindow,data:JSON.parse(data)}));
     try{await socialSigner('other-google-account','owner');}catch(e){return {account:signer.account,error:(e as Error).message,logout:(window as any).didLogout};}
   });
-  expect(result).toEqual({account:f.account,error:'Use the same Google account for your saved game and game access. Try again.',logout:true});expect(calls).toBe(1);expect(f.counts().signatures).toBe(1);
+  expect(result).toEqual({account:f.account,error:'Use the same Google account for your saved game and game access. Try again.',logout:true});expect(calls).toBe(2);expect(f.counts().signatures).toBe(1);
 });
 
 test('an unexpected OAuth callback is rejected and removed before a proof or signature is requested',async({page})=>{
@@ -227,7 +231,7 @@ test('an unexpected OAuth callback is rejected and removed before a proof or sig
   expect(result.message).toContain('Start again');expect(result.url).toBe('');expect(result.intent).toBe(null);expect(f.counts().signatures).toBe(0);
 });
 
-test('the Google save controller creates and opens one proven game, restores it and signs out both sessions',async({page})=>{
+for(const callback of [false,true])test(`the Google save controller ${callback?'resumes New game after the Google callback':'creates and opens one proven game'}, restores it and signs out both sessions`,async({page})=>{
   const f=await fixture(page);await mockSdk(page);
   const user={id:owner,aud:'authenticated',role:'authenticated',user_metadata:{},identities:[{id:'google-subject',provider:'google',identity_data:{sub:'google-subject'}}]},expires=Math.floor(Date.now()/1000)+3600;
   const token=['header',Buffer.from(JSON.stringify({sub:owner,exp:expires,role:'authenticated'})).toString('base64url'),'fixture'].join('.');
@@ -243,12 +247,25 @@ test('the Google save controller creates and opens one proven game, restores it 
     const result=await page.evaluate(async({name,body})=>(window as any).fixtureRequest(name,{body}),{name,body:r.postData()});
     return route.fulfill({json:result,headers});
   });
-  await page.evaluate(async()=>{const {initOwnedAccount}=await import('/src/owned-account.ts'),w=window as any;w.controls=initOwnedAccount(c=>{w.connection=c;},()=>{});});
-  await expect(page.locator('#owned-status')).toContainText('No saved game was found');expect(f.counts().links).toBe(0);
-  f.expireChallenge();expect(await page.evaluate(async()=>(window as any).controls.prepare())).toBe(false);expect(f.counts().signatures).toBe(0);
-  expect(await page.evaluate(async()=>(window as any).controls.prepare())).toBe(true);
-  expect(f.challengeRequests).toHaveLength(2);expect(f.challengeRequests[0]).not.toBe(f.challengeRequests[1]);
+  const callbackRequest=randomUUID();
+  if(callback)await page.evaluate(({owner,request})=>{
+    Object.assign(window,{oauthRequired:true,objectReply:true,needsWallet:true});
+    sessionStorage.setItem('copper-acorn.social-return',JSON.stringify({owner,world:null,request,created:Date.now()}));
+    history.replaceState(null,'','?privy_oauth_code=fictional-code&privy_oauth_state=fictional-state');
+  },{owner,request:callbackRequest});
+  await page.evaluate(async()=>{const {initOwnedAccount}=await import('/src/owned-account.ts'),w=window as any;w.controls=initOwnedAccount((c,enter)=>{w.connection=c;w.enter=enter;},()=>{});});
+  if(!callback){
+    await expect(page.locator('#owned-status')).toContainText('No saved game was found');expect(f.counts().links).toBe(0);
+    f.expireChallenge();expect(await page.evaluate(async()=>(window as any).controls.prepare())).toBe(false);expect(f.counts().signatures).toBe(0);
+    expect(await page.evaluate(async()=>(window as any).controls.prepare())).toBe(true);
+    expect(f.challengeRequests).toHaveLength(2);expect(f.challengeRequests[0]).not.toBe(f.challengeRequests[1]);
+  }
   await expect(page.locator('#owned-status')).toContainText('Your saved shop is ready');expect(f.counts()).toMatchObject({links:1,signatures:3});
+  if(callback){
+    expect(f.challengeRequests).toEqual([callbackRequest]);
+    expect(await page.evaluate(()=>({exchanges:(window as any).codeExchanges,enter:(window as any).enter,query:location.search,intent:sessionStorage.getItem('copper-acorn.social-return')}))).toEqual({exchanges:1,enter:true,query:'?world_id='+world,intent:null});
+    expect(await page.evaluate(()=>(window as any).creationKey)).toBe('copper-acorn-player-v1:did:privy:fixture-user');
+  }
   await page.locator('#owned-check').click();await expect(page.locator('#owned-status')).toContainText('Your saved shop is ready');expect(f.counts().signatures).toBe(3);
   expect(await page.locator('#online-account').innerText()).not.toMatch(/wallet|near|privy|crypto|blockchain/i);
   await page.locator('#owned-signout').click();await expect(page.locator('#owned-login')).toBeVisible();expect(await page.evaluate(()=>(window as any).didLogout)).toBe(true);

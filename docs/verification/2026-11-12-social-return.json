@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-12",
+  "problem": "Google authorization returns to the welcome menu because setup replies from the provider iframe are dropped before game creation",
+  "cause": "The handler accepted JSON strings only; the live provider sends structured object replies",
+  "change": "Accept object and JSON string replies after exact source-window and origin checks",
+  "live_provider_check": {
+    "scope": "Readiness handshake only, isolated fictional application session; original deployed handler versus corrected message handling",
+    "before": {
+      "patched": false,
+      "ping": "Embedded wallet WebView failed to become ready",
+      "provider_message_types": [
+        "object"
+      ],
+      "provider_replies": 96,
+      "exact_iframe_source": true,
+      "page_errors": [],
+      "frame_loaded": true,
+      "backend_writes": 0,
+      "real_consent": false,
+      "root_signatures": 0
+    },
+    "after": {
+      "patched": true,
+      "ping": true,
+      "provider_message_types": [
+        "object"
+      ],
+      "provider_replies": 1,
+      "exact_iframe_source": true,
+      "page_errors": [],
+      "frame_loaded": true,
+      "backend_writes": 0,
+      "real_consent": false,
+      "root_signatures": 0
+    }
+  },
+  "regressions": {
+    "old_source_callback_test": "Fails: setup approval reply ignored; game does not open",
+    "corrected_privy_browser_tests": 13,
+    "checks": "Same request ID resumed; one code exchange; one game bound; device access authorized; enter=true; callback removed; no repeated login; wrong origin/window rejected"
+  },
+  "other_checks": {
+    "node_tests": 130,
+    "production_stasho_build": true,
+    "approved_art_hashes_unchanged": 76
+  },
+  "not_verified": [
+    "Completed real-user Google consent and first-game creation",
+    "Real-player signing or cross-browser recovery"
+  ],
+  "new_model_requests": 0,
+  "player_data_sent": false
+}

@@ -40,8 +40,8 @@ async function client(){
     if(target.origin!=='https://auth.privy.io')throw Error('Game access could not be initialized.');
     iframe.src=target.href;iframe.hidden=true;iframe.title='Saved game access';
     window.addEventListener('message',event=>{
-      if(event.source!==iframe.contentWindow||event.origin!==target.origin||typeof event.data!=='string')return;
-      try{sdk.embeddedWallet.onMessage(JSON.parse(event.data));}catch{}
+      if(event.source!==iframe.contentWindow||event.origin!==target.origin)return;
+      try{sdk.embeddedWallet.onMessage(typeof event.data==='string'?JSON.parse(event.data):event.data);}catch{}
     });
     document.body.append(iframe);sdk.setMessagePoster({postMessage:message=>iframe.contentWindow!.postMessage(message,target.origin),reload:()=>{iframe.src=target.href;}});
     return sdk;
