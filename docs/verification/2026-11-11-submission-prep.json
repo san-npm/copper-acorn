@@ -55,15 +55,11 @@
     {
       "path": "docs/demo/arena.png",
       "sha256": "71bf4529e10a7a0a967cf5de7c298f8b836f18de6d824936ef7ac6139e961f09"
-    },
-    {
-      "path": "docs/demo/walkthrough.mp4",
-      "sha256": "60e2f0cac7c821a93e5d2335f0ea3a773c1ed982258a7b7dbe8b7cb1d0fdfee0"
     }
   ],
   "media": {
-    "origin": "Actual isolated local Sandbox capture; MP4 conversion only",
-    "duration_seconds": 21.28,
+    "origin": "Actual isolated local Sandbox capture",
+    "video_status": "Removed on 2026-11-12 at the owner's request; the owner will record the replacement",
     "real_google_login": false,
     "live_inference": false,
     "public_testnet_transactions": false

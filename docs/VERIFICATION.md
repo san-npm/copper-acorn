@@ -16,7 +16,7 @@ The subsequent [main CI run](https://github.com/san-npm/copper-acorn/actions/run
 
 ## Submission preparation
 
-The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. [Submission material](SUBMISSION.md) includes the MP4, screenshots and draft text; nothing was submitted or posted.
+The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. [Submission material](SUBMISSION.md) includes screenshots and draft text; the previous video was removed on 12 November at the owner's request, and the owner will record its replacement. Nothing was submitted or posted.
 
 ## Onboarding follow-up
 
