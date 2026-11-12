@@ -1,8 +1,8 @@
-# Submission preparation
+# Hackathon submission
 
 Track: **Games With Real Economies** (`games`). Deadline: **14 November 2026, 23:59 UTC**, checked against the [official rules](https://nearhackathon.com/HACKATHON.md) on 12 November.
 
-Project summary, demo material and a reproducible local walkthrough are prepared. The entry has not been submitted. See the [requirements checklist](HACKATHON_CHECKLIST.md) for verification status and submission inputs.
+Submitted on **12 November 2026** after the owner approved the exact application and contact notice. The organizer’s API returned **HTTP 201**, confirming the entry was saved. Personal submission details and the receipt are stored privately outside Git. See the [requirements checklist](HACKATHON_CHECKLIST.md) for product verification status.
 
 ## Project description
 
@@ -32,11 +32,11 @@ Code: https://github.com/san-npm/copper-acorn
 
 The owner has published the [demo post](https://x.com/3615crypto/status/2120878487804289264). X’s public embed confirms the hackathon name, @NEARProtocol and #NEARHackathon; X’s media metadata confirms an attached gameplay video (2 minutes 44 seconds). The text above is the prepared caption; the published wording is visible in the linked post.
 
-## Before sending
+## Submission status
 
-1. Supply the team lead's name, contact email, team size and an owner-controlled NEAR mainnet payout address. Disclose another entry if applicable. Keep personal submission data out of Git.
-2. Agree to the organizers' contact notice: “I agree that the organizers may use these details to review our submission and contact us about this hackathon.”
-3. Review the full final submission and explicitly approve sending it. The demo-post URL is recorded; the application has not been submitted.
+The application includes the public repository and demo-post links above. Team/contact/payout details and the organizers' contact notice were explicitly approved before sending. Judging is pending.
+
+If a submitted field needs correction, use the organizers' [request-changes page](https://nearhackathon.com/request-changes). The project should not be submitted a second time.
 
 New-player creation/signing/recovery remains a product verification limit, documented in the [verification report](VERIFICATION.md). The free local route is reproducible without Google.
 

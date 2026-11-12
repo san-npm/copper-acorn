@@ -69,7 +69,7 @@ After contract changes, rebuild WebAssembly and run `node scripts/bundle-contrac
 
 ## Hackathon information
 
-Started in November 2026 during the [hackathon's eligible period](https://nearhackathon.com/HACKATHON.md). See the [submission draft](docs/SUBMISSION.md) and [requirements checklist](docs/HACKATHON_CHECKLIST.md). The project has not been submitted.
+Started in November 2026 during the [hackathon's eligible period](https://nearhackathon.com/HACKATHON.md). See the [submission draft](docs/SUBMISSION.md) and [requirements checklist](docs/HACKATHON_CHECKLIST.md). Submitted to NEAR HACKATHON on **12 November 2026**.
 
 Built with AI coding assistance using NEAR SDK, Phaser, Supabase, Privy and TypeSafe/Jev. Dependencies are pinned. [Credits](docs/ASSET_CREDITS.md) list third-party material; builds use the committed game assets.
 

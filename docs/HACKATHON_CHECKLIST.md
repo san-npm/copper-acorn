@@ -11,7 +11,7 @@ The official rules say the track hints/integrations and example prompts are opti
 | Public repository, reproducible README, license | This repository, lockfiles, local commands, CI and Apache-2.0 license. Public export excludes keys/private source packs. |
 | Disclose templates/libraries/AI assistance | README and asset credits identify dependencies and generated/original artwork. |
 | Public demo post on X | [Published by the owner](https://x.com/3615crypto/status/2120878487804289264). X’s public embed confirms the hackathon name, @NEARProtocol and #NEARHackathon; media metadata confirms an attached video. A local-only demo requires video (Q-012). |
-| Submit repository and demo-post links before deadline | **Not submitted or authorized by this task.** Team/contact details, the owner's mainnet payout account and consent are still submission inputs. No mainnet deployment is required for this prototype. |
+| Submit repository and demo-post links before deadline | **Submitted on 12 November 2026.** The owner approved the exact fields and contact notice; the organizer’s API confirmed storage with HTTP 201. Personal fields and receipt remain private. No mainnet deployment is required for this prototype. |
 | Public repo through judging; independent projects disclosed | Keep it public through judging. Each person may submit up to two independent projects; if another entry exists, both READMEs must name it (Q-015). No second entry is asserted here. |
 
 ## Example prompt and product choices
@@ -30,4 +30,4 @@ Each saved shop has its own economy; player-to-player item trading is not implem
 
 ## Release review
 
-[Judge instructions](JUDGE_GUIDE.md), [current verification](VERIFICATION.md) and [security self-review](RELEASE_REVIEW.md) separate actual local contract/browser checks from real-provider and human-playtest gaps. Automated checks cover the core economy, quest chain, two-player arena, recovery and once-only XP. The owner has published the linked demo post. Team/contact/payout details, contact consent and final submission approval remain pending.
+[Judge instructions](JUDGE_GUIDE.md), [current verification](VERIFICATION.md) and [security self-review](RELEASE_REVIEW.md) separate actual local contract/browser checks from real-provider and human-playtest gaps. Automated checks cover the core economy, quest chain, two-player arena, recovery and once-only XP. The owner has published the linked demo post, and the approved application has been submitted. Judging and the documented product verification limits remain outstanding.

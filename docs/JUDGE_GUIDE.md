@@ -44,4 +44,4 @@ The game server validates turns and attests the result. The referee contract rec
 
 The local demo uses disposable browser-held keys, with no social recovery. Hosted shops use NEAR testnet; older shops retain their original keys and contract versions. Google authorization startup and setup-message handling pass on the current hosted build. Completed first-time creation/signing and recovery still need a real-user retest. [Onboarding](ONBOARDING.md) explains that boundary and the hosted limits.
 
-See the [requirements checklist](HACKATHON_CHECKLIST.md) and [security self-review](RELEASE_REVIEW.md). The project has not been submitted to the organizers.
+See the [requirements checklist](HACKATHON_CHECKLIST.md) and [security self-review](RELEASE_REVIEW.md). Submitted to NEAR HACKATHON on **12 November 2026**.
