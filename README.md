@@ -6,8 +6,6 @@ Includes a guild quest chain, two side orders, and a shared arena with eight cla
 
 [Play the hosted build](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) · [Demo video](docs/demo/demo-near-hack.mp4) · [Judge guide](docs/JUDGE_GUIDE.md) · [Release checks](docs/VERIFICATION.md)
 
-**Login activation pending:** the current game origin still needs to be added to Privy’s allowed origins before Google login at this address can complete.
-
 ## Where NEAR fits
 
 - One NEP-245 multi-token contract per saved world holds ingredients, potions and Copper. Contracts validate recipes, inventories, purchases and merchant investment.
