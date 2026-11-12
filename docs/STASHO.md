@@ -1,6 +1,8 @@
 # Deploy from GitHub
 
-Connected and verified on 10 November 2026. The [reviewed setup PR](https://github.com/san-npm/copper-acorn/pull/1) is merged; the [first native deployment](https://github.com/san-npm/copper-acorn/actions/runs/42872260231) succeeded. [Current game](https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh/).
+Connected and verified on 10 November 2026. The [reviewed setup PR](https://github.com/san-npm/copper-acorn/pull/1) is merged; the [first native deployment](https://github.com/san-npm/copper-acorn/actions/runs/42872260231) succeeded. [Current game](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/).
+
+The current build and backend origin settings are published. Its exact origin still needs to be added in Privy’s allowed origins before Google sign-in is activated.
 
 The repository root is the application root. Stasho publishes the static frontend; Supabase provides Auth, persistence and the shared arena backend.
 
