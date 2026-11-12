@@ -10,9 +10,10 @@ Copper Acorn is a pixel-art alchemy shop game. Players gather ingredients, brew 
 
 ## Demo material
 
+- [Owner-recorded demo (MP4, 2 minutes 44 seconds)](demo/demo-near-hack.mp4)
 - [Town](demo/town.png), [completed crafted sale](demo/crafted-sale.png), [arena](demo/arena.png)
 
-The previous video was removed at the owner's request. The owner will record the replacement submission video.
+The demo is the owner's replacement recording, converted from MOV to H.264 MP4 at its original 3446 × 2000 resolution, with the full duration and audio retained. It shows the shop, crafting and arena. The original MOV remains unchanged. [Media checks](verification/2026-11-12-owner-demo.json) record the conversion separately from the automated gameplay checks.
 
 The screenshots are actual captures from an isolated local Sandbox using the approved game artwork and browser-held disposable keys. They do not demonstrate real Google consent, live inference or public-testnet transactions. The capture uses reduced motion for stable screenshots. No player credentials or private source packs are included.
 
@@ -26,12 +27,12 @@ Play: https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.a
 
 Code: https://github.com/san-npm/copper-acorn
 
-Attach the owner's replacement video or the screenshots. This draft has not been posted.
+Attach the owner-recorded demo or the screenshots. This draft has not been posted.
 
 ## Before sending
 
 1. Confirm completed new-player Google setup/signing and recovery; only authorization startup is verified on the hosted build. The free local route is reproducible without Google.
-2. Record the replacement video, publish the demo post and retain its public URL. A video is required if judges rely on a local-only demo.
+2. Publish the demo post with the owner's recording and retain its public URL. A video is required if judges rely on a local-only demo.
 3. Supply the team lead, email, team size and an owner-controlled NEAR payout account. Disclose another entry if applicable. Keep personal submission data out of Git.
 4. Review the final fields and explicitly agree to the organizers' contact notice before sending the form. Nothing has been submitted, and no X post has been sent.
 

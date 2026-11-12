@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-12",
+  "source": {
+    "file": "demo-near-hack.mov",
+    "supplied_by": "project owner",
+    "bytes": 947498900,
+    "duration_seconds": 163.803333,
+    "sha256": "5bdeafca9066e3fec81ddeafb19f57ff73c29547619d90fa59fb318b619d2685",
+    "original_unchanged": true
+  },
+  "output": {
+    "path": "docs/demo/demo-near-hack.mp4",
+    "bytes": 87322943,
+    "duration_seconds": 163.833333,
+    "width": 3446,
+    "height": 2000,
+    "frames_per_second": 30,
+    "sha256": "d3bb44b825bd0dc1b32071b26a77fa28930d022f47c5506a158d1b2d43a00b18"
+  },
+  "conversion": {
+    "video": "H.264, libx264, CRF 18, fast preset, yuv420p",
+    "audio": "Original AAC stream copied",
+    "resolution_changed": false,
+    "trimmed": false,
+    "frame_rate": "Normalized to 30 fps",
+    "metadata": "Source metadata and chapters omitted; faststart enabled"
+  },
+  "checks": {
+    "full_audio_video_decode": "Passed: ffmpeg -xerror completed without decode errors",
+    "visual_review": "Seven source sample frames covering town, crafting, shelves and training arena",
+    "original_recording_retained": true
+  },
+  "scope": "Media conversion only. No new independent gameplay, Google onboarding, account recovery or multiplayer verification.",
+  "social_post_sent": false,
+  "submission_sent": false
+}
