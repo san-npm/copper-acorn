@@ -49,5 +49,34 @@
     "Real-player signing or cross-browser recovery"
   ],
   "new_model_requests": 0,
-  "player_data_sent": false
+  "player_data_sent": false,
+  "deployment": {
+    "urls": [
+      "https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh"
+    ],
+    "run": "https://github.com/san-npm/copper-acorn/actions/runs/43203854211",
+    "source_commit": "6399dbfca6f284e996ecb0fc085f8e8f92243c8d",
+    "artifact": {
+      "origin": "https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh",
+      "files": 121,
+      "bytes": 25051491,
+      "all_match": true,
+      "approved_art_files": 76
+    },
+    "backend_access_checks": 19,
+    "backend_functions": {
+      "game-session": 26,
+      "game-api": 28,
+      "arena-api": 20
+    },
+    "jwt_verification": true,
+    "previous_origins_preserved": true,
+    "world_counts_before_and_after": {
+      "total": 4,
+      "legacy": 4,
+      "player_owned": 0
+    },
+    "provider_origin_allowed": false,
+    "activation_pending": "Owner must add this exact origin in Privy Dashboard; the available app-settings API is read-only"
+  }
 }

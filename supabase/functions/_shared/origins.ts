@@ -1,5 +1,6 @@
-export const publishedOrigin = 'https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh';
+export const publishedOrigin = 'https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh';
 export const previousOrigins = [
+  'https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh',
   'https://bafybeihpt6dmy4sfvql72v4vkrfs774yv6kccjk6tu5ni42pehi4ifyaly.ipfs.aleph.sh',
   'https://bafybeid6rjjrd62guu463w7irbp3g6zf5sunhui7xxmh6gvtdawnvgvree.ipfs.aleph.sh',
   'https://bafybeievcuwakpltpmgz5gw3hdvstygempknjj27wy7tgj7jzmf2ynnp4a.ipfs.aleph.sh',

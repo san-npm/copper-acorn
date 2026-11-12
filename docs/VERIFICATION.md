@@ -16,6 +16,8 @@ The subsequent [main CI run](https://github.com/san-npm/copper-acorn/actions/run
 
 ## Submission preparation
 
+The 12 November [new-game login fix](https://github.com/san-npm/copper-acorn/pull/11) accepts the live setup iframe's structured replies as well as JSON strings, preserving exact source-window and origin checks. The old handler timed out while receiving object replies; the corrected handling reaches readiness. All 13 isolated login tests and 130 Node tests pass. The [corrected hosted build](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) matches 121 compiled files; backend origin updates and 19 access checks pass. Its new exact origin still needs to be added in the Privy Dashboard before login at that address is activated. Existing addresses remain accepted by the backend. [Detailed evidence](verification/2026-11-12-social-return.json). Completed real-user creation/signing/recovery is still unverified.
+
 The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. The previous video was removed on 12 November at the owner's request. [Submission material](SUBMISSION.md) now includes the owner's replacement recording, screenshots and draft text. The [replacement media checks](verification/2026-11-12-owner-demo.json) cover conversion and playback validity; they do not independently verify the recorded gameplay or account setup. Nothing was submitted or posted.
 
 ## Onboarding follow-up
