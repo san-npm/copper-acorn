@@ -10,6 +10,7 @@ Copper Acorn is a pixel-art alchemy shop game with turn-based player duels, buil
 
 ## Demo material
 
+- [Public demo post on X](https://x.com/3615crypto/status/2120878487804289264)
 - [Owner-recorded demo (MP4, 2 minutes 44 seconds)](demo/demo-near-hack.mp4)
 - [Town](demo/town.png), [completed crafted sale](demo/crafted-sale.png), [arena](demo/arena.png)
 
@@ -17,7 +18,7 @@ The demo is the owner's replacement recording, converted from MOV to H.264 MP4 a
 
 The screenshots are actual captures from an isolated local Sandbox using the approved game artwork and browser-held disposable keys. They do not demonstrate real Google consent, live inference or public-testnet transactions. The capture uses reduced motion for stable screenshots. No player credentials or private source packs are included.
 
-## Draft X post
+## Prepared caption
 
 Built Copper Acorn at NEAR HACKATHON: gather herbs, brew potions, run a shop and challenge players to turn-based duels.
 
@@ -29,13 +30,14 @@ Play: https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.a
 
 Code: https://github.com/san-npm/copper-acorn
 
-Attach the owner-recorded demo or the screenshots. This draft has not been posted.
+The owner has published the [demo post](https://x.com/3615crypto/status/2120878487804289264). X’s public embed confirms the hackathon name, @NEARProtocol and #NEARHackathon; X’s media metadata confirms an attached gameplay video (2 minutes 44 seconds). The text above is the prepared caption; the published wording is visible in the linked post.
 
 ## Before sending
 
-1. Confirm completed new-player Google setup/signing and recovery; only authorization startup is verified on the hosted build. The free local route is reproducible without Google.
-2. Publish the demo post with the owner's recording and retain its public URL. A video is required if judges rely on a local-only demo.
-3. Supply the team lead, email, team size and an owner-controlled NEAR payout account. Disclose another entry if applicable. Keep personal submission data out of Git.
-4. Review the final fields and explicitly agree to the organizers' contact notice before sending the form. Nothing has been submitted, and no X post has been sent.
+1. Supply the team lead's name, contact email, team size and an owner-controlled NEAR mainnet payout address. Disclose another entry if applicable. Keep personal submission data out of Git.
+2. Agree to the organizers' contact notice: “I agree that the organizers may use these details to review our submission and contact us about this hackathon.”
+3. Review the full final submission and explicitly approve sending it. The demo-post URL is recorded; the application has not been submitted.
+
+New-player creation/signing/recovery remains a product verification limit, documented in the [verification report](VERIFICATION.md). The free local route is reproducible without Google.
 
 No mainnet deployment, fast-forward feature or NEAR Intents integration is required by the official rules. The [judge guide](JUDGE_GUIDE.md) explains the actual contracts and service trust boundaries.

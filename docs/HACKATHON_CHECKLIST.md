@@ -10,7 +10,7 @@ The official rules say the track hints/integrations and example prompts are opti
 | Work within the eligible period | Project work began in November 2026. The official window starts 19 October and ends 14 November 2026 at 23:59 UTC (Q-001). |
 | Public repository, reproducible README, license | This repository, lockfiles, local commands, CI and Apache-2.0 license. Public export excludes keys/private source packs. |
 | Disclose templates/libraries/AI assistance | README and asset credits identify dependencies and generated/original artwork. |
-| Public demo post on X | **Pending; the owner must publish it.** It must identify NEAR HACKATHON, tag @NEARProtocol and #NEARHackathon, and include a video/screenshots. A local-only demo requires video (Q-012). |
+| Public demo post on X | [Published by the owner](https://x.com/3615crypto/status/2120878487804289264). X’s public embed confirms the hackathon name, @NEARProtocol and #NEARHackathon; media metadata confirms an attached video. A local-only demo requires video (Q-012). |
 | Submit repository and demo-post links before deadline | **Not submitted or authorized by this task.** Team/contact details, the owner's mainnet payout account and consent are still submission inputs. No mainnet deployment is required for this prototype. |
 | Public repo through judging; independent projects disclosed | Keep it public through judging. Each person may submit up to two independent projects; if another entry exists, both READMEs must name it (Q-015). No second entry is asserted here. |
 
@@ -30,4 +30,4 @@ Each saved shop has its own economy; player-to-player item trading is not implem
 
 ## Release review
 
-[Judge instructions](JUDGE_GUIDE.md), [current verification](VERIFICATION.md) and [security self-review](RELEASE_REVIEW.md) separate actual local contract/browser checks from real-provider and human-playtest gaps. Automated checks cover the core economy, quest chain, two-player arena, recovery and once-only XP. Demo media/X publication and submission remain separate pending owner tasks.
+[Judge instructions](JUDGE_GUIDE.md), [current verification](VERIFICATION.md) and [security self-review](RELEASE_REVIEW.md) separate actual local contract/browser checks from real-provider and human-playtest gaps. Automated checks cover the core economy, quest chain, two-player arena, recovery and once-only XP. The owner has published the linked demo post. Team/contact/payout details, contact consent and final submission approval remain pending.

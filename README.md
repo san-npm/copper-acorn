@@ -4,7 +4,7 @@ A pixel-art browser game about running an alchemy shop and fighting turn-based d
 
 You inherit a shop in Briarbridge. Gather ingredients, brew potions, choose your selling prices and supply the town. Merchant stock and budgets affect what you can buy and sell. Between orders, enter the shared arena to practise skills or challenge another player.
 
-[Play](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) · [Watch the demo](docs/demo/demo-near-hack.mp4) · [Judge walkthrough](docs/JUDGE_GUIDE.md)
+[Play](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) · [Demo on X](https://x.com/3615crypto/status/2120878487804289264) · [Video file](docs/demo/demo-near-hack.mp4) · [Judge walkthrough](docs/JUDGE_GUIDE.md)
 
 ## What you can do
 
