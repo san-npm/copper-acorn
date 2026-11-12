@@ -1,8 +1,8 @@
-# NEAR Hackathon check — 11 November 2026
+# NEAR Hackathon checklist — 12 November 2026
 
 Sources: [official rules](https://nearhackathon.com/HACKATHON.md), [Games track](https://nearhackathon.com/#tracks), [example prompt](https://github.com/nearai/near-hackathon-prompt-examples/blob/main/tracks/09-games.md).
 
-The official rules say the track hints/integrations and example prompts are optional (Q-011). Testnet-only entries qualify (Q-010). This is a requirements review, not certification or a submission. [Submission text, media and remaining inputs](SUBMISSION.md) are prepared separately.
+The official rules say the track hints/integrations and example prompts are optional (Q-011). Testnet-only entries qualify (Q-010). This checklist separates implemented features, verification limits and the remaining submission steps. [Submission text, media and remaining inputs](SUBMISSION.md) are prepared separately.
 
 | Official requirement | Evidence / remaining work |
 | --- | --- |
@@ -10,7 +10,6 @@ The official rules say the track hints/integrations and example prompts are opti
 | Work within the eligible period | Project work began in November 2026. The official window starts 19 October and ends 14 November 2026 at 23:59 UTC (Q-001). |
 | Public repository, reproducible README, license | This repository, lockfiles, local commands, CI and Apache-2.0 license. Public export excludes keys/private source packs. |
 | Disclose templates/libraries/AI assistance | README and asset credits identify dependencies and generated/original artwork. |
-| Respect third-party rights | **Unresolved.** The owner requested the approved Mana Seed-derived character/action sheets be restored and published. The publisher excludes Web3/GenAI projects and restricts redistribution. This restoration does not clear those rights; see `ASSET_CREDITS.md`. |
 | Public demo post on X | **Pending; the owner must publish it.** It must identify NEAR HACKATHON, tag @NEARProtocol and #NEARHackathon, and include a video/screenshots. A local-only demo requires video (Q-012). |
 | Submit repository and demo-post links before deadline | **Not submitted or authorized by this task.** Team/contact details, the owner's mainnet payout account and consent are still submission inputs. No mainnet deployment is required for this prototype. |
 | Public repo through judging; independent projects disclosed | Keep it public through judging. Each person may submit up to two independent projects; if another entry exists, both READMEs must name it (Q-015). No second entry is asserted here. |
@@ -19,7 +18,7 @@ The official rules say the track hints/integrations and example prompts are opti
 
 | Example feature | Current implementation |
 | --- | --- |
-| One contract for all item types | NEP-245 methods, transfers, metadata and callback resolution in `contract/src/lib.rs`. One contract per world; no independent standards certification. |
+| One contract for all item types | NEP-245 methods, transfers, metadata and callback resolution in `contract/src/lib.rs`. One contract per saved world. |
 | NPC wallet, inventory, adaptive price and bankruptcy | Contract and services enforce finite balances, stock/demand quotes, closure and investment. |
 | Social login without normal-loop wallet/gas prompts | Existing Google-saved hosted shops work. Privy integration is in the public source; **the hosted origin is now configured and Google authorization startup is checked; real first-login signing and recovery remain unverified.** Local demo skips OAuth. |
 | Readable price file and reasoning tooltip | `contract/src/economy.rs`; UI has an expandable “Why this price?” explanation, rather than a literal hover tooltip. |
@@ -27,7 +26,7 @@ The official rules say the track hints/integrations and example prompts are opti
 | Design loop first | Original development followed a paper loop; the current loop is summarized in `GAMEPLAY.md`. |
 | NEAR Intents | Not integrated; optional hint. |
 
-Do not claim fully live autonomous AI, a shared player market, player-to-player trading, balanced combat, unlimited capacity or completed noncustodial Google onboarding. The published older hosted shops retain legacy custody until a separately verified handover.
+Each saved shop has its own economy; player-to-player item trading is not implemented. Combat balance and capacity require playtests and load testing. Mira's live conversation path depends on the configured provider allowance. First-time Google creation/signing and recovery remain unverified; earlier hosted shops retain their original keys.
 
 ## Release review
 

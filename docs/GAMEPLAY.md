@@ -16,6 +16,6 @@ The main quest starts with brewing and selling a tonic, then supplying two Focus
 
 Three merchants own separate wallets and inventory. More stock lowers their quotes; recent consumption raises demand. An empty Copper purse closes the shop; a fixed investment reopens it. Mana refills use a finite prefunded reserve, not a liquidity pool.
 
-The arena has eight classes and three skills each, levels1–20, movement on a grid, and60-second turns. Combat ends at zero health. Only skills heal; there are no combat potions or item/Copper stakes. Training grants no XP and the chicken does not attack. Combat is server-authoritative; courtyard walking starts locally and reconciles with its confirmed position.
+The arena has eight classes and three skills each, levels 1–20, movement on a grid, and 60-second turns. Combat ends at zero health. Only skills heal; there are no combat potions or item/Copper stakes. Training grants no XP and the chicken does not attack. Combat is server-authoritative; courtyard walking starts locally and reconciles with its confirmed position.
 
 The game has no seven-day ending. Fast-forward mode was deliberately removed from the product.

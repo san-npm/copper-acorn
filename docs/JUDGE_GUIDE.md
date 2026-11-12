@@ -1,10 +1,12 @@
 # Try Copper Acorn
 
-Copper Acorn is an alchemy shop prototype for Games With Real Economies (`games`). Gather ingredients, brew potions, set a shelf price and sell actual stock. Three merchants have separate balances and inventories; their stock and recent consumption change prices.
+Copper Acorn is a pixel-art alchemy shop game with turn-based player duels, built for **Games With Real Economies** (`games`). Run a shop, supply the town and take your character into the arena.
 
-## Free reproducible route
+[Hosted game](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) · [Recorded demo](demo/demo-near-hack.mp4) · [Verification](VERIFICATION.md)
 
-Use Node24+, npm and Rust/rustup on macOS/Linux, or WSL. No account, API key, purchase or mainnet funds are needed.
+## Run the local demo
+
+Use Node **24+**, npm and Rust/rustup on macOS/Linux, or WSL. No account, API key, purchase or mainnet funds are needed. This route runs the current contracts in an isolated NEAR Sandbox.
 
 ```sh
 npm ci
@@ -13,35 +15,33 @@ cargo build --locked -p alchemy-sandbox --bin game-api
 npm run dev:ownership
 ```
 
-Open `http://127.0.0.1:5181/?owned=1`. If these ports are occupied, use `GAME_API_PORT=3903 GAME_WEB_PORT=5183 npm run dev:ownership` and open `http://127.0.0.1:5183/?owned=1`.
+Open **http://127.0.0.1:5181/?owned=1**. If the default ports are occupied, run `GAME_API_PORT=3903 GAME_WEB_PORT=5183 npm run dev:ownership` and open `http://127.0.0.1:5183/?owned=1`.
 
-1. Create a new game. Choose a character and nickname; both stay with that game.
-2. Open the Cauldron and brew a Healing Tonic. Its recipe consumes ingredients and one Copper.
-3. Put it on a shelf for 13 Copper. Open Customers and serve the gardener. Starting Copper moves 40→39→52; the tonic leaves your inventory. Reload to confirm persistence while this Sandbox is running.
-4. Read the guild letter. The main commission progresses through the first crafted sale, Focus Draught trial and Restoration Elixir delivery. Mira's and Rowan's orders are separate side quests.
-5. Visit a merchant. Read “Why this price?”, trade a chosen quantity and inspect the actual stock/balance changes. The price rule is `contract/src/economy.rs`.
-6. Run the market from the ledger. Ten merchant turns advance its in-game day and replenish gathering. Reopening the page does not reset the day.
-7. Walk through the courtyard portal. Click the chicken, then Fight, to test skills; stop training whenever you want. Training has no XP or retaliation.
+## Actions and expected results
 
-## Two-player arena
+1. **Create a game.** Choose a character and nickname. Each save keeps its own identity and shop.
+2. **Brew a Healing Tonic.** Open Cauldron and brew using the starting ingredients. The recipe consumes ingredients and one Copper: the starting balance changes from **40 to 39**.
+3. **Complete a sale.** Put the tonic on a shelf for **13 Copper**, open Customers and serve the gardener. Copper reaches **52**, and the sold tonic leaves the player's inventory. Reload to check persistence while this Sandbox is running.
+4. **Read the guild letter.** The first crafted sale starts the potion commissions: two Focus Draughts, then one Restoration Elixir. Mira's tonic order and Rowan's water order are optional side quests.
+5. **Inspect merchant trading.** Visit a merchant, open “Why this price?”, then buy or sell a quantity. Check the quoted price, stock and Copper changes. The shared pricing rule is in [economy.rs](../contract/src/economy.rs).
+6. **Advance the market.** Start the market in the ledger. Ten merchant turns advance the in-game day and replenish gathering allowances. Reloading does not reset the day.
+7. **Practise combat.** Walk through the portal, click the chicken and choose Fight. Test movement and skills, then stop training. The chicken does not attack and training awards no XP.
 
-Open the same local URL in two independent browser profiles or contexts. Create different saved games and enter the arena in each. Click the other player, send a challenge and accept it from the invited player. Each turn has 60 seconds; movement uses grid cells and skills use AP, range and line-of-sight rules. Combat ends at zero health. Items and Copper are not staked.
+## Check player duels
 
-The two-browser and ownership test suites exercise challenges, movement, casting, reconnect, timeout, completion and once-only progression. They are automated players, not a human usability or load study. The referee contract records the server-attested result; it does not replay the fight independently.
+Open the same local URL in two independent browser profiles or contexts. Create a different saved game in each and enter the arena. Click the other character to send a challenge, then accept it from the invited player.
 
-## What runs where
+Move on the grid and cast skills within their action-point, range and line-of-sight limits. Turns last **60 seconds** and pass automatically when time expires. Combat ends at zero health. Each of the eight classes has three skills; levels are capped at 20. Items and Copper are not staked.
 
-| Component | Role |
-| --- | --- |
-| NEAR item contract | NEP-245 item balances, crafting, sales, merchant trades, investments and funded quest orders; one contract per saved world. |
-| Arena referee contract | Once-only PvP result/progression records. Training grants no XP. |
-| Game service | Validates identity and requests, runs deterministic combat, keeps durable operation records and submits NPC/referee actions. |
-| Jev | Classifies free-text NPC intent when a server-side allowance is available. Code controls goods, prices and payments. Authored choices/recorded judgments support free repeatable checks. |
+The game server validates turns and attests the result. The referee contract records that result and its progression award once. The [automated ownership tests](../web/tests/player-ownership.spec.ts) exercise actual Sandbox contracts; the browser suites also cover challenge, reconnect and timeout paths. This does not establish human playtest quality or production capacity.
 
-The local route uses actual contracts on an isolated Sandbox, not public testnet receipts. Its browser-held signing keys are for a disposable local game and have no social recovery. Hosted older shops use NEAR testnet and retain their original immutable contract versions. The local route exercises the current contracts. The public Google/Privy app now allows the exact hosted origin, and Google authorization startup was checked. Completed first-time provisioning/signing and recovery remain unverified; existing hosted saves are preserved. Do not share an owner's login to let judges in.
+## NEAR and service boundaries
 
-## Checks and limitations
+- **Item contract:** NEP-245 balances for ingredients, potions and Copper; validates crafting, sales, merchant trades, investments and quest payments. Each saved world has its own economy.
+- **Referee contract:** records approved player-duel results and progression. Training grants no XP.
+- **Game services:** handle identity, saves, deterministic combat, durable requests and NPC/referee actions.
+- **Jev:** interprets Mira's conversation intent when a server-side allowance is available. Application rules control goods and payments. Local authored choices require no live model requests.
 
-See [release verification](VERIFICATION.md), [security self-review](RELEASE_REVIEW.md), [onboarding](ONBOARDING.md) and the [hackathon checklist](HACKATHON_CHECKLIST.md).
+The local demo uses disposable browser-held keys, with no social recovery. Hosted shops use NEAR testnet; older shops retain their original keys and contract versions. Google authorization startup and setup-message handling pass on the current hosted build. Completed first-time creation/signing and recovery still need a real-user retest. [Onboarding](ONBOARDING.md) explains that boundary and the hosted limits.
 
-There is no player-to-player item market, combat stake, proven class balance, production load benchmark, NEAR Intents integration or seven-day game ending. The example fast-forward feature was removed by product choice; the official integration hints are optional. Nothing has been submitted to the organizers.
+See the [requirements checklist](HACKATHON_CHECKLIST.md) and [security self-review](RELEASE_REVIEW.md). The project has not been submitted to the organizers.

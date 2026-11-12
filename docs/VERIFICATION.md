@@ -1,50 +1,61 @@
-# Current release verification — 11 November 2026
+# Verification — 12 November 2026
 
-The release review covers the public source and the fixes described in [RELEASE_REVIEW.md](RELEASE_REVIEW.md). [Judge instructions](JUDGE_GUIDE.md) provide the free reproducible route. Older version-specific checks remain in Git history; they are not claims about current onboarding.
+The latest full runtime check at [`68dc77f`](https://github.com/san-npm/copper-acorn/actions/runs/43214202799) passed all CI jobs. The documentation revision that follows it changes repository information only.
 
-## Map refresh test follow-up
+| Check | Result | Coverage |
+| --- | --- | --- |
+| Node tests | 130 passed | Request validation, account isolation, economy rules, NPC orders, arena actions and retry handling. |
+| Rust contract tests | 34 passed | Item contract and arena referee. |
+| Artwork checks | 9 passed | Character/action regressions; builds also check all 76 pinned asset hashes. |
+| Browser scenarios | 98 passed | 73 default, 13 social-signing fixtures, 10 hosted-controller checks and 2 actual Sandbox ownership scenarios. |
 
-The following [main run](https://github.com/san-npm/copper-acorn/actions/runs/43118870856) passed the arena recovery checks, then timed out waiting for Leave in the map journey. The fixture clicked a new resource while Refresh ledger was still busy and could read retained text from the previous closed dialog. The application intentionally blocks interactions during that refresh. The test now waits until the refresh control is enabled and verifies the visible resource dialog and its exact title. A private controlled four-second read delay reproduces the previous Leave timeout and passes with the corrected synchronization. All three map scenarios pass locally. Runtime code, artwork and the game address remain unchanged. Failed browser jobs also print their fictional fixture UI context to make later failures diagnosable. [Evidence](verification/2026-11-12-map-refresh.json).
+## What the checks demonstrate
 
-## Arena recovery test follow-up
+The local ownership scenarios execute actual Sandbox contracts for crafting, shelf sales, funded NPC orders, duel settlement and device-access revocation. Two independent browser contexts create different saved characters, join the shared arena, challenge, move, cast, reconnect and finish a match. Tests also cover turn deadlines and once-only progression.
 
-A later [readiness CI](https://github.com/san-npm/copper-acorn/actions/runs/43116452266) failed because a fixture expected the temporary “safe retry” diagnostic. A normal read-only arena refresh replaces that text with the persistent same-request guidance. Holding the fixture until that refresh reproduces the old assertion failure deterministically. The updated test waits for two refreshes and verifies that the exact original request is retained, no automatic POST is sent, and manual retry sends the same body. Both desktop/mobile walking and combat recovery cases pass locally. Runtime code and the hosted address are unchanged. [Evidence](verification/2026-11-12-arena-polling.json).
+The login fixtures use fictional provider identities. They test callback resumption, account matching, exact-window/origin checks and recovery after uncertain requests. Automated browser scenarios establish tested behaviour; human playtest quality and capacity require separate evaluation.
 
-## Mira opening race follow-up
+## Hosted version
 
-The subsequent [main CI run](https://github.com/san-npm/copper-acorn/actions/runs/43082137508/job/130737119042) passed build/contracts and 95 browser checks, then timed out in the second ownership scenario waiting for Mira's Accept order button. Choices were enabled during the initial read, before the automatic greeting disabled them; an early click could be lost. The fix keeps controls disabled through initialization and restores them on failure. A delayed-response regression fails before the fix and passes after it; ten hosted checks and both actual Sandbox ownership scenarios pass locally. [Detailed evidence](verification/2026-11-11-mira-opening.json). The [corrected source CI](https://github.com/san-npm/copper-acorn/actions/runs/43103554379) now passes all jobs, including the exact previously failing scenario. The old failed run remains in history. The [corrected hosted build](https://bafybeico4f7hgkeu6kafrhzrz2ez5q4maog5nvlygwsemedkirjfdfa2gm.ipfs.aleph.sh/) has 121 verified files and 19 passing backend access checks; the owner has now saved its exact Privy origin. A fresh isolated hosted check reached real Google authorization with zero page errors and no backend writes. That address was configured for the 11 November release; the README and submission links now use the 12 November corrected build below. The previous Privy origin was removed; the backend and Supabase Auth still preserve earlier addresses, but new Privy authorization from an old address requires restoring its allowed-origin entry.
+The [current game](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) matches **121 compiled files / 25,051,491 bytes**. The 19 API access/configuration checks pass, including rejection of unrelated origins and unauthenticated requests. Backend functions retain JWT verification.
 
-## Submission preparation
+Public provider settings confirm Google enabled and both the current and previous game addresses allowed. Separate isolated checks of the published version pass the setup-iframe readiness handshake and reach real Google authorization, with zero page errors and zero backend writes. They stop before human consent and do not request real-player signatures. [Login evidence](verification/2026-11-12-social-return.json).
 
-The 12 November [new-game login fix](https://github.com/san-npm/copper-acorn/pull/11) accepts the live setup iframe's structured replies as well as JSON strings, preserving exact source-window and origin checks. The old handler timed out while receiving object replies; the corrected handling reaches readiness. All 13 isolated login tests and 130 Node tests pass. The [corrected hosted build](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) matches 121 compiled files; backend origin updates and 19 access checks pass. The owner has added the new exact origin in Privy; public settings confirm Google enabled and both the current and previous origins allowed. Fresh checks of the published handler reach iframe readiness and real Google authorization with no page errors or backend writes, stopping before human consent. Existing addresses remain accepted by the backend. [Detailed evidence](verification/2026-11-12-social-return.json). Completed real-user creation/signing/recovery is still unverified.
+Existing hosted saves and inventories were preserved. Release checks did not operate an owner's browser or perform economic actions on an owner's hosted shop.
 
-The [cleanup evidence](verification/2026-11-11-submission-prep.json) records a fresh 130-test pass, strict unused-code checking, production build and an actual local craft/sale/arena capture. All 121 frontend files are byte-identical to the deployed release. The recorder rejects non-local targets. The previous video was removed on 12 November at the owner's request. [Submission material](SUBMISSION.md) now includes the owner's replacement recording, screenshots and draft text. The [replacement media checks](verification/2026-11-12-owner-demo.json) cover conversion and playback validity; they do not independently verify the recorded gameplay or account setup. Nothing was submitted or posted.
+## Verification limits
 
-## Onboarding follow-up
+- Completed first-time Google game creation, player signing and recovery still need a real-user retest. An existing saved shop opening successfully does not establish these steps.
+- Earlier hosted shops retain their original backend-held keys and immutable contract versions. The local ownership demo exercises the current contracts with disposable browser-held keys. [Onboarding details](ONBOARDING.md).
+- Human two-player usability, class balance and concurrent-player capacity have not been established. Automated two-browser tests are the current multiplayer evidence.
+- The referee records the server-attested outcome; it does not independently replay combat. Each shop has its own economy, and player-to-player item trading is not implemented.
 
-The [friend onboarding check](verification/2026-11-11-friend-onboarding.json) covers 27 focused browser cases and a fresh build. It verifies the initial loading screen, refresh, saved sessions and exact-origin access checks. Public app configuration and the exact hosted origin are enabled. A hosted check with a fictional game identity reached real provider Google authorization, without backend writes. Real Google consent/signing/recovery remain unverified.
+## Repeat the checks
 
-## Automated checks
+Install/build with the [README](../README.md#try-it-locally--free-no-api-keys), then run:
 
-The [release CI at `aa46b5d`](https://github.com/san-npm/copper-acorn/actions/runs/43106161223) passed: 130 Node tests, 34 Rust tests, 9 artwork checks and 97 browser cases (73 default, 12 Privy fixtures, 10 hosted-controller and 2 actual Sandbox ownership scenarios).
+```sh
+npm test
+npm run build
+cargo test --locked -p briarbridge-alchemy -p briarbridge-arena --lib
+npx playwright install chrome
+npx playwright test
+PRIVY_TEST_ORIGIN=http://127.0.0.1:5190 npx playwright test --config playwright.privy.config.ts
+npx playwright test --config playwright.hosted-owned.config.ts
+npx playwright test --config playwright.owned.config.ts
+```
 
-- Node tests cover request validation, account/session isolation, economic rules, NPC conversations, arena actions, retries and once-only settlement.
-- Rust tests cover the item and referee contracts. Browser ownership tests execute actual Sandbox contracts for crafting, sales, funded NPC orders, PvP settlement and revocation.
-- The default browser suite covers map/artwork, interactions, quests, shelf stock, saved-game UI, market turns and recovery. Separate configurations cover the hosted controller and Privy adapter using fictional provider identities.
-- Two independent browser contexts create different saved alchemists, join the same arena, challenge, move, cast, reconnect and finish. Backend tests verify deadline expiry and replay handling. This is not a two-human usability or load test.
-- Artwork checks and the Stasho build verify the 76 pinned files. Source/private packs are not downloaded at build time.
-- Fresh Semgrep, Gitleaks, Trivy, npm and Cargo audit results are triaged in the self-review. Automated scanners are not a proof of security.
+These suites use disposable local data and fictional sign-in identities. They do not require inference credits or real-player credentials. The [security self-review](RELEASE_REVIEW.md) records scanner findings and their treatment; automated scanners do not establish that the game is free of vulnerabilities.
 
-Exact counts and source fingerprints for the reviewed implementation are recorded in [release evidence](verification/2026-11-11-release.json). CI runs Node/build/artwork and Rust checks plus the four browser configurations without real player credentials or inference credits.
+## Supporting records
 
-## Hosted checks
+| Record | Evidence |
+| --- | --- |
+| New-game callback and provider messages | [Live readiness comparison, callback regression and hosted startup](verification/2026-11-12-social-return.json). |
+| Map/quest fixture synchronization | [Delayed-ledger reproduction and focused checks](verification/2026-11-12-map-refresh.json). |
+| Arena pending-request recovery | [Exact request preservation across background polling](verification/2026-11-12-arena-polling.json). |
+| Mira dialogue initialization | [Delayed-response regression and corrected checks](verification/2026-11-11-mira-opening.json). |
+| Earlier security/build review | [Source fingerprints and results](verification/2026-11-11-release.json). |
+| Owner-recorded demo | [Conversion and playback checks](verification/2026-11-12-owner-demo.json). The recording is separate from automated verification. |
 
-The last published version and its exact-URL access checks are linked from the README and STASHO guide. Publication verification compares the compiled files byte for byte, checks Google return routing, rejects unrelated origins and retains JWT protection. Checking the Google redirect URL does not verify human consent, root signatures or recovery.
-
-Existing hosted saves, inventories, contracts and keys are preserved. No owner browser was controlled and no economic action was performed on an owner's hosted shop during release verification.
-
-## Remaining external checks
-
-The exact hosted origin is configured and real provider Google authorization startup is checked. Real Google consent/provider signing/recovery remain unverified. The owner reports that the configured build works; the precise fresh-game creation and different-browser recovery steps were not specified. The code fixes prevent unentered legacy saves from dismissing the chooser and allow pending old actions to reconcile before new-browser access is restored.
-
-No human two-player playtest, large-load benchmark, mainnet deployment, X post or hackathon submission is claimed.
+[Judge walkthrough](JUDGE_GUIDE.md) · [Hackathon checklist](HACKATHON_CHECKLIST.md) · [Submission preparation](SUBMISSION.md)

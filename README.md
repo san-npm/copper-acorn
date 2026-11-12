@@ -1,23 +1,44 @@
 # Copper Acorn
 
-A pixel-art alchemy shop prototype for **NEAR Hackathon — Games With Real Economies**. Gather ingredients, brew potions and sell them from your shop or trade with NPC merchants. Each merchant has its own wallet and inventory; stock and consumption affect prices.
+A pixel-art browser game about running an alchemy shop and fighting turn-based duels. Built for **NEAR HACKATHON — Games With Real Economies** (`games`).
 
-Includes a guild quest chain, two side orders, and a shared arena with eight classes, turn-based duels and a passive training chicken.
+You inherit a shop in Briarbridge. Gather ingredients, brew potions, choose your selling prices and supply the town. Merchant stock and budgets affect what you can buy and sell. Between orders, enter the shared arena to practise skills or challenge another player.
 
-[Play the hosted build](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) · [Demo video](docs/demo/demo-near-hack.mp4) · [Judge guide](docs/JUDGE_GUIDE.md) · [Release checks](docs/VERIFICATION.md)
+[Play](https://bafybeiaps7mv4ote6v2hlu6okemli63rpqqxb5y6nublenxrino77d6ehe.ipfs.aleph.sh/) · [Watch the demo](docs/demo/demo-near-hack.mp4) · [Judge walkthrough](docs/JUDGE_GUIDE.md)
 
-## Where NEAR fits
+## What you can do
 
-- One NEP-245 multi-token contract per saved world holds ingredients, potions and Copper. Contracts validate recipes, inventories, purchases and merchant investment.
-- Merchant pricing lives in [one Rust file](contract/src/economy.rs). The interface explains the actual stock and demand factors.
-- A separate referee contract records once-only PvP results and progression. Movement and combat turns run on the game server.
-- Jev classifies NPC conversation intent; code limits orders and payments. Recorded merchant judgments support repeatable tests without model credits.
+- **Choose your alchemist.** Pick one of eight characters and a nickname. Each save keeps its character, shop and progress. Characters share alchemy recipes and have different combat skills.
+- **Gather and craft.** Harvest herbs, collect spring water, tap wood essence and mine silver dust. Brew Healing Tonics, Focus Draughts and Restoration Elixirs. Select quantities for repeated tasks.
+- **Run your shop.** Display potions on two shelves, set prices and serve buyers. Listing reserves the goods; serving a buyer completes the sale and pays Copper.
+- **Trade with NPCs.** Buy and sell with Mira, Rowan and Bram. Their stock and budgets affect their prices. Read the explanation behind a quote, or contribute working capital to reopen a closed stall.
+- **Complete quests.** Brew and sell a tonic to begin the guild's potion commissions. Mira's tonic order and Rowan's water order are optional side quests. Trading continues after the story objectives.
+- **Fight other players.** Enter the arena through the portal, send a challenge, move on a grid and use three class skills. Turns last 60 seconds; combat ends at zero health. Levels are capped at 20, with no item or Copper stakes.
 
-This uses NEAR testnet and local Sandbox. No NEAR Intents integration or real-money economy is claimed.
+The passive training chicken lets you test skills without retaliation or XP rewards. You can stop training whenever you want. [Gameplay details](docs/GAMEPLAY.md).
 
-## Run locally — free, no API keys
+## How the economy works
 
-Requires Node **24+**, npm, and Rust/rustup. The pinned Rust toolchain installs the WebAssembly target. The local node runs on macOS/Linux; use WSL on Windows.
+Copper is the shop currency. Brewing consumes recipe ingredients and a Copper fee; a completed sale transfers goods and payment. Each merchant has a separate inventory and balance. Prices respond to stock and recent demand, so a quoted price can change as the market changes.
+
+Start the market from the ledger: ten merchant turns advance the in-game day and replenish gathering allowances. Reloading does not reset them. Each saved shop has its own economy; the arena is shared.
+
+## What NEAR does
+
+The prototype uses **NEAR testnet** for hosted shops and an isolated **NEAR Sandbox** locally. Contracts enforce inventories and payments and keep records of approved duel results.
+
+| Part | Implementation |
+| --- | --- |
+| Ingredients, potions and Copper | One [NEP-245 multi-token contract](contract/src/lib.rs) per saved world holds every item type and its balances. |
+| Crafting, sales and NPC trades | The item contract checks recipes, stock, balances and transfers, including quest payments and merchant investment. |
+| Merchant prices | Quotes and trades share [one readable pricing file](contract/src/economy.rs). The game explains the stock and demand factors behind a quote. |
+| Player duel results | A [separate referee contract](arena-contract/src/lib.rs) records each approved PvP result and its progression award once. The game server runs combat and attests the result. |
+
+Movement, combat and conversation run outside the blockchain. Stasho hosts the website; Supabase handles hosted accounts and services. Privy supports new-game signing. Jev interprets Mira's messages when a server-side allowance is available; application rules control orders and payments. Local NPC choices need no live model requests.
+
+## Try it locally — free, no API keys
+
+Use Node **24+**, npm and Rust/rustup on macOS or Linux, or WSL on Windows. The repository pins the Rust toolchain and WebAssembly target.
 
 ```sh
 npm ci
@@ -26,44 +47,30 @@ cargo build --locked -p alchemy-sandbox --bin game-api
 npm run dev:ownership
 ```
 
-Open **http://127.0.0.1:5181/?owned=1**. Create a game, choose an alchemist and nickname, brew a Healing Tonic, list it and serve its buyer. Walk through the portal and click the chicken to train. Local saves belong to this running disposable Sandbox; they are separate from hosted Google accounts.
+Open **http://127.0.0.1:5181/?owned=1** and create a game. Starting ingredients let you brew a Healing Tonic: Copper changes **40 → 39**. List it for **13 Copper**, then open Customers and serve the gardener: Copper reaches **52** and the sold tonic leaves your inventory. Follow the [judge walkthrough](docs/JUDGE_GUIDE.md) to check quests, merchant prices and two-player combat.
 
-The approved character and action sheets are included and pinned in `deploy/approved-art.json`. Builds verify their hashes and need no artwork downloads or model credits. The retired redraw scripts refuse to overwrite them. Character artwork has third-party licensing restrictions; see [asset credits](docs/ASSET_CREDITS.md).
+The local demo runs actual contracts with disposable browser-held keys. Its saves are separate from hosted Google accounts and remain available while that Sandbox runs. The walkthrough includes port overrides.
 
-## Check the code
+## Verification and current limits
+
+Automated checks cover crafting, sales, quests, merchant rules, two-player combat, reconnect and once-only result recording. Hosted setup-message handling and Google authorization startup pass. **Completed first-time Google game creation, signing and recovery still need a real-user retest.** Earlier hosted saves retain their original backend-held keys and contract versions. See [verification](docs/VERIFICATION.md) and [onboarding](docs/ONBOARDING.md).
+
+Player-to-player item trading is not implemented. Class balance and concurrent-player capacity need human playtests and load testing. Hosted testing has finite save, action and conversation allowances, listed in the onboarding guide.
+
+## Development checks
 
 ```sh
 npm test
 npm run build
 cargo test --locked -p briarbridge-alchemy -p briarbridge-arena --lib
-npx playwright install chrome
-npx playwright test
-PRIVY_TEST_ORIGIN=http://127.0.0.1:5190 npx playwright test --config playwright.privy.config.ts
-npx playwright test --config playwright.hosted-owned.config.ts
-npx playwright test --config playwright.owned.config.ts
 ```
 
-Embedded backend WebAssembly modules are included for Node tests and Edge Function packaging. After changing a contract, rebuild the WebAssembly targets and run `node scripts/bundle-contract.ts`.
+After contract changes, rebuild WebAssembly and run `node scripts/bundle-contract.ts`. See [browser test commands](docs/VERIFICATION.md#repeat-the-checks), the [security self-review](docs/RELEASE_REVIEW.md) and [vulnerability reporting](SECURITY.md).
 
-## Current limits
+## Hackathon information
 
-Google login restores existing hosted shops. The [Privy integration](docs/ONBOARDING.md) for new player-owned games includes the public app configuration. New-game setup requires the provider to allow the exact game address; it refuses to initialize without that setting. Real Google setup/signing/recovery still need verification. Existing older shops still use their original backend-held keys and immutable contract versions. The local ownership demo uses browser-held keys. No completed migration is claimed.
+Started in November 2026 during the [hackathon's eligible period](https://nearhackathon.com/HACKATHON.md). See the [submission draft](docs/SUBMISSION.md) and [requirements checklist](docs/HACKATHON_CHECKLIST.md). The project has not been submitted.
 
-Each save has its own economy; player-to-player trading is not implemented. Mira's dynamic conversation path depends on configured provider access and a finite request budget. Class balance and large-scale multiplayer load are not established. Two independent automated browsers exercise the shared arena, including combat and reconnect; this is not a two-human playtest.
+Built with AI coding assistance using NEAR SDK, Phaser, Supabase, Privy and TypeSafe/Jev. Dependencies are pinned. [Credits](docs/ASSET_CREDITS.md) list third-party material; builds use the committed game assets.
 
-Hosted development quotas are 10 saved worlds globally, two owned saves per Google account, 1,000 durable economic operations per world and 128 NPC requests per world. The shared arena keeps up to 128 profiles and 256 PvP matches. These are application limits, not Stasho limits or a concurrent-user benchmark.
-
-The hosted build deploys from GitHub through Stasho. Backend origin/Auth settings still need an exact-URL update when a new build changes the CID.
-
-## Project notes
-
-- [Gameplay loop](docs/GAMEPLAY.md)
-- [Submission draft and demo capture](docs/SUBMISSION.md)
-- [Hackathon requirements and gaps](docs/HACKATHON_CHECKLIST.md)
-- [GitHub → Stasho setup](docs/STASHO.md)
-- [Release security self-review and known limits](docs/RELEASE_REVIEW.md)
-- [Security reporting](SECURITY.md)
-
-Started during the hackathon development window, in November 2026. Built with AI coding assistance, NEAR SDK, Phaser, Supabase, Privy and TypeSafe/Jev; lockfiles pin dependencies. This public snapshot omits private development logs, credentials and original third-party art packs.
-
-Original project code is licensed under **Apache-2.0**. Third-party artwork, font and dependency terms remain separate; see [credits](docs/ASSET_CREDITS.md). Contributions are welcome through small pull requests with relevant checks.
+Project code is licensed under [Apache-2.0](LICENSE). Deployment instructions are in the [GitHub → Stasho guide](docs/STASHO.md).

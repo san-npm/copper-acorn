@@ -1,12 +1,12 @@
 # Submission preparation
 
-Track: **Games With Real Economies** (`games`). Deadline: **14 November 2026, 23:59 UTC**, checked against the [official rules](https://nearhackathon.com/HACKATHON.md) on 11 November.
+Track: **Games With Real Economies** (`games`). Deadline: **14 November 2026, 23:59 UTC**, checked against the [official rules](https://nearhackathon.com/HACKATHON.md) on 12 November.
 
-Repository and a reproducible local demo are prepared. This is not a submitted or fully cleared entry. See the [requirements checklist](HACKATHON_CHECKLIST.md) for remaining checks.
+Project summary, demo material and a reproducible local walkthrough are prepared. The entry has not been submitted. See the [requirements checklist](HACKATHON_CHECKLIST.md) for verification status and submission inputs.
 
 ## Project description
 
-Copper Acorn is a pixel-art alchemy shop game. Players gather ingredients, brew potions, set shelf prices and trade with three NPC merchants. Each merchant has its own balance and inventory; stock and recent demand change its prices. A NEAR multi-token contract tracks items and validates crafting, sales and merchant investment. A quest chain and two side orders guide the shop loop. A shared turn-based arena records once-only duel results through a separate referee contract. The prototype uses testnet and a free local Sandbox; player-to-player item trading is not implemented.
+Copper Acorn is a pixel-art alchemy shop game with turn-based player duels, built for Games With Real Economies. Players gather ingredients, brew potions, set shelf prices, trade with three NPC merchants and complete guild commissions and side quests. Each merchant has its own balance and inventory; stock and recent demand affect its prices, and an underfunded stall can close until working capital is contributed. Players can also enter a shared arena, challenge another player or practise against a passive training chicken. A NEAR multi-token contract tracks ingredients, potions and Copper and validates the economy actions. A separate referee contract records approved PvP results and progression once; the game server runs combat. Hosted shops use testnet, and the free local demo runs actual contracts in an isolated Sandbox. Player-to-player item trading is not implemented.
 
 ## Demo material
 
@@ -19,7 +19,9 @@ The screenshots are actual captures from an isolated local Sandbox using the app
 
 ## Draft X post
 
-Built Copper Acorn at NEAR HACKATHON: gather herbs, brew potions and run a shop. NPC prices react to stock and demand; NEAR contracts track items and trades.
+Built Copper Acorn at NEAR HACKATHON: gather herbs, brew potions, run a shop and challenge players to turn-based duels.
+
+NEAR contracts track items, trades and duel results.
 
 @NEARProtocol #NEARHackathon
 

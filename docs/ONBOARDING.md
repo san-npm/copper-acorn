@@ -1,10 +1,10 @@
 # Google access with Privy
 
-The owner selected Privy on 10 November 2026. The integration is included in the public source; live Google consent, root signing and recovery still need verification before public activation. Earlier hosted shops keep their existing keys and assets. No automatic custody migration is performed.
+The hosted game uses Google sign-in through Supabase and Privy for new-game signing. The current game address is configured, and setup-message handling and Google authorization startup have been checked. Completed first-time game creation, player signing and recovery still need a real-user retest. Earlier hosted shops keep their existing keys and assets; no automatic custody migration is performed.
 
 ## Verified state
 
-As of 11 November, Google is enabled and the operator has allowed the published game origin. The onboarding follow-up includes the existing public Privy App ID. Before initialization, the client requires Google enabled and the exact current origin in that list; no root signing starts while configuration is missing. Failed checks can retry in-page after configuration is saved. Browser fixtures cover creation, cancellation, exact-request recovery, identity rejection and two-browser replacement; they do not establish real Google consent or provider signatures. Do not mark first-time onboarding complete from an automatically restored older shop.
+As of 12 November, Google is enabled and both the current and previous published origins are allowed. Before initialization, the client checks Google and the exact current origin; setup cannot start while configuration is missing. Failed checks can retry in-page after configuration is saved. Browser fixtures cover creation, cancellation, exact-request recovery, identity rejection and two-browser replacement. The [hosted startup checks](verification/2026-11-12-social-return.json) stop before human consent and provider signatures. An automatically restored older shop does not verify first-time onboarding.
 
 ## Setup
 
